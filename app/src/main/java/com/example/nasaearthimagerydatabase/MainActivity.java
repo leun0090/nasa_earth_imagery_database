@@ -2,7 +2,10 @@ package com.example.nasaearthimagerydatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,5 +14,19 @@ public class MainActivity extends AppCompatActivity {
         // hi again!!
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button activityButton1 = (Button) findViewById(R.id.activityButton1);
+        Button activityButton2 = (Button) findViewById(R.id.activityButton2);
+        Button activityButton3 = (Button) findViewById(R.id.activityButton3);
+
+        activityButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(getApplicationContext(), Activity2.class);
+                startActivity(intent2);
+            }
+        });
+
+
     }
 }
