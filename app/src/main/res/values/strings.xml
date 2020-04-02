@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Nasa Earth Imagery Database</string>
     <string name="activity2_favoriteButton">Add To Favorites</string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <!--    <item android:id="@+id/search_item"-->
+    <!--        android:orderInCategory="50"-->
+    <!--        app:actionViewClass="android.widget.SearchView"-->
+    <!--        android:icon="@android:drawable/ic_search_category_default"-->
+    <!--        app:showAsAction="always|collapseActionView"-->
+    <!--        android:title="Search"/>    &lt;!&ndash; This uses showAsAction=always, so look at icon= parameter &ndash;&gt;-->
+
+    <item android:id="@+id/itemChat"
+        android:title="Chat Page"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>  <!-- This uses showAsAction=always, so look at icon= parameter -->
+
+    <item android:id="@+id/itemWeather"
+        android:title="Weather Forecast"
+        app:showAsAction="always"
+        android:orderInCategory="200"/> <!-- This uses showAsAction=never, so look at title= parameter -->
+
+    <item android:id="@+id/itemLogin"
+        android:orderInCategory="300"
+        app:showAsAction="always"
+        android:title="Go back to login"/>
+
+</menu>
