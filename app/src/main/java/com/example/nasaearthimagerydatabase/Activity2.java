@@ -53,6 +53,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
     TextView longitudeTextView;
     TextView latitudeTextView;
+    TextView progressLabel;
 
     Button favoriteButton;
 
@@ -61,28 +62,27 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_2);
 
-//        progressBar = (ProgressBar)findViewById(R.id.progressBar);
-//        progressBar.setVisibility(View.VISIBLE);
-//
-//        mapView = (ImageView) findViewById(R.id.mapView);
-//        latitudeTextView = (TextView) findViewById(R.id.latitudeTextView);
-//        longitudeTextView = (TextView) findViewById(R.id.longitudeTextView);
-//
-//
-//        MapQuery req = new MapQuery();
-//        req.execute(urlMap);
-//
-//
-//        favoriteButton = (Button) findViewById(R.id.favoriteButton);
-//        favoriteButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Snackbar.make(favoriteButton, "Your map location has been favorited", Snackbar.LENGTH_LONG)
-//                        .show();
-//            }
-//
-//        });
-//
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        mapView = (ImageView) findViewById(R.id.mapView);
+        latitudeTextView = (TextView) findViewById(R.id.latitudeTextView);
+        longitudeTextView = (TextView) findViewById(R.id.longitudeTextView);
+        progressLabel = (TextView) findViewById(R.id.progressLabel);
+
+        MapQuery req = new MapQuery();
+        req.execute(urlMap);
+
+
+        favoriteButton = (Button) findViewById(R.id.favoriteButton);
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(favoriteButton, "Your map location has been favorited", Snackbar.LENGTH_LONG)
+                        .show();
+            }
+
+        });
 
 
         //This gets the toolbar from the layout:
@@ -104,84 +104,93 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
-//    private class MapQuery extends AsyncTask<String, Integer, String>
-//    {
-//        protected void onPreExecute() {
-//            longitudeTextView.setVisibility(View.GONE);
-//            latitudeTextView.setVisibility(View.GONE);
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... args) {
-//
-//            try {
-//
-//                URL url = new URL(urlMap);
-//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-//                urlConnection.connect();
-//                InputStream response = urlConnection.getInputStream();
-//
-//
-//                // TEMPERATURE
-//                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-//                factory.setNamespaceAware(false);
-//                XmlPullParser xpp = factory.newPullParser();
-//                xpp.setInput( response  , "UTF-8");
-//
-//                String parameter = null;
-//                int eventType = xpp.getEventType(); //The parser is currently at START_DOCUMENT
-//
-//
-//                while(eventType != XmlPullParser.END_DOCUMENT) {
-//                    if(eventType == XmlPullParser.START_TAG) {
-//                        if(xpp.getName().equals("ImageUrl"))
-//                        {
-//                            imageUrl = xpp.nextText();
-//                            Log.i(TAG, "imageUrl" + imageUrl);
-//                            publishProgress(50);
-//
-//                        }
-//                    }
-//                    eventType = xpp.next(); //move to the next xml event and store it in a variable
-//                }
-//
-//
-//                URL iconUrl = new URL(imageUrl);
-//                HttpURLConnection iconConnection = (HttpURLConnection) iconUrl.openConnection();
-//                iconConnection.connect();
-//                int responseCode = iconConnection.getResponseCode();
-//                if (responseCode == 200) {
-//                    image = BitmapFactory.decodeStream(iconConnection.getInputStream());
-//                }
-//
-//            }
-//            catch (Exception e) {
-//                e.printStackTrace();
-//                Log.i(TAG, "Error");
-//            }
-//
-//
-//            return null;
-//        }
-//
-//        public void onProgressUpdate(Integer ... args) {
-//            progressBar.setVisibility(View.VISIBLE);
-//            progressBar.setProgress(args[0]);
-//
-//        }
-//
-//        public void onPostExecute(String fromDoInBackground) {
-//            progressBar.setVisibility(View.GONE);
-//
-//            longitudeTextView.setVisibility(View.VISIBLE);
-//            latitudeTextView.setVisibility(View.VISIBLE);
-//
-//            longitudeTextView.setText(longitude);
-//            latitudeTextView.setText(latitude);
-//
-//            mapView.setImageBitmap(image);
-//        }
-//    }
+    private class MapQuery extends AsyncTask<String, Integer, String>
+    {
+        protected void onPreExecute() {
+            longitudeTextView.setVisibility(View.GONE);
+            latitudeTextView.setVisibility(View.GONE);
+
+
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+
+            try {
+
+                URL url = new URL(urlMap);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.connect();
+                InputStream response = urlConnection.getInputStream();
+
+
+                // TEMPERATURE
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware(false);
+                XmlPullParser xpp = factory.newPullParser();
+                xpp.setInput( response  , "UTF-8");
+
+                String parameter = null;
+                int eventType = xpp.getEventType(); //The parser is currently at START_DOCUMENT
+
+
+                while(eventType != XmlPullParser.END_DOCUMENT) {
+                    if(eventType == XmlPullParser.START_TAG) {
+                        if(xpp.getName().equals("ImageUrl"))
+                        {
+                            imageUrl = xpp.nextText();
+                            Log.i(TAG, "imageUrl" + imageUrl);
+                            publishProgress(10);
+
+                        }
+                    }
+                    eventType = xpp.next(); //move to the next xml event and store it in a variable
+                }
+
+                publishProgress(20);
+                URL iconUrl = new URL(imageUrl);
+                publishProgress(30);
+                HttpURLConnection iconConnection = (HttpURLConnection) iconUrl.openConnection();
+                publishProgress(40);
+                iconConnection.connect();
+                publishProgress(50);
+                int responseCode = iconConnection.getResponseCode();
+                publishProgress(60);
+                if (responseCode == 200) {
+                    image = BitmapFactory.decodeStream(iconConnection.getInputStream());
+                    publishProgress(80);
+                }
+                publishProgress(100);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                Log.i(TAG, "Error");
+            }
+
+
+            return null;
+        }
+
+        public void onProgressUpdate(Integer ... args) {
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(args[0]);
+
+        }
+
+        public void onPostExecute(String fromDoInBackground) {
+            progressBar.setVisibility(View.GONE);
+            progressLabel.setVisibility(View.GONE);
+
+            longitudeTextView.setVisibility(View.VISIBLE);
+            latitudeTextView.setVisibility(View.VISIBLE);
+
+            longitudeTextView.setText(longitude);
+            latitudeTextView.setText(latitude);
+
+            mapView.setImageBitmap(image);
+
+        }
+    }
 
 
 
@@ -224,7 +233,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                             }
                         });
                 alertDialog.show();
-
+                message = "You clicked on Help";
                 break;
         }
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

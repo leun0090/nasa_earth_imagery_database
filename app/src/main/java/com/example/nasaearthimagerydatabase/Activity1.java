@@ -14,7 +14,7 @@ public class Activity1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_1);
 
-        progressBar1 = findViewById(R.id.progressBar);
+        progressBar1 = findViewById(R.id.progressbar1);
         progressBar1.setVisibility(View.VISIBLE);
 
 
