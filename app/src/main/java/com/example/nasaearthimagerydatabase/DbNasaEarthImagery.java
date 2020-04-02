@@ -74,7 +74,7 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Bitmap getImageById(long id) {
+    public void getImageById(long id) {
 
     }
 }
