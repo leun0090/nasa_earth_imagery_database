@@ -15,9 +15,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button activityButton1 = (Button) findViewById(R.id.activityButton1);
-        Button activityButton2 = (Button) findViewById(R.id.activityButton2);
-        Button activityButton3 = (Button) findViewById(R.id.activityButton3);
+        Button activityButton1 = findViewById(R.id.activityButton1);
+        Button activityButton2 = findViewById(R.id.activityButton2);
+        Button activityButton3 = findViewById(R.id.activityButton3);
+
+        Intent intent1 = new Intent(this, Activity1.class);
+        activityButton1.setOnClickListener(click -> startActivity(intent1));
+
 
         activityButton2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -26,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent2);
             }
         });
+
+        activityButton3.setOnClickListener(c -> {
+            Intent intent3 = new Intent(MainActivity.this, Activity3.class);
+            MainActivity.this.startActivity(intent3);
+        });
+
 
 
     }

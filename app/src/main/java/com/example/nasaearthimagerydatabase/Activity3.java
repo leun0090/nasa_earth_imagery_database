@@ -36,10 +36,8 @@ import java.net.URL;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-
-public class Activity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
-
-    private static final String TAG = "Activity 2";
+public class Activity3 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    private static final String TAG = "Activity 3";
 
     String latitude = "43.6532";
     String longitude = "-79.3832";
@@ -60,7 +58,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_2);
+        setContentView(R.layout.activity_3);
 
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -70,7 +68,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         longitudeTextView = (TextView) findViewById(R.id.longitudeTextView);
         progressLabel = (TextView) findViewById(R.id.progressLabel);
 
-        MapQuery req = new MapQuery();
+        Activity3.MapQuery req = new Activity3.MapQuery();
         req.execute(urlMap);
 
 
@@ -200,7 +198,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.top_menu, menu);
+        inflater.inflate(R.menu.top_menu3, menu);
 
         return true;
     }
@@ -218,12 +216,12 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             case R.id.item3:
                 message = "You clicked on Activity 3";
 
-                Intent activityTwoIntent = new Intent(getApplicationContext(), Activity2.class);
+                Intent activityTwoIntent = new Intent(getApplicationContext(), Activity3.class);
                 startActivity(activityTwoIntent);
 
                 break;
             case R.id.item4:
-                AlertDialog alertDialog = new AlertDialog.Builder(Activity2.this).create();
+                AlertDialog alertDialog = new AlertDialog.Builder(Activity3.this).create();
                 alertDialog.setTitle("Help");
                 alertDialog.setMessage("Help message to be shown");
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
