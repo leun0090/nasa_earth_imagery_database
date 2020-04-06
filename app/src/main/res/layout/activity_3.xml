@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity2"
+    tools:context=".Activity3"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_marginLeft="5dp"
@@ -40,34 +40,17 @@
                 android:layout_height="wrap_content"
                 android:visibility="invisible" />
 
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/aListView" />
+
             <ImageView
                 android:id="@+id/mapView"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="10"/>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/latitudeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="45.23424 N"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:id="@+id/longitudeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="75.23423 W"
-                    android:textSize="20dp"/>
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -96,8 +79,8 @@
                 android:orientation="vertical">
 
 
-                <EditText
-                    android:id="@+id/titleEditText"
+                <TextView
+                    android:id="@+id/editText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -112,13 +95,6 @@
                     android:layout_weight="1"
                     android:text="@string/activity2_favoriteButton" />
 
-                <Button
-                    android:id="@+id/saveButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Save location" />
-
             </LinearLayout>
 
         </LinearLayout>
@@ -127,8 +103,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:headerLayout="@layout/header_layout"
-            app:menu="@menu/drawer_menu"
+            app:menu="@menu/drawer_menu3"
             android:id="@+id/nav_view"/>
     </androidx.drawerlayout.widget.DrawerLayout>
 

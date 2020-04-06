@@ -75,5 +75,4 @@
         android:transcriptMode="alwaysScroll"
         android:stackFromBottom="true"/>
 
-
 </LinearLayout>

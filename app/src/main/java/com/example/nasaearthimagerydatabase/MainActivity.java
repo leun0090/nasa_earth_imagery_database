@@ -31,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        activityButton3.setOnClickListener(c -> {
+            Intent intent3 = new Intent(MainActivity.this, Activity3.class);
+            MainActivity.this.startActivity(intent3);
+        });
+
+
 
     }
 }
