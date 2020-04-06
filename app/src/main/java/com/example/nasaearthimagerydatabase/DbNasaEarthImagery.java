@@ -6,18 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
-import android.util.Log;
-
-import java.io.BufferedReader;
+import android.graphics.BitmapFactory;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 public class DbNasaEarthImagery extends SQLiteOpenHelper {
@@ -30,8 +22,9 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
     public static final String FAVORITE = "Favorite";
     public static final String IMAGE = "Image";
     public static final String LOCATION_ID = "_id";
-    public static final String CREATE_TABLE = "CREATE TABLE "+TABLE_NAME+" ("+LOCATION_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
-            TITLE+" TEXT, "+LATITUDE+" TEXT,"+LONGITUDE+" TEXT,"+DESCRIPTION+" TEXT,"+IMAGE+" BLOB,"+FAVORITE+" INTEGER);";
+    public static final String IMAGE_PATH = "ImagePath";
+    public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" + LOCATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            TITLE + " TEXT, " + LATITUDE + " TEXT," + LONGITUDE + " TEXT," + DESCRIPTION + " TEXT," + IMAGE + " BLOB," + IMAGE_PATH + " TEXT," + FAVORITE + " INTEGER);";
 
     public DbNasaEarthImagery(Context context) {
         super(context, DB_NAME, null, 1);
@@ -54,37 +47,73 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertLocation(String title, String latitude, String longitude, String description, Bitmap image, boolean favorite) throws SQLException {
+    //public long insertLocation(String title, String latitude, String longitude, String description, Bitmap image, String imagePath, boolean favorite) throws SQLException {
+    public long insertLocation(MapElement me) throws SQLException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(TITLE, title);
-        cv.put(LATITUDE, latitude);
-        cv.put(LONGITUDE, longitude);
-        cv.put(DESCRIPTION, description);
+        cv.put(TITLE, me.getTitle());
+        cv.put(LATITUDE, me.getLatitude());
+        cv.put(LONGITUDE, me.getLongitude());
+        cv.put(DESCRIPTION, me.getDescription());
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        //image.compress(Bitmap.CompressFormat.PNG, 100, bos);
-        //byte[] bArray = bos.toByteArray();
-        //cv.put(IMAGE, bArray);
-        if (favorite) cv.put(FAVORITE, 1);
+        if (me.getImage()!=null) me.getImage().compress(Bitmap.CompressFormat.PNG, 100, bos);
+        byte[] bArray = bos.toByteArray();
+        cv.put(IMAGE, bArray);
+        cv.put(IMAGE_PATH, me.getImage_path());
+        if (me.isFavorite()) cv.put(FAVORITE, 1);
         else cv.put(FAVORITE, 0);
         return db.insert(TABLE_NAME, null, cv);
     }
 
-    public Cursor readAllLocationsToCursor(){
+    public Cursor readAllLocationsToCursor() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "Select * from "+TABLE_NAME;
+        String query = "Select * from " + TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
         return cursor;
     }
 
-    public void deleteLocation(long id){
+    public ArrayList<MapElement> getListElements() {
+        ArrayList<MapElement> list_map_elements = new ArrayList<>();;
+        Cursor cursor = readAllLocationsToCursor();
+        int i = cursor.getCount();
+        MapElement[] loc = new MapElement[i];
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                Bitmap bmp=null;
+                if (cursor.getBlob(5)!=null) {
+                byte[] byteArray = cursor.getBlob(5);
+                bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);}
+                long l=cursor.getLong(0);
+                String s1=cursor.getString(1);
+                String s2=cursor.getString(2);
+                String s3=cursor.getString(3);
+                String s4=cursor.getString(4);
+                String s5=cursor.getString(6);
+                int h=cursor.getInt(6);
+                loc[--i] = new MapElement(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), bmp, (cursor.getInt(7) == 1) ? true : false);
+                list_map_elements.add(loc[i]);
+            }
+        }
+        return list_map_elements;
+    }
+
+    public void deleteLocation(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, LOCATION_ID + " = " + id, null);
         db.close();
     }
 
-
-    public void getImageById(long id) {
-
+    public void deleteAllLocation() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
+        db.close();
     }
+    public void deleteTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL(CREATE_TABLE);;
+        db.close();
+    }
+
+
 }

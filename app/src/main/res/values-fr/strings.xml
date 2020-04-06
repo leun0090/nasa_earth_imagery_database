@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Base de données d\'images de la Terre de la NASA</string>
-
     <string name="activity2_favoriteButton">Ajouter aux Favoris</string>
-
     <string name="open">Ouvrir</string>
     <string name="close">Fermer</string>
+    <string name="activity2_favoriteSnack">Votre emplacement sur la carte a été privilégié</string>
     <string name="delete_this">Do you want to delete this location?</string>
     <string name="select_row">The selected row is:</string>
     <string name="dataB_id">"\nThe database id: "</string>

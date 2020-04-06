@@ -1,3 +1,4 @@
+
 package com.example.nasaearthimagerydatabase;
 
 import androidx.appcompat.app.AppCompatActivity;

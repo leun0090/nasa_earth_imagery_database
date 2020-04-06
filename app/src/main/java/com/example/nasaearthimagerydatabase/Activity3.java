@@ -9,8 +9,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 
 public class Activity3 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private static final String ACTIVITY_NAME = "PROFILE_ACTIVITY";
-    private ArrayList<Favorite> list_favorite= new ArrayList<>();
+    private ArrayList<MapElement> list_map_elements= new ArrayList<>();
     DbNasaEarthImagery dbHelper;
     ListView theList;
     private DrawerLayout drawerLayout;
@@ -43,15 +44,15 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_3);
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
         MyListAdapter adpt = new MyListAdapter();
         theList = findViewById(R.id.aListView);
         theList.setAdapter(adpt);
         dbHelper = new DbNasaEarthImagery(this);
-        try {
-            viewFavorites();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        viewFavorites();
         Toolbar tBar = findViewById(R.id.toolbar);
         setSupportActionBar(tBar);
 
@@ -69,14 +70,10 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
             builder.setMessage(getString(R.string.select_row) + (pos + 1) + getString(R.string.dataB_id) + id);
             builder.setPositiveButton(getString(R.string.yyes), (click, arg)  -> {
                 Log.e(ACTIVITY_NAME, "In function: onStart");
-                dbHelper.deleteLocation(list_favorite.get(pos).GetId());
-                list_favorite.clear();
-                try {
-                    viewFavorites();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                if (list_favorite.isEmpty()) list_favorite.add(null);
+                dbHelper.deleteLocation(list_map_elements.get(pos).getId());
+                list_map_elements.clear();
+                viewFavorites();
+                if (list_map_elements.isEmpty()) list_map_elements.add(null);
                 adpt.notifyDataSetChanged();
             });
             builder.setNegativeButton(getString(R.string.nnoo), (click, arg)  -> { });
@@ -90,7 +87,7 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
         sendButton.setOnClickListener(click -> {
             //String msg=textView.getText().toString();
             //dbHelper.insertFavorite(msg,true);
-            list_favorite.clear();
+            list_map_elements.clear();
             //viewFavorites();
             adpt.notifyDataSetChanged();
             //textView.setText("");
@@ -107,17 +104,14 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
-    private void viewFavorites() throws SQLException {
-        Cursor cursor = dbHelper.readAllLocationsToCursor();
-        if (cursor.getCount() == 0) initElements();
-        /*
-        if (cursor.getCount() != 0) {
-            while (cursor.moveToNext()){
-                Favorite fvr = new Favorite(cursor.getString(1), cursor.getInt(2)==1?true:false, cursor.getLong(0));
-                list_favorite.add(fvr);
-                theList.setAdapter(new MyListAdapter());
-            }
-        }*/
+    private void viewFavorites(){
+        //dbHelper.deleteTable();
+        list_map_elements = dbHelper.getListElements();
+       // Cursor cursor = dbHelper.readAllLocationsToCursor();
+        if (list_map_elements.size() == 0) {initElementsDemo();
+            list_map_elements = dbHelper.getListElements();}
+        else dbHelper.deleteAllLocation();
+        theList.setAdapter(new MyListAdapter());
     }
 
     @Override
@@ -166,33 +160,24 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
         return true;
     }
 
-    public void initElements() throws SQLException {
-        MapElement loc[] = new MapElement[5];
-        loc[0] =new MapElement("Title 1","45.335421","-75.783714","Description 1","http://ecn.t1.tiles.virtualearth.net/tiles/a030230322201101.jpeg?g=8293",true);
-        loc[1] =new MapElement("Title 2","45.345421","-75.793714","Description 2","http://ecn.t1.tiles.virtualearth.net/tiles/a030230322023321.jpeg?g=8293",true);
-        loc[2] =new MapElement("Title 3","45.355421","-75.803714","Description 3","http://ecn.t2.tiles.virtualearth.net/tiles/a030230322023302.jpeg?g=8293",true);
-        loc[3] =new MapElement("Title 4","45.365421","-75.813714","Description 4","http://ecn.t1.tiles.virtualearth.net/tiles/a030230322023211.jpeg?g=8293",true);
-        loc[4] =new MapElement("Title 5","45.375421","-75.823714","Description 5","http://ecn.t0.tiles.virtualearth.net/tiles/a030230322023030.jpeg?g=8293",true);
-        for (int i=0; i<5;i++) dbHelper.insertLocation(loc[i].getTitle(),loc[i].getLatitude(),loc[i].getLongitude(),loc[i].getDescription(),loc[i].getImage(),loc[i].isFavorite());
-    }
-
-    public class Favorite {
-        private String Favorite;
-        private boolean isFavorite;
-        private long id;
-
-        public Favorite(String Favorite, boolean isFavorite, long id ){
-            this.Favorite = Favorite;
-            this.isFavorite = isFavorite;
-            this.id=id;
+    public void initElementsDemo() {
+        try {
+            MapElement loc[] = new MapElement[9];
+            loc[0] = new MapElement(0,"Title 1", "45.335421", "-75.783714", "Description 1", true);
+            loc[1] = new MapElement(0,"Title 2", "45.345421", "-75.793714", "Description 2", true);
+            loc[2] = new MapElement(0,"Title 3", "45.355421", "-75.803714", "Description 3", true);
+            loc[3] = new MapElement(0,"Title 4", "45.365421", "-75.813714", "Description 4", true);
+            loc[4] = new MapElement(0,"Title 5", "45.375421", "-75.823714", "Description 5", true);
+            loc[5] = new MapElement(0,"Title 6", "37.802297", "-122.405844", "Description 6", true);
+            loc[6] = new MapElement(0,"Title 7", "37.792297", "-122.405844", "Description 7", true);
+            loc[7] = new MapElement(0,"Title 8", "37.782297", "-122.405844", "Description 8", true);
+            loc[8] = new MapElement(0,"Title 9", "37.802297", "-122.415844", "Description 9", true);
+            for (int i = 0; i < 9; i++)
+                dbHelper.insertLocation(loc[i]);
         }
-
-        public boolean isFavorite() {
-            return isFavorite;
-        }
-        public long GetId() {return  id;}
+        catch ( SQLException e) {
+            e.printStackTrace();}
     }
-
 
     private class MyListAdapter extends BaseAdapter {
 
@@ -201,27 +186,34 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
 
         @Override
         public int getCount() {
-            return list_favorite.size();
+            return list_map_elements.size();
         }
 
         @Override
-        public Favorite getItem(int position) {
-            return list_favorite.get(position);
+        public MapElement getItem(int position) {
+            return list_map_elements.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return list_favorite.get(position).GetId();
+            return list_map_elements.get(position).getId();
         }
 
         @Override
         public View getView(int position, View old, ViewGroup parent) {
-            TextView FavoriteText=null;
+            TextView discr=null;
+            TextView title=null;
+            ImageView view=null;
             if (getItem(position).isFavorite()) {
                 old = getLayoutInflater().inflate(R.layout.layout_favorite_view, parent, false);
-                FavoriteText = old.findViewById(R.id.mapDescription);
+                discr = old.findViewById(R.id.mapDescription);
+                title = old.findViewById(R.id.mapTitle);
+                view = old.findViewById(R.id.mapImage);
             }
-            FavoriteText.setText(getItem(position).Favorite);
+            discr.setText(getItem(position).getDescription());
+            title.setText(getItem(position).getTitle()+"  "+getItem(position).getLatitude()+", "+getItem(position).getLongitude());
+            if (getItem(position).getImage()!=null)
+                getItem(position).bitMapToImageView(view,getItem(position).getImage());
             return old;
         }
     }

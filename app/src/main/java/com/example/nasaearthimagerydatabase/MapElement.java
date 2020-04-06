@@ -10,11 +10,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class MapElement {
+    private long id=0;
     private String title = "";
     private String latitude = "";
     private String longitude = "";
@@ -24,25 +26,52 @@ public class MapElement {
     private boolean favorite = false;
 
 
-    public MapElement(String title, String latitude, String longitude, String description, String image_path, boolean favorite) {
-        //String xml = getMapPath(latitude, longitude);
-        //image_path = "";
+    public MapElement(long id, String title, String latitude, String longitude, String description, boolean favorite) {
+        this.id=id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
         this.description = description;
         this.favorite = favorite;
-        //this.image = getBitmapFromURL(image_path);
+        this.id=id;
+        this.image_path="http://dev.virtualearth.net/REST/V1/Imagery/Map/Birdseye/"+latitude+","+longitude+
+                "/19?dir=180&ms=500,500&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
+        this.image = getBitmapFromURL(image_path);
+    }
+
+    public MapElement(long id, String title, String latitude, String longitude, String description, Bitmap image, boolean favorite) {
+        this.id=id;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.title = title;
+        this.description = description;
+        this.favorite = favorite;
+        this.id=id;
+        this.image = image;
     }
 
     public Bitmap getBitmapFromURL(String url) {
-        Bitmap bmp = null;
+        Bitmap bmp=null;
+        URL _url = null;
         try {
-            InputStream in = new URL(url).openStream();
-            bmp = BitmapFactory.decodeStream(in);
-        } catch (Exception e) {
-            Log.e("Error: ", e.getMessage());
+            _url = new URL(url);
+        } catch (MalformedURLException e) {
             e.printStackTrace();
+        }
+        HttpURLConnection conn = null;
+        try {
+            conn = (HttpURLConnection) _url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        conn.setDoInput(true);
+        conn.setDoOutput(true);
+        try {
+
+            InputStream in = conn.getInputStream();
+            bmp = BitmapFactory.decodeStream(in);
+        } catch(IOException e) {
+            System.out.println(e);
         }
         return bmp;
     }
@@ -146,4 +175,8 @@ public class MapElement {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public long getId() {return id;}
+
+    public void setId(long id) {this.id = id;}
 }
