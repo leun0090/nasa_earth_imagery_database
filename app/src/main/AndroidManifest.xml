@@ -26,7 +26,7 @@
         <activity android:name=".Activity2" />
         <activity android:name=".Activity3" />
         <activity android:name=".DbNasaEarthImagery" />
-
+        <activity android:name=".TestActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
