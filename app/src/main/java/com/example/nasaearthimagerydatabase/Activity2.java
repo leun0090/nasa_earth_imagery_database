@@ -48,10 +48,11 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     String testUrl = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/43.6532,-79.3832?zl=18&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
 
     private static final String TAG = "Activity 2";
-    String latitude = "43.6532";
-    String longitude = "-79.3832";
-    String urlMap = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=18&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
+    String latitude;
+    String longitude;
+    String urlMap;
     String traceId;
+    int zoom = 8;
 
     ProgressBar progressBar;
     ImageView mapView;
@@ -59,7 +60,10 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     String imageUrl;
     TextView longitudeTextView;
     TextView latitudeTextView;
-    TextView progressLabel;
+
+    Button zoomOutButton;
+    Button zoomInButton;
+
     Button favoriteButton;
     Button saveButton;
     EditText titleEditText;
@@ -79,17 +83,34 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         mapView = (ImageView) findViewById(R.id.mapView);
         latitudeTextView = (TextView) findViewById(R.id.latitudeTextView);
         longitudeTextView = (TextView) findViewById(R.id.longitudeTextView);
-        progressLabel = (TextView) findViewById(R.id.progressLabel);
         titleEditText = (EditText) findViewById(R.id.titleEditText);
+        favoriteButton = (Button) findViewById(R.id.favoriteButton);
+        saveButton = (Button) findViewById(R.id.saveButton);
+        zoomInButton = (Button) findViewById(R.id.zoomInButton);
+        zoomOutButton = (Button) findViewById(R.id.zoomOutButton);
+
+        // Load data from previous activity
+        latitude = getIntent().getStringExtra("LATITUDE");
+        longitude = getIntent().getStringExtra("LONGITUDE");
+
+        Log.i(TAG, "latitude:" + latitude);
+        // default
+        if (latitude == null || longitude == null) {
+            latitude = "43.6532";
+            longitude = "-79.3832";
+        }
+
+        //urlMap = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=" + Integer.toString(zoom) + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
+        ApiUrl myUrl = new ApiUrl(latitude, longitude, Integer.toString(zoom));
+        urlMap = myUrl.returnUrl();
+
 
         // Load data from sharedpreferences
         sharedPreferences = getSharedPreferences("ActivityTwo", Context.MODE_PRIVATE);
         String savedLatitude = sharedPreferences.getString("savedLatitude",DEFAULT);
         String savedLongitude = sharedPreferences.getString("savedLongitude",DEFAULT);
         String savedTitle = sharedPreferences.getString("savedTitle",DEFAULT);
-
-
-        if (savedTitle.equals(DEFAULT)) { ;
+        if (savedTitle.equals(DEFAULT)) {
             titleEditText.setText("");
         }
         else {
@@ -97,27 +118,24 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         }
 
 
-
         // Load async task
         MapQuery req = new MapQuery();
         req.execute(urlMap);
 
         // Add click listener to favorite button
-        favoriteButton = (Button) findViewById(R.id.favoriteButton);
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Snackbar.make(favoriteButton, R.string.activity2_favoriteSnack, Snackbar.LENGTH_LONG).show();
 
+                // Load shared preferences data into title
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("savedTitle",titleEditText.getText().toString());
                 editor.commit();
-
             }
         });
 
-
-        saveButton = (Button) findViewById(R.id.saveButton);
+        // Saves Title into SharedPreferences
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +145,31 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 editor.putString("savedLatitude",latitude);
                 editor.putString("savedLongitude",latitude);
                 editor.commit();
+            }
+        });
 
+
+        // ZoomIn
+        zoomInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MapQuery req = new MapQuery();
+                zoom++;
+                myUrl.changeZoom(Integer.toString(zoom));
+                req.execute(myUrl.returnUrl());
+                //req.execute("https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=" + Integer.toString(zoom) + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O");
+            }
+        });
+
+        // ZoomOut
+        zoomOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MapQuery req = new MapQuery();
+                zoom--;
+                myUrl.changeZoom(Integer.toString(zoom));
+                req.execute(myUrl.returnUrl());
+                //req.execute("https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=" + Integer.toString(zoom) + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O");
             }
         });
 
@@ -159,7 +201,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             try {
 
                 // Load url
-                URL url = new URL(urlMap);
+                URL url = new URL(args[0]);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.connect();
                 InputStream response = urlConnection.getInputStream();
@@ -189,9 +231,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                             if (responseCode == 200) {
                                 image = BitmapFactory.decodeStream(iconConnection.getInputStream());
                             }
-
-
-
                         }
                     }
                     eventType = xpp.next(); //move to the next xml event and store it in a variable
@@ -212,14 +251,11 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
         public void onPostExecute(String fromDoInBackground) {
             progressBar.setVisibility(View.GONE);
-            progressLabel.setVisibility(View.GONE);
             longitudeTextView.setVisibility(View.VISIBLE);
             latitudeTextView.setVisibility(View.VISIBLE);
             longitudeTextView.setText(longitude);
             latitudeTextView.setText(latitude);
             mapView.setImageBitmap(image);
-
-
         }
     }
 
@@ -284,5 +320,26 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         return false;
     }
 
+    private class ApiUrl {
+        String start = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/";
+        String latitude = "";
+        String longitude = "";
+        String zoom = "";
+        String end = "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
+
+        public ApiUrl(String latitude, String longitude, String zoom) {
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.zoom = zoom;
+        }
+
+        public void changeZoom(String zoom) {
+            this.zoom = zoom;
+        }
+
+        public String returnUrl() {
+            return start + latitude + "," + longitude + "?zl=" + zoom + end;
+        }
+    }
 
 }
