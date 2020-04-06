@@ -6,4 +6,5 @@
 
     <string name="open">Ouvrir</string>
     <string name="close">Fermer</string>
+    <string name="activity2_favoriteSnack">Votre emplacement sur la carte a été privilégié</string>
 </resources>

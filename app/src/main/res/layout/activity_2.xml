@@ -97,7 +97,7 @@
 
 
                     <EditText
-                        android:id="@+id/editText"
+                        android:id="@+id/titleEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -111,6 +111,13 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/activity2_favoriteButton" />
+
+                    <Button
+                        android:id="@+id/saveButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Save location" />
 
                 </LinearLayout>
 
