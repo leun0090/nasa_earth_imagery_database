@@ -4,4 +4,9 @@
 
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="delete_this">Do you want to delete this location?</string>
+    <string name="select_row">The selected row is:</string>
+    <string name="dataB_id">"\nThe database id: "</string>
+    <string name="yyes">Yes</string>
+    <string name="nnoo">No</string>
 </resources>

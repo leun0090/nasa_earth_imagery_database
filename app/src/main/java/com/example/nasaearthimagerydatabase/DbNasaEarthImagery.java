@@ -6,8 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.SQLException;
 
 
@@ -53,9 +62,9 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
         cv.put(LONGITUDE, longitude);
         cv.put(DESCRIPTION, description);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, bos);
-        byte[] bArray = bos.toByteArray();
-        cv.put(IMAGE, bArray);
+        //image.compress(Bitmap.CompressFormat.PNG, 100, bos);
+        //byte[] bArray = bos.toByteArray();
+        //cv.put(IMAGE, bArray);
         if (favorite) cv.put(FAVORITE, 1);
         else cv.put(FAVORITE, 0);
         return db.insert(TABLE_NAME, null, cv);
@@ -73,6 +82,7 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
         db.delete(TABLE_NAME, LOCATION_ID + " = " + id, null);
         db.close();
     }
+
 
     public void getImageById(long id) {
 
