@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,14 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -67,6 +63,8 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     Button favoriteButton;
     Button saveButton;
     EditText titleEditText;
+
+    ApiUrl currentUrl;
 
     // Shared preferences
     SharedPreferences sharedPreferences = null;
@@ -101,8 +99,8 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         }
 
         //urlMap = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=" + Integer.toString(zoom) + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
-        ApiUrl myUrl = new ApiUrl(latitude, longitude, Integer.toString(zoom));
-        urlMap = myUrl.returnUrl();
+        currentUrl = new ApiUrl(latitude, longitude, Integer.toString(zoom));
+        urlMap = currentUrl.returnUrl();
 
 
         // Load data from sharedpreferences
@@ -153,11 +151,8 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         zoomInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MapQuery req = new MapQuery();
                 zoom++;
-                myUrl.changeZoom(Integer.toString(zoom));
-                req.execute(myUrl.returnUrl());
-                //req.execute("https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=" + Integer.toString(zoom) + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O");
+                zoom();
             }
         });
 
@@ -165,11 +160,8 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         zoomOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MapQuery req = new MapQuery();
                 zoom--;
-                myUrl.changeZoom(Integer.toString(zoom));
-                req.execute(myUrl.returnUrl());
-                //req.execute("https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=" + Integer.toString(zoom) + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O");
+                zoom();
             }
         });
 
@@ -263,63 +255,89 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.top_menu, menu);
+        inflater.inflate(R.menu.top_menu2, menu);
         return true;
     }
 
     // Add actions to top toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        String message = null;
         switch(item.getItemId()) {
-            case R.id.item1:
+            case R.id.itemZoomIn:
+                zoom++;
+                zoom();
+                break;
+            case R.id.itemZoomOut:
+                zoom--;
+                zoom();
+                break;
+            case R.id.helpItem:
+//                AlertDialog alertDialog = new AlertDialog.Builder(Activity2.this).create();
+//                alertDialog.setTitle("Welcome to the Map View page!");
+//                alertDialog.setMessage("You are currently viewing a map. Tap on the zoom in or out icons on the toolbar. Then enter a title to favorite this location.");
+//                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                alertDialog.show();
 
-                Intent activityOneIntent = new Intent(getApplicationContext(), Activity1.class);
-                startActivity(activityOneIntent);
-                break;
-            case R.id.item2:
-                message = "You clicked on Activity 2";
-                Intent activityTwoIntent = new Intent(getApplicationContext(), Activity2.class);
-                startActivity(activityTwoIntent);
-                break;
-            case R.id.item3:
-                message = "You clicked on Activity 3";
-                break;
-            case R.id.item4:
-                AlertDialog alertDialog = new AlertDialog.Builder(Activity2.this).create();
-                alertDialog.setTitle("Help");
-                alertDialog.setMessage("Help message to be shown");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
-                message = "You clicked on Help";
+                Dialog helpDialog = new Dialog(Activity2.this);
+                helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                helpDialog.setContentView(R.layout.help_dialog2);
+                Button okButton = helpDialog.findViewById(R.id.okButton);
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        helpDialog.cancel();
+                    }
+                });
+                helpDialog.show();
                 break;
         }
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         return true;
     }
 
     // Add actions to navigation drawer
     @Override
     public boolean onNavigationItemSelected( MenuItem item) {
-        String message = null;
         switch(item.getItemId()) {
             case R.id.itemTest:
-                message = "You clicked on Activity 1";
                 Intent testIntent = new Intent(getApplicationContext(), TestActivity.class);
                 startActivity(testIntent);
+                break;
+
+            case R.id.activityOne:
+                Intent activityOneIntent = new Intent(getApplicationContext(), Activity1.class);
+                startActivity(activityOneIntent);
+                break;
+
+            case R.id.activityTwo:
+                Intent activityTwoIntent = new Intent(getApplicationContext(), Activity2.class);
+                startActivity(activityTwoIntent);
+                break;
+
+            case R.id.activityThree:
+                Intent activityThreeIntent = new Intent(getApplicationContext(), Activity3.class);
+                startActivity(activityThreeIntent);
                 break;
         }
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
-        Toast.makeText(this, "NavigationDrawer: " + message, Toast.LENGTH_LONG).show();
         return false;
     }
 
+
+
+    // zoom
+    public void zoom() {
+        MapQuery req = new MapQuery();
+        currentUrl.changeZoom(Integer.toString(zoom));
+        req.execute(currentUrl.returnUrl());
+    }
+
+    // Class to store api url
     private class ApiUrl {
         String start = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/";
         String latitude = "";

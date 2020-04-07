@@ -9,15 +9,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:text="Hello world" />
+        android:text="Activity 2 - Display map" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Version" />
+        android:text="Version: 4" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name" />
+        android:text="Name: Pak Leung" />
 
 </LinearLayout>
