@@ -17,6 +17,7 @@
 
     <item android:id="@+id/itemZoomOut"
         android:icon="@drawable/zoom_out"
+
         android:title="Choice 2"
         app:showAsAction="always"
         android:orderInCategory="200"/>
@@ -24,6 +25,8 @@
     <item android:id="@+id/helpItem"
         android:icon="@drawable/help"
         android:orderInCategory="400"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:title="Choice 3"
+         />
 
 </menu>

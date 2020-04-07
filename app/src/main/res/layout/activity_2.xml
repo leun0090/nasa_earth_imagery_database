@@ -50,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="2">
                     <TextView
                         android:id="@+id/latitudeLabel"
                         android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="2">
                     <TextView
                         android:id="@+id/longitudeLabel"
                         android:layout_width="wrap_content"
@@ -85,23 +85,38 @@
                 </LinearLayout>
 
 
-                <!--ZOOM -->
+                <!--Move -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="right">
-                    <Button
-                        android:id="@+id/zoomOutButton"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="-" />
-                    <Button
-                        android:id="@+id/zoomInButton"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="+" />
+
+                    <ImageButton
+                        android:id="@+id/downButton"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/down" />
+                    <ImageButton
+                        android:id="@+id/upButton"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/up" />
+                    <ImageButton
+                        android:id="@+id/leftButton"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/left" />
+                    <ImageButton
+                        android:id="@+id/rightButton"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/right" />
                 </LinearLayout>
 
             </LinearLayout>

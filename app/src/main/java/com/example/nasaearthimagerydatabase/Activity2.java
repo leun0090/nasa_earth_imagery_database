@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -48,7 +49,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     String longitude;
     String urlMap;
     String traceId;
-    int zoom = 8;
+    int zoom = 10;
 
     ProgressBar progressBar;
     ImageView mapView;
@@ -57,8 +58,10 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     TextView longitudeTextView;
     TextView latitudeTextView;
 
-    Button zoomOutButton;
-    Button zoomInButton;
+    ImageButton leftButton;
+    ImageButton rightButton;
+    ImageButton upButton;
+    ImageButton downButton;
 
     Button favoriteButton;
     Button saveButton;
@@ -84,8 +87,10 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         titleEditText = (EditText) findViewById(R.id.titleEditText);
         favoriteButton = (Button) findViewById(R.id.favoriteButton);
         saveButton = (Button) findViewById(R.id.saveButton);
-        zoomInButton = (Button) findViewById(R.id.zoomInButton);
-        zoomOutButton = (Button) findViewById(R.id.zoomOutButton);
+        leftButton = (ImageButton) findViewById(R.id.leftButton);
+        rightButton = (ImageButton) findViewById(R.id.rightButton);
+        upButton = (ImageButton) findViewById(R.id.upButton);
+        downButton = (ImageButton) findViewById(R.id.downButton);
 
         // Load data from previous activity
         latitude = getIntent().getStringExtra("LATITUDE");
@@ -121,50 +126,41 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         req.execute(urlMap);
 
         // Add click listener to favorite button
-        favoriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(favoriteButton, R.string.activity2_favoriteSnack, Snackbar.LENGTH_LONG).show();
-
-                // Load shared preferences data into title
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("savedTitle",titleEditText.getText().toString());
-                editor.commit();
-            }
+        favoriteButton.setOnClickListener(c -> {
+            Snackbar.make(favoriteButton, R.string.activity2_favoriteSnack, Snackbar.LENGTH_LONG).show();
+            // Load shared preferences data into title
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("savedTitle",titleEditText.getText().toString());
+            editor.commit();
         });
 
         // Saves Title into SharedPreferences
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        saveButton.setOnClickListener(c -> {
+            // Save longitude and latitude into shared preferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("savedLatitude",latitude);
+            editor.putString("savedLongitude",latitude);
+            editor.commit();
 
-                // Save longitude and latitude into shared preferences
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("savedLatitude",latitude);
-                editor.putString("savedLongitude",latitude);
-                editor.commit();
-            }
         });
 
-
-        // ZoomIn
-        zoomInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                zoom++;
-                zoom();
-            }
+        // moveLeft
+        leftButton.setOnClickListener(c -> {
+            moveLeft();
         });
 
-        // ZoomOut
-        zoomOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                zoom--;
-                zoom();
-            }
+        // moveRight
+        rightButton.setOnClickListener(c -> {
+            moveRight();
         });
 
+        upButton.setOnClickListener(c -> {
+            moveUp();
+        });
+
+        downButton.setOnClickListener(c -> {
+            moveDown();
+        });
 
         // Load toolbar
         Toolbar tBar = findViewById(R.id.toolbar);
@@ -264,11 +260,11 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.itemZoomIn:
-                zoom++;
+                zoom += 2;
                 zoom();
                 break;
             case R.id.itemZoomOut:
-                zoom--;
+                zoom -= 2;
                 zoom();
                 break;
             case R.id.helpItem:
@@ -337,6 +333,33 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         req.execute(currentUrl.returnUrl());
     }
 
+    // move Right
+    public void moveRight() {
+        MapQuery req = new MapQuery();
+        currentUrl.moveRight();
+        req.execute(currentUrl.returnUrl());
+    }
+
+    public void moveLeft() {
+        MapQuery req = new MapQuery();
+        currentUrl.moveLeft();
+        req.execute(currentUrl.returnUrl());
+    }
+
+    public void moveUp() {
+        MapQuery req = new MapQuery();
+        currentUrl.moveUp();
+        req.execute(currentUrl.returnUrl());
+    }
+
+    public void moveDown() {
+        MapQuery req = new MapQuery();
+        currentUrl.moveDown();
+        req.execute(currentUrl.returnUrl());
+    }
+
+
+
     // Class to store api url
     private class ApiUrl {
         String start = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/";
@@ -353,6 +376,26 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
         public void changeZoom(String zoom) {
             this.zoom = zoom;
+        }
+
+        public void moveRight() {
+            double longi = Double.parseDouble(this.longitude);
+            this.longitude = Double.toString(longi + 1);
+        }
+
+        public void moveLeft() {
+            double longi = Double.parseDouble(this.longitude);
+            this.longitude = Double.toString(longi - 1);
+        }
+
+        public void moveUp() {
+            double lat = Double.parseDouble(this.latitude);
+            this.latitude = Double.toString(lat + 1);
+        }
+
+        public void moveDown() {
+            double lat = Double.parseDouble(this.latitude);
+            this.latitude = Double.toString(lat - 1);
         }
 
         public String returnUrl() {
