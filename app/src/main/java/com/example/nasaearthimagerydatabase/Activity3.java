@@ -92,15 +92,6 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
             adpt.notifyDataSetChanged();
             //textView.setText("");
         });
-        /*Button receiveButton = findViewById(R.id.receiveButton);
-        receiveButton.setOnClickListener(click -> {
-            String msg=textView.getText().toString();
-            dbHelper.insertFavorite(msg,false);
-            list_Favorite.clear();
-            viewFavorites();
-            adpt.notifyDataSetChanged();
-            textView.setText("");
-        });*/
 
     }
 
