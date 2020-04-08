@@ -66,6 +66,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     Button favoriteButton;
     Button saveButton;
     EditText titleEditText;
+    EditText descriptionEditText;
 
     ApiUrl currentUrl;
 
@@ -85,6 +86,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         latitudeTextView = (TextView) findViewById(R.id.latitudeTextView);
         longitudeTextView = (TextView) findViewById(R.id.longitudeTextView);
         titleEditText = (EditText) findViewById(R.id.titleEditText);
+        descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
         favoriteButton = (Button) findViewById(R.id.favoriteButton);
         saveButton = (Button) findViewById(R.id.saveButton);
         leftButton = (ImageButton) findViewById(R.id.leftButton);
@@ -132,6 +134,15 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("savedTitle",titleEditText.getText().toString());
             editor.commit();
+
+
+            // send to activity3
+            Intent intent = new Intent(getApplicationContext(), Activity3.class);
+            intent.putExtra("LATITUDE", latitude);
+            intent.putExtra("LONGITUDE", longitude);
+            intent.putExtra("TITLE", titleEditText.getText().toString());
+            intent.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
+            startActivity(intent);
         });
 
         // Saves Title into SharedPreferences
