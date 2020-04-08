@@ -16,4 +16,19 @@
         android:orderInCategory="100"
         app:showAsAction="always"/>
 
+    <item android:id="@+id/activityOne"
+        android:title="Activity One"
+        android:orderInCategory="200"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/activityTwo"
+        android:title="Activity Two"
+        android:orderInCategory="300"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/activityThree"
+        android:title="Activity Three"
+        android:orderInCategory="400"
+        app:showAsAction="always"/>
+
 </menu>

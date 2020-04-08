@@ -8,26 +8,36 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/latitude"
+        android:id="@+id/latitudeEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="latitude"
+        android:text="43.6532"
         tools:layout_editor_absoluteX="123dp"
         tools:layout_editor_absoluteY="150dp" />
 
     <EditText
-        android:id="@+id/longitude"
+        android:id="@+id/longitudeEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="longitude"
+        android:text="-79.3832"
         tools:layout_editor_absoluteX="127dp"
         tools:layout_editor_absoluteY="336dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/randomButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="Generate Random Location"
+        tools:layout_editor_absoluteX="128dp"
+        tools:layout_editor_absoluteY="456dp" />
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search Location"
         tools:layout_editor_absoluteX="128dp"
         tools:layout_editor_absoluteY="456dp" />
 
