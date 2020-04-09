@@ -37,13 +37,16 @@
             <ImageView
                 android:id="@+id/mapView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="10"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:paddingBottom="5dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
                 <!--LATITUDE-->
                 <LinearLayout
@@ -125,7 +128,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginBottom="10dp">
                 <EditText
                     android:id="@+id/titleEditText"
                     android:layout_width="match_parent"
@@ -133,7 +139,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:hint="Title" />
+                    android:hint="@string/activity2Title" />
 
                 <EditText
                     android:id="@+id/descriptionEditText"
@@ -142,7 +148,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:hint="Description" />
+                    android:hint="@string/activity2Description" />
 
                 <Button
                     android:id="@+id/favoriteButton"
@@ -151,12 +157,13 @@
                     android:layout_weight="1"
                     android:text="@string/activity2_favoriteButton" />
 
-                <Button
-                    android:id="@+id/saveButton"
-                    android:layout_width="match_parent"
+
+                <ImageButton
+                    android:id="@+id/viewButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Save location" />
+                    app:srcCompat="@drawable/coffee" />
 
             </LinearLayout>
 

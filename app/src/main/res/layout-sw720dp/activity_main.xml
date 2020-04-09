@@ -7,14 +7,14 @@
     tools:context=".MainActivity"
 
     android:gravity="center"
-    android:background="@drawable/earth_mobile">
+    android:background="@drawable/earth_tablet">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#FFF"
-
+        android:gravity="center"
         android:paddingTop="60dp"
         android:paddingBottom="60dp"
         android:paddingLeft="60dp"
@@ -22,13 +22,12 @@
         android:bottomRightRadius="40dp"
         android:bottomLeftRadius="40dp"
         android:topLeftRadius="40dp"
-        android:topRightRadius="40dp"
-        android:gravity="center">
+        android:topRightRadius="40dp">
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="200dp"
-            android:layout_height="120dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/mainTitle"
             android:textColor="@color/colorPrimary"

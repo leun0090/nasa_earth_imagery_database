@@ -9,4 +9,18 @@
     <string name="dataB_id">"\nThe database id: "</string>
     <string name="yyes">Yes</string>
     <string name="nnoo">No</string>
+
+
+    <!-- main activity -->
+    <string name="mainTitle">NASA IMAGERY DATABASE</string>
+
+    <!-- Activity 2 text -->
+    <string name="helpDescription">You are currently viewing a map. Tap on the zoom in or out icons on the toolbar. Then enter a title to favorite this location.</string>
+    <string name="okButton">Ok</string>
+    <string name="helpExtra">Click on the items in the list to view more details</string>
+
+    <string name="activity2Title">Title</string>
+    <string name="activity2Description">Description</string>
+
+    <string name="activity2Hide">Hide</string>
 </resources>
