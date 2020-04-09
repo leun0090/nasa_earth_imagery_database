@@ -29,13 +29,36 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="vertical">
         <TextView
             android:id="@+id/helpDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:text="You are currently viewing a map. Tap on the zoom in or out icons on the toolbar. Then enter a title to favorite this location." />
+
+        <TextView
+            android:id="@+id/helpDescription2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/helpDescription3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/helpDescription4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="" />
+
     </LinearLayout>
 
     <LinearLayout

@@ -1,5 +1,6 @@
 package com.example.nasaearthimagerydatabase;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -52,6 +54,8 @@ public class DetailsFragment2 extends Fragment {
         // Required empty public constructor
 
         coffeePlaces = new ArrayList<CoffeePlace>();
+
+
 
     }
 
@@ -129,7 +133,9 @@ public class DetailsFragment2 extends Fragment {
                     String address  = jsonObject.getString("Address");
                     JSONObject addObj = new JSONObject(address);
                     String formattedAddress = addObj.getString("formattedAddress");
-                    coffeePlaces.add(new CoffeePlace(name, formattedAddress));
+                    String phoneNumber  = jsonObject.getString("PhoneNumber");
+                    String website  = jsonObject.getString("Website");
+                    coffeePlaces.add(new CoffeePlace(name, formattedAddress, phoneNumber, website));
 
                 }
 
@@ -151,6 +157,37 @@ public class DetailsFragment2 extends Fragment {
 
             coffeeListView = (ListView) result.findViewById(R.id.theListView);
             coffeeListView.setAdapter( myAdapter = new PlacesAdapter());
+
+            coffeeListView.setOnItemClickListener(( parent,  view,  position,  id) -> {
+                CoffeePlace selectedCoffee = coffeePlaces.get(position);
+
+                Dialog helpDialog = new Dialog(getContext());
+
+                helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                helpDialog.setContentView(R.layout.help_dialog2);
+
+                TextView helpDescription =  (TextView)helpDialog.findViewById(R.id.helpDescription);
+                helpDescription.setText(selectedCoffee.name);
+
+                TextView helpDescription2 =  (TextView)helpDialog.findViewById(R.id.helpDescription2);
+                helpDescription2.setText(selectedCoffee.address);
+
+                TextView helpDescription3 =  (TextView)helpDialog.findViewById(R.id.helpDescription3);
+                helpDescription3.setText("Phone: " + selectedCoffee.telephone);
+
+                TextView helpDescription4 =  (TextView)helpDialog.findViewById(R.id.helpDescription4);
+                helpDescription4.setText("Website: " + selectedCoffee.website);
+
+                Button okButton = helpDialog.findViewById(R.id.okButton);
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        helpDialog.cancel();
+                    }
+                });
+                helpDialog.show();
+
+            });
 
         }
 

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -45,6 +46,9 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
     private MenuItem itemZoomIn;
     private MenuItem itemZoomOut;
 
+    ListView coffeeListView;
+
+
     // private static final String coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=47.602038,-122.333964&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
 
     String coffeeUrl;
@@ -69,7 +73,7 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
 
         // ListView
         coffeePlaces = new ArrayList<CoffeePlace>();
-
+        coffeeListView = findViewById(R.id.theListView);
 
         // Load toolbar
         Toolbar tBar = findViewById(R.id.toolbar);
@@ -94,8 +98,41 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
             }
         });
 
-    }
 
+
+
+        coffeeListView.setOnItemClickListener(( parent,  view,  position,  id) -> {
+            CoffeePlace selectedCoffee = coffeePlaces.get(position);
+
+            Dialog helpDialog = new Dialog(Activity2_Extra.this);
+
+            helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            helpDialog.setContentView(R.layout.help_dialog2);
+
+            TextView helpDescription =  (TextView)helpDialog.findViewById(R.id.helpDescription);
+            helpDescription.setText(selectedCoffee.name);
+
+            TextView helpDescription2 =  (TextView)helpDialog.findViewById(R.id.helpDescription2);
+            helpDescription2.setText(selectedCoffee.address);
+
+            TextView helpDescription3 =  (TextView)helpDialog.findViewById(R.id.helpDescription3);
+            helpDescription3.setText("Phone: " + selectedCoffee.telephone);
+
+            TextView helpDescription4 =  (TextView)helpDialog.findViewById(R.id.helpDescription4);
+            helpDescription4.setText("Website: " + selectedCoffee.website);
+
+            Button okButton = helpDialog.findViewById(R.id.okButton);
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    helpDialog.cancel();
+                }
+            });
+            helpDialog.show();
+
+        });
+
+    }
 
     // Load top toolbar
     @Override
@@ -123,7 +160,7 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
                 helpDialog.setContentView(R.layout.help_dialog2);
 
                 TextView helpDescription =  (TextView)helpDialog.findViewById(R.id.helpDescription);
-                helpDescription.setText("Coffee List");
+                helpDescription.setText("Click on the items in the list to view more details");
 
                 Button okButton = helpDialog.findViewById(R.id.okButton);
                 okButton.setOnClickListener(new View.OnClickListener() {
@@ -167,13 +204,11 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
         return false;
     }
 
-
-
+    // ASYNC TASK RETRIEVES COFFEE URL
     private class CoffeeQuery extends AsyncTask<String, Integer, String>
     {
 
-        protected void onPreExecute() {
-        }
+        protected void onPreExecute() { }
 
         protected String doInBackground(String ... args) {
 
@@ -208,14 +243,14 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
                     String address  = jsonObject.getString("Address");
                     JSONObject addObj = new JSONObject(address);
                     String formattedAddress = addObj.getString("formattedAddress");
-                    coffeePlaces.add(new CoffeePlace(name, formattedAddress));
+                    String phoneNumber  = jsonObject.getString("PhoneNumber");
+                    String website  = jsonObject.getString("Website");
+                    coffeePlaces.add(new CoffeePlace(name, formattedAddress, phoneNumber, website));
                 }
-
 
             }
             catch (Exception e) {
             }
-
             return null;
         }
 
@@ -225,15 +260,10 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
         //Type3
         public void onPostExecute(String fromDoInBackground) {
 
-            // ListView
-
-            ListView myList = findViewById(R.id.theListView);
-            myList.setAdapter( myAdapter = new PlacesAdapter());
+            coffeeListView.setAdapter( myAdapter = new PlacesAdapter());
 
         }
-
     }
-
 
     // Listview adapter
     private class PlacesAdapter extends BaseAdapter {
@@ -250,5 +280,4 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
             return newView;
         }
     }
-
 }

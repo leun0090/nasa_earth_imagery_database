@@ -53,7 +53,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     String longitude;
     String urlMap;
     String traceId;
-    int zoom = 10;
+    int zoom = 14;
 
     ProgressBar progressBar;
     ImageView mapView;
@@ -107,8 +107,8 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
         // default
         if (latitude == null || longitude == null) {
-            latitude = "37.7749";
-            longitude = "-122.4194";
+            latitude = "40.7128";
+            longitude = "-74.0060";
         }
 
         //urlMap = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=" + Integer.toString(zoom) + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
@@ -318,17 +318,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 Snackbar.make(findViewById(R.id.itemZoomOut), "You have zoomed out", Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.helpItem:
-//                AlertDialog alertDialog = new AlertDialog.Builder(Activity2.this).create();
-//                alertDialog.setTitle("Welcome to the Map View page!");
-//                alertDialog.setMessage("You are currently viewing a map. Tap on the zoom in or out icons on the toolbar. Then enter a title to favorite this location.");
-//                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                alertDialog.show();
-
                 Dialog helpDialog = new Dialog(Activity2.this);
                 helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 helpDialog.setContentView(R.layout.help_dialog2);
