@@ -64,6 +64,22 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Add item to db
+        String title = getIntent().getStringExtra("TITLE");
+        String latitude = getIntent().getStringExtra("LATITUDE");
+        String longitude = getIntent().getStringExtra("LONGITUDE");
+        String description = getIntent().getStringExtra("DESCRIPTION");
+        try {
+            MapElement newMapElement = new MapElement(0,title, latitude, longitude, description, true);
+            dbHelper.insertLocation(newMapElement);
+            list_map_elements.add(newMapElement);
+            adpt.notifyDataSetChanged();
+        }
+        catch ( SQLException e) {
+            e.printStackTrace();
+        }
+
+
         theList.setOnItemLongClickListener((parent, view, pos, id) -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.delete_this));
@@ -101,7 +117,7 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
        // Cursor cursor = dbHelper.readAllLocationsToCursor();
         if (list_map_elements.size() == 0) {initElementsDemo();
             list_map_elements = dbHelper.getListElements();}
-        else dbHelper.deleteAllLocation();
+       // else dbHelper.deleteAllLocation();
         theList.setAdapter(new MyListAdapter());
     }
 
