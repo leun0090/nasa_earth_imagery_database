@@ -121,11 +121,20 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         String savedLatitude = sharedPreferences.getString("savedLatitude",DEFAULT);
         String savedLongitude = sharedPreferences.getString("savedLongitude",DEFAULT);
         String savedTitle = sharedPreferences.getString("savedTitle",DEFAULT);
+        String savedDescription = sharedPreferences.getString("savedDescription",DEFAULT);
+
         if (savedTitle.equals(DEFAULT)) {
             titleEditText.setText("");
         }
         else {
             titleEditText.setText(savedTitle);
+        }
+
+        if (savedDescription.equals(DEFAULT)) {
+            descriptionEditText.setText("");
+        }
+        else {
+            descriptionEditText.setText(savedDescription);
         }
 
 
@@ -135,10 +144,11 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
         // Add click listener to favorite button
         favoriteButton.setOnClickListener(c -> {
-            Snackbar.make(favoriteButton, R.string.activity2_favoriteSnack, Snackbar.LENGTH_LONG).show();
+
             // Load shared preferences data into title
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("savedTitle",titleEditText.getText().toString());
+            editor.putString("savedDescription",descriptionEditText.getText().toString());
             editor.commit();
 
 
@@ -153,19 +163,23 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
         // moveLeft
         leftButton.setOnClickListener(c -> {
+            Snackbar.make(leftButton, "You have moved left", Snackbar.LENGTH_LONG).show();
             moveLeft();
         });
 
         // moveRight
         rightButton.setOnClickListener(c -> {
+            Snackbar.make(rightButton, "You have moved right", Snackbar.LENGTH_LONG).show();
             moveRight();
         });
 
         upButton.setOnClickListener(c -> {
+            Snackbar.make(upButton, "You have moved up", Snackbar.LENGTH_LONG).show();
             moveUp();
         });
 
         downButton.setOnClickListener(c -> {
+            Snackbar.make(downButton, "You have moved down", Snackbar.LENGTH_LONG).show();
             moveDown();
         });
 
@@ -296,10 +310,12 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             case R.id.itemZoomIn:
                 zoom += 2;
                 zoom();
+                Snackbar.make(findViewById(R.id.itemZoomIn), "You have zoomed in", Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.itemZoomOut:
                 zoom -= 2;
                 zoom();
+                Snackbar.make(findViewById(R.id.itemZoomOut), "You have zoomed out", Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.helpItem:
 //                AlertDialog alertDialog = new AlertDialog.Builder(Activity2.this).create();
