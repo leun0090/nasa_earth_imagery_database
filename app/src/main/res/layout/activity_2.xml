@@ -151,12 +151,13 @@
                     android:layout_weight="1"
                     android:text="@string/activity2_favoriteButton" />
 
-                <Button
-                    android:id="@+id/saveButton"
+
+                <ImageButton
+                    android:id="@+id/viewButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Save location" />
+                    app:srcCompat="@drawable/coffee" />
 
             </LinearLayout>
 

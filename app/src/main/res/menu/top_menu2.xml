@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <item android:id="@+id/search_item"
-            android:orderInCategory="50"
-            app:actionViewClass="android.widget.SearchView"
-            android:icon="@android:drawable/ic_search_category_default"
-            app:showAsAction="always|collapseActionView"
-            android:title="Search"/>
+<!--        <item android:id="@+id/search_item"-->
+<!--            android:orderInCategory="50"-->
+<!--            app:actionViewClass="android.widget.SearchView"-->
+<!--            android:icon="@android:drawable/ic_search_category_default"-->
+<!--            app:showAsAction="always|collapseActionView"-->
+<!--            android:title="Search"/>-->
 
     <item android:id="@+id/itemZoomIn"
         android:title="Choice 1"

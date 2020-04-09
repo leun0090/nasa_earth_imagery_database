@@ -44,6 +44,9 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
     String testUrl = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/43.6532,-79.3832?zl=18&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
 
+    // https://docs.microsoft.com/en-us/bingmaps/rest-services/traffic/get-traffic-incidents
+    //http://dev.virtualearth.net/REST/v1/Traffic/Incidents/45.4215,-75.6972,46.4215,-74.6972?key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O
+
     private static final String TAG = "Activity 2";
     String latitude;
     String longitude;
@@ -64,11 +67,14 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     ImageButton downButton;
 
     Button favoriteButton;
-    Button saveButton;
+    ImageButton viewButton;
     EditText titleEditText;
     EditText descriptionEditText;
 
     ApiUrl currentUrl;
+
+    Boolean isTablet;
+    DetailsFragment2 dFragment;
 
     // Shared preferences
     SharedPreferences sharedPreferences = null;
@@ -88,7 +94,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         titleEditText = (EditText) findViewById(R.id.titleEditText);
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
         favoriteButton = (Button) findViewById(R.id.favoriteButton);
-        saveButton = (Button) findViewById(R.id.saveButton);
+        viewButton = (ImageButton) findViewById(R.id.viewButton);
         leftButton = (ImageButton) findViewById(R.id.leftButton);
         rightButton = (ImageButton) findViewById(R.id.rightButton);
         upButton = (ImageButton) findViewById(R.id.upButton);
@@ -98,7 +104,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         latitude = getIntent().getStringExtra("LATITUDE");
         longitude = getIntent().getStringExtra("LONGITUDE");
 
-        Log.i(TAG, "latitude:" + latitude);
         // default
         if (latitude == null || longitude == null) {
             latitude = "43.6532";
@@ -145,16 +150,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             startActivity(intent);
         });
 
-        // Saves Title into SharedPreferences
-        saveButton.setOnClickListener(c -> {
-            // Save longitude and latitude into shared preferences
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("savedLatitude",latitude);
-            editor.putString("savedLongitude",latitude);
-            editor.commit();
-
-        });
-
         // moveLeft
         leftButton.setOnClickListener(c -> {
             moveLeft();
@@ -185,6 +180,35 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        // Fragment + View Coffee button
+        dFragment = new DetailsFragment2();
+        isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
+        viewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle dataToPass = new Bundle();
+                dataToPass.putString("message", "Coffeeshop List" );
+                dataToPass.putString("latitude", latitude );
+                dataToPass.putString("longtitude", longitude );
+
+                if (isTablet) {
+                    dFragment.setArguments( dataToPass );
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragmentLocation, dFragment)
+                            .commit();
+                }
+                else {
+                    Intent extraIntent = new Intent(getApplicationContext(), Activity2_Extra.class);
+                    extraIntent.putExtra("LATITUDE", latitude);
+                    extraIntent.putExtra("LONGITUDE", longitude);
+                    startActivity(extraIntent);
+                }
+            }
+        });
+
 
     }
 

@@ -1,0 +1,252 @@
+package com.example.nasaearthimagerydatabase;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import android.app.Dialog;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Activity2_Extra extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener  {
+
+//    https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=47.602038,-122.333964&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz
+
+    private static final String TAG = "Activity2_Extra";
+
+    private MenuItem itemZoomIn;
+    private MenuItem itemZoomOut;
+
+    // private static final String coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=47.602038,-122.333964&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
+
+    String coffeeUrl;
+    private ArrayList<Place> places;
+    private PlacesAdapter myAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)  {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_2_extra);
+
+        // Load Data from intent
+        String latitude = getIntent().getStringExtra("LATITUDE");
+        String longitude = getIntent().getStringExtra("LONGITUDE");
+
+        coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=47.602038,-122.333964&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
+
+        //coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=" + latitude + "," + longitude + "&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
+
+        CoffeeQuery req = new CoffeeQuery();
+        req.execute(coffeeUrl);
+
+        // ListView
+        places = new ArrayList<Place>();
+
+
+        // Load toolbar
+        Toolbar tBar = findViewById(R.id.toolbar);
+        setSupportActionBar(tBar);
+
+        //Load NavigationDrawer:
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
+                drawer, tBar, R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+    }
+
+
+    // Load top toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_menu2, menu);
+
+        itemZoomIn = menu.findItem(R.id.itemZoomIn);
+        itemZoomOut = menu.findItem(R.id.itemZoomOut);
+        itemZoomIn.setVisible(false);
+        itemZoomOut.setVisible(false);
+
+        return true;
+    }
+
+    // Add actions to top toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.helpItem:
+
+                Dialog helpDialog = new Dialog(Activity2_Extra.this);
+
+                helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                helpDialog.setContentView(R.layout.help_dialog2);
+
+                TextView helpDescription =  (TextView)helpDialog.findViewById(R.id.helpDescription);
+                helpDescription.setText("Coffee List");
+
+                Button okButton = helpDialog.findViewById(R.id.okButton);
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        helpDialog.cancel();
+                    }
+                });
+                helpDialog.show();
+                break;
+        }
+        return true;
+    }
+
+    // Add actions to navigation drawer
+    @Override
+    public boolean onNavigationItemSelected( MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.itemTest:
+                Intent testIntent = new Intent(getApplicationContext(), TestActivity.class);
+                startActivity(testIntent);
+                break;
+
+            case R.id.activityOne:
+                Intent activityOneIntent = new Intent(getApplicationContext(), Activity1.class);
+                startActivity(activityOneIntent);
+                break;
+
+            case R.id.activityTwo:
+                Intent activityTwoIntent = new Intent(getApplicationContext(), Activity2.class);
+                startActivity(activityTwoIntent);
+                break;
+
+            case R.id.activityThree:
+                Intent activityThreeIntent = new Intent(getApplicationContext(), Activity3.class);
+                startActivity(activityThreeIntent);
+                break;
+        }
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return false;
+    }
+
+
+
+    private class CoffeeQuery extends AsyncTask<String, Integer, String>
+    {
+
+        protected void onPreExecute() {
+        }
+
+        protected String doInBackground(String ... args) {
+
+            try {
+
+                // UV
+                URL url = new URL(args[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream response = urlConnection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response, "UTF-8"), 8);
+                StringBuilder sb = new StringBuilder();
+
+                String line = null;
+                while ((line = reader.readLine()) != null)
+                {
+                    sb.append(line + "\n");
+                }
+                String result = sb.toString(); //result is the whole string
+
+                // convert string to JSON:
+                JSONObject coffeeReport = new JSONObject(result);
+
+                String data = coffeeReport.getString("resourceSets");
+                JSONArray jsonArr = new JSONArray(data);
+                JSONObject jsonObj = jsonArr.getJSONObject(0);
+                String resources  = jsonObj.getString("resources");
+                JSONArray resourcesArr = new JSONArray(resources);
+
+                for (int i = 0; i < resourcesArr.length(); i++) {
+                    JSONObject jsonObject = resourcesArr.getJSONObject(i);
+                    String name  = jsonObject.getString("name");
+                    String address  = jsonObject.getString("Address");
+                    places.add(new Place(name, address));
+                }
+
+
+            }
+            catch (Exception e) {
+            }
+
+            return null;
+        }
+
+        //Type 2
+        public void onProgressUpdate(Integer ... args) {
+        }
+        //Type3
+        public void onPostExecute(String fromDoInBackground) {
+
+            // ListView
+
+            ListView myList = findViewById(R.id.theListView);
+            myList.setAdapter( myAdapter = new PlacesAdapter());
+
+        }
+
+    }
+
+
+    // Listview adapter
+    private class PlacesAdapter extends BaseAdapter {
+        public int getCount() { return places.size();}
+        public Object getItem(int position) { return "This is row " + position; }
+        public long getItemId(int position) { return (long) position; }
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Place aPlace = places.get(position);
+            View newView = getLayoutInflater().inflate(R.layout.activity_2_extra_row_layout, parent, false);
+            TextView placeName = (TextView)newView.findViewById(R.id.placeName);
+            placeName.setText(aPlace.name);
+            TextView placeAddress = (TextView)newView.findViewById(R.id.placeAddress);
+            placeAddress.setText(aPlace.address);
+            return newView;
+        }
+    }
+
+    // Coffee place
+    private class Place {
+        public String name;
+        public String address;
+        public Place(String name, String address) {
+            this.name = name;
+            this.address = address;
+        }
+    }
+}

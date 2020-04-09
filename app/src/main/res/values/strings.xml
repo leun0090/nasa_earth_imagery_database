@@ -9,4 +9,7 @@
     <string name="dataB_id">"\nThe database id: "</string>
     <string name="yyes">Yes</string>
     <string name="nnoo">No</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
