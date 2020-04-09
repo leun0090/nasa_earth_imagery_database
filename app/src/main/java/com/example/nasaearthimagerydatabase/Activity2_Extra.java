@@ -48,7 +48,7 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
     // private static final String coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=47.602038,-122.333964&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
 
     String coffeeUrl;
-    private ArrayList<Place> places;
+    private ArrayList<CoffeePlace> coffeePlaces;
     private PlacesAdapter myAdapter;
 
     @Override
@@ -60,15 +60,15 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
         String latitude = getIntent().getStringExtra("LATITUDE");
         String longitude = getIntent().getStringExtra("LONGITUDE");
 
-        coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=47.602038,-122.333964&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
+        //coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=47.602038,-122.333964&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
 
-        //coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=" + latitude + "," + longitude + "&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
+        coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=" + latitude + "," + longitude + "&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
 
         CoffeeQuery req = new CoffeeQuery();
         req.execute(coffeeUrl);
 
         // ListView
-        places = new ArrayList<Place>();
+        coffeePlaces = new ArrayList<CoffeePlace>();
 
 
         // Load toolbar
@@ -84,6 +84,15 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        // Go Back to Activity2
+        Button hideButton = (Button) findViewById(R.id.hideButton);
+        hideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 
@@ -197,7 +206,9 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
                     JSONObject jsonObject = resourcesArr.getJSONObject(i);
                     String name  = jsonObject.getString("name");
                     String address  = jsonObject.getString("Address");
-                    places.add(new Place(name, address));
+                    JSONObject addObj = new JSONObject(address);
+                    String formattedAddress = addObj.getString("formattedAddress");
+                    coffeePlaces.add(new CoffeePlace(name, formattedAddress));
                 }
 
 
@@ -226,11 +237,11 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
 
     // Listview adapter
     private class PlacesAdapter extends BaseAdapter {
-        public int getCount() { return places.size();}
+        public int getCount() { return coffeePlaces.size();}
         public Object getItem(int position) { return "This is row " + position; }
         public long getItemId(int position) { return (long) position; }
         public View getView(int position, View convertView, ViewGroup parent) {
-            Place aPlace = places.get(position);
+            CoffeePlace aPlace = coffeePlaces.get(position);
             View newView = getLayoutInflater().inflate(R.layout.activity_2_extra_row_layout, parent, false);
             TextView placeName = (TextView)newView.findViewById(R.id.placeName);
             placeName.setText(aPlace.name);
@@ -240,13 +251,4 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
         }
     }
 
-    // Coffee place
-    private class Place {
-        public String name;
-        public String address;
-        public Place(String name, String address) {
-            this.name = name;
-            this.address = address;
-        }
-    }
 }

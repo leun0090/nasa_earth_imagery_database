@@ -134,6 +134,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+                    <LinearLayout
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:clickable="true"
+                        android:layout_width="0px"
+                        android:layout_height="0px" />
+
                     <EditText
                         android:id="@+id/titleEditText"
                         android:layout_width="match_parent"
@@ -162,7 +170,7 @@
 
                     <ImageButton
                         android:id="@+id/viewButton"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         app:srcCompat="@drawable/coffee" />

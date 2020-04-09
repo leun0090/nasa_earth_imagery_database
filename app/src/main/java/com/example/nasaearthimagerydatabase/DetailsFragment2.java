@@ -1,5 +1,6 @@
 package com.example.nasaearthimagerydatabase;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,8 +39,8 @@ public class DetailsFragment2 extends Fragment {
     private AppCompatActivity parentActivity;
 
     String coffeeUrl;
-    private ArrayList<String> places;
-    private ListView myListView;
+    private ArrayList<CoffeePlace> coffeePlaces;
+    private ListView coffeeListView;
     private PlacesAdapter myAdapter;
 
     View result;
@@ -49,7 +51,7 @@ public class DetailsFragment2 extends Fragment {
     public DetailsFragment2() {
         // Required empty public constructor
 
-        places = new ArrayList<String>();
+        coffeePlaces = new ArrayList<CoffeePlace>();
 
     }
 
@@ -58,30 +60,37 @@ public class DetailsFragment2 extends Fragment {
                              Bundle savedInstanceState) {
 
         dataFromActivity = getArguments();
-        String message = this.getArguments().getString("message");
-        String latitude = this.getArguments().getString("latitude");
-        String longitude = this.getArguments().getString("longitude");
+        String latitude = this.getArguments().getString("LATITUDE");
+        String longitude = this.getArguments().getString("LONGITUDE");
 
         // ListView
 
-        coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=47.602038,-122.333964&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
+        coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation="+ latitude+ "," + longitude + "&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
+        //coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=47.602038,-122.333964&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
         CoffeeQuery req = new CoffeeQuery();
         req.execute(coffeeUrl);
 
 
         result =  inflater.inflate(R.layout.fragment_details2, container, false);
 
-        //show the message
-        TextView fragmentTexMessage = (TextView)result.findViewById(R.id.fragmentTexMessage);
-        fragmentTexMessage.setText(message);
+        // get the delete button, and add a click listener:
+        Button hideButton = (Button)result.findViewById(R.id.hideButton);
+        hideButton.setOnClickListener( clk -> {
+            coffeePlaces.clear();
+            parentActivity.getSupportFragmentManager().beginTransaction().remove(this).commit();
+        });
 
-
-        // Inflate the layout for this fragment
         return result;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentActivity = (AppCompatActivity)context;
+    }
 
 
+    // ASYNC TASK TO PULL LOCATION OF COFFEE SHOPS
     private class CoffeeQuery extends AsyncTask<String, Integer, String>
     {
         protected void onPreExecute() {
@@ -118,7 +127,9 @@ public class DetailsFragment2 extends Fragment {
                     JSONObject jsonObject = resourcesArr.getJSONObject(i);
                     String name  = jsonObject.getString("name");
                     String address  = jsonObject.getString("Address");
-                    places.add(name);
+                    JSONObject addObj = new JSONObject(address);
+                    String formattedAddress = addObj.getString("formattedAddress");
+                    coffeePlaces.add(new CoffeePlace(name, formattedAddress));
 
                 }
 
@@ -137,8 +148,9 @@ public class DetailsFragment2 extends Fragment {
         public void onPostExecute(String fromDoInBackground) {
 
             // ListView
-            myListView = (ListView) result.findViewById(R.id.theListView);
-            myListView.setAdapter( myAdapter = new PlacesAdapter());
+
+            coffeeListView = (ListView) result.findViewById(R.id.theListView);
+            coffeeListView.setAdapter( myAdapter = new PlacesAdapter());
 
         }
 
@@ -147,26 +159,19 @@ public class DetailsFragment2 extends Fragment {
 
     // Listview adapter
     private class PlacesAdapter extends BaseAdapter {
-        public int getCount() { return places.size();}
+        public int getCount() { return coffeePlaces.size();}
         public Object getItem(int position) { return "This is row " + position; }
         public long getItemId(int position) { return (long) position; }
         public View getView(int position, View convertView, ViewGroup parent) {
-            String aPlace = places.get(position);
+            CoffeePlace aPlace = coffeePlaces.get(position);
             View newView = getLayoutInflater().inflate(R.layout.activity_2_extra_row_layout, parent, false);
             TextView placeName = (TextView)newView.findViewById(R.id.placeName);
-            placeName.setText(aPlace);
+            placeName.setText(aPlace.name);
+            TextView placeAddress = (TextView)newView.findViewById(R.id.placeAddress);
+            placeAddress.setText(aPlace.address);
 
             return newView;
         }
     }
 
-    // Coffee place
-    private class Place {
-        public String name;
-        public String address;
-        public Place(String name, String address) {
-            this.name = name;
-            this.address = address;
-        }
-    }
 }

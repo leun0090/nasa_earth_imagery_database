@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -106,8 +107,8 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
         // default
         if (latitude == null || longitude == null) {
-            latitude = "43.6532";
-            longitude = "-79.3832";
+            latitude = "37.7749";
+            longitude = "-122.4194";
         }
 
         //urlMap = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=" + Integer.toString(zoom) + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
@@ -189,9 +190,8 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void onClick(View view) {
                 Bundle dataToPass = new Bundle();
-                dataToPass.putString("message", "Coffeeshop List" );
-                dataToPass.putString("latitude", latitude );
-                dataToPass.putString("longtitude", longitude );
+                dataToPass.putString("LATITUDE", latitude );
+                dataToPass.putString("LONGITUDE", longitude );
 
                 if (isTablet) {
                     dFragment.setArguments( dataToPass );
@@ -208,7 +208,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 }
             }
         });
-
 
     }
 
@@ -438,4 +437,15 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
+
+    // Close The Virtual keyboard
+    private void closeKeyboard() {
+        // current edittext
+        View view = this.getCurrentFocus();
+        // if there is a view that has focus
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 }
