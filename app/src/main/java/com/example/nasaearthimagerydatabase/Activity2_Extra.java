@@ -116,10 +116,10 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
             helpDescription2.setText(selectedCoffee.address);
 
             TextView helpDescription3 =  (TextView)helpDialog.findViewById(R.id.helpDescription3);
-            helpDescription3.setText("Phone: " + selectedCoffee.telephone);
+            helpDescription3.setText(selectedCoffee.telephone);
 
             TextView helpDescription4 =  (TextView)helpDialog.findViewById(R.id.helpDescription4);
-            helpDescription4.setText("Website: " + selectedCoffee.website);
+            helpDescription4.setText(selectedCoffee.website);
 
             Button okButton = helpDialog.findViewById(R.id.okButton);
             okButton.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +160,7 @@ public class Activity2_Extra extends AppCompatActivity  implements NavigationVie
                 helpDialog.setContentView(R.layout.help_dialog2);
 
                 TextView helpDescription =  (TextView)helpDialog.findViewById(R.id.helpDescription);
-                helpDescription.setText("Click on the items in the list to view more details");
+                helpDescription.setText(R.string.helpExtra);
 
                 Button okButton = helpDialog.findViewById(R.id.okButton);
                 okButton.setOnClickListener(new View.OnClickListener() {

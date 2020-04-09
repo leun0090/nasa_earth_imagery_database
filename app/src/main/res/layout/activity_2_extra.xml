@@ -37,7 +37,7 @@ android:layout_marginRight="5dp">
             android:id="@+id/hideButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hide"
+            android:text="@string/activity2Hide"
             android:layout_alignParentBottom="true"/>
 
     </LinearLayout>

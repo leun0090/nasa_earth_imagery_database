@@ -37,14 +37,14 @@
             <ImageView
                 android:id="@+id/mapView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="10"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:paddingBottom="5dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp">
 
@@ -130,7 +130,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp">
+                android:paddingRight="20dp"
+                android:layout_marginBottom="10dp">
                 <EditText
                     android:id="@+id/titleEditText"
                     android:layout_width="match_parent"
@@ -138,7 +139,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:hint="Title" />
+                    android:hint="@string/activity2Title" />
 
                 <EditText
                     android:id="@+id/descriptionEditText"
@@ -147,7 +148,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:hint="Description" />
+                    android:hint="@string/activity2Description" />
 
                 <Button
                     android:id="@+id/favoriteButton"

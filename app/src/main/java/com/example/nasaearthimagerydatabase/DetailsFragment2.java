@@ -173,10 +173,10 @@ public class DetailsFragment2 extends Fragment {
                 helpDescription2.setText(selectedCoffee.address);
 
                 TextView helpDescription3 =  (TextView)helpDialog.findViewById(R.id.helpDescription3);
-                helpDescription3.setText("Phone: " + selectedCoffee.telephone);
+                helpDescription3.setText(selectedCoffee.telephone);
 
                 TextView helpDescription4 =  (TextView)helpDialog.findViewById(R.id.helpDescription4);
-                helpDescription4.setText("Website: " + selectedCoffee.website);
+                helpDescription4.setText(selectedCoffee.website);
 
                 Button okButton = helpDialog.findViewById(R.id.okButton);
                 okButton.setOnClickListener(new View.OnClickListener() {

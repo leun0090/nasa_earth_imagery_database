@@ -30,31 +30,31 @@
             android:layout_width="200dp"
             android:layout_height="120dp"
             android:gravity="center"
-
-            android:text="NASA IMAGERY DATABASE"
+            android:text="@string/mainTitle"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
-            android:paddingBottom="20dp"/>
+            android:paddingBottom="20dp"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/activityButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Go To Activity 1"
+            android:text="Activity 1"
             />
 
         <Button
             android:id="@+id/activityButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Go To Activity 2"
+            android:text="Activity 2"
            />
 
         <Button
             android:id="@+id/activityButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Go To Activity 3"
+            android:text="Activity 3"
            />
 
     </LinearLayout>
