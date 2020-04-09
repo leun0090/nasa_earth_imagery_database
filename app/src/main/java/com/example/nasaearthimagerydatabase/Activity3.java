@@ -65,6 +65,7 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
         toggle.syncState();
 
         // Add item to db
+        /*
         String title = getIntent().getStringExtra("TITLE");
         String latitude = getIntent().getStringExtra("LATITUDE");
         String longitude = getIntent().getStringExtra("LONGITUDE");
@@ -77,7 +78,7 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
         }
         catch ( SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
         theList.setOnItemLongClickListener((parent, view, pos, id) -> {
