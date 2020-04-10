@@ -103,6 +103,7 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
         db.close();
     }
 
+
     public void deleteAllLocation() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, null, null);

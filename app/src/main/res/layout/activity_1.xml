@@ -74,4 +74,5 @@
         android:layout_height="match_parent"
         android:transcriptMode="alwaysScroll"
         android:stackFromBottom="true"/>
+
 </LinearLayout>

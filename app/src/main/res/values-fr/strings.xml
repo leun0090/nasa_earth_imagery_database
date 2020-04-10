@@ -10,4 +10,16 @@
     <string name="dataB_id">"\nThe database id: "</string>
     <string name="yyes">Yes</string>
     <string name="nnoo">No</string>
+
+
+    <!-- main activity -->
+    <string name="mainTitle">base de données d\'images de la nasa</string>
+    <string name="helpDescription">Vous consultez actuellement une carte. Appuyez sur les icônes de zoom avant ou arrière dans la barre d\'outils. Saisissez ensuite un titre pour mettre cet emplacement en favori.</string>
+    <string name="okButton">D\'accord</string>
+    <string name="helpExtra">Cliquez sur les éléments de la liste pour voir plus de détails</string>
+
+    <string name="activity2Title">Titre</string>
+    <string name="activity2Description">La description</string>
+
+    <string name="activity2Hide">Cacher</string>
 </resources>
