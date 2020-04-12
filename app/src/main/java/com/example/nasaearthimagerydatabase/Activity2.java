@@ -1,7 +1,6 @@
 package com.example.nasaearthimagerydatabase;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -9,7 +8,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -41,7 +39,7 @@ import java.net.URL;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-public class Activity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class Activity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     String testUrl = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/43.6532,-79.3832?zl=18&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
 
@@ -68,7 +66,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     ImageButton downButton;
 
     Button favoriteButton;
-    ImageButton viewButton;
+    ImageButton coffeeshopButton;
     EditText titleEditText;
     EditText descriptionEditText;
 
@@ -79,7 +77,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
     // Shared preferences
     SharedPreferences sharedPreferences = null;
-    public static final String DEFAULT="N/A";
+    public static final String DEFAULT = "N/A";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +85,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         setContentView(R.layout.activity_2);
 
         // Initialize layout items
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
         mapView = (ImageView) findViewById(R.id.mapView);
         latitudeTextView = (TextView) findViewById(R.id.latitudeTextView);
@@ -95,7 +93,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         titleEditText = (EditText) findViewById(R.id.titleEditText);
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
         favoriteButton = (Button) findViewById(R.id.favoriteButton);
-        viewButton = (ImageButton) findViewById(R.id.viewButton);
+        coffeeshopButton = (ImageButton) findViewById(R.id.coffeeshopButton);
         leftButton = (ImageButton) findViewById(R.id.leftButton);
         rightButton = (ImageButton) findViewById(R.id.rightButton);
         upButton = (ImageButton) findViewById(R.id.upButton);
@@ -118,22 +116,20 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
         // Load data from sharedpreferences
         sharedPreferences = getSharedPreferences("ActivityTwo", Context.MODE_PRIVATE);
-        String savedLatitude = sharedPreferences.getString("savedLatitude",DEFAULT);
-        String savedLongitude = sharedPreferences.getString("savedLongitude",DEFAULT);
-        String savedTitle = sharedPreferences.getString("savedTitle",DEFAULT);
-        String savedDescription = sharedPreferences.getString("savedDescription",DEFAULT);
+        String savedLatitude = sharedPreferences.getString("savedLatitude", DEFAULT);
+        String savedLongitude = sharedPreferences.getString("savedLongitude", DEFAULT);
+        String savedTitle = sharedPreferences.getString("savedTitle", DEFAULT);
+        String savedDescription = sharedPreferences.getString("savedDescription", DEFAULT);
 
         if (savedTitle.equals(DEFAULT)) {
             titleEditText.setText("");
-        }
-        else {
+        } else {
             titleEditText.setText(savedTitle);
         }
 
         if (savedDescription.equals(DEFAULT)) {
             descriptionEditText.setText("");
-        }
-        else {
+        } else {
             descriptionEditText.setText(savedDescription);
         }
 
@@ -147,10 +143,9 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
             // Load shared preferences data into title
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("savedTitle",titleEditText.getText().toString());
-            editor.putString("savedDescription",descriptionEditText.getText().toString());
+            editor.putString("savedTitle", titleEditText.getText().toString());
+            editor.putString("savedDescription", descriptionEditText.getText().toString());
             editor.commit();
-
 
             // send to activity3
             Intent intent = new Intent(getApplicationContext(), Activity3.class);
@@ -200,39 +195,41 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         // Fragment + View Coffee button
         dFragment = new DetailsFragment2();
         isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
-        viewButton.setOnClickListener(new View.OnClickListener() {
+        coffeeshopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Show Toast
+                Toast.makeText(getApplicationContext(), "Coffee shop list is only available in USA at this time. ", Toast.LENGTH_LONG).show();
+
                 Bundle dataToPass = new Bundle();
-                dataToPass.putString("LATITUDE", latitude );
-                dataToPass.putString("LONGITUDE", longitude );
+                dataToPass.putString("LATITUDE", latitude);
+                dataToPass.putString("LONGITUDE", longitude);
 
                 if (isTablet) {
-                    dFragment.setArguments( dataToPass );
+                    dFragment.setArguments(dataToPass);
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragmentLocation, dFragment)
                             .commit();
-                }
-                else {
-                    Intent extraIntent = new Intent(getApplicationContext(), Activity2_Extra.class);
+                } else {
+                    Intent extraIntent = new Intent(getApplicationContext(), Activity2_listview.class);
                     extraIntent.putExtra("LATITUDE", latitude);
                     extraIntent.putExtra("LONGITUDE", longitude);
                     startActivity(extraIntent);
                 }
             }
         });
-
     }
 
-    private class MapQuery extends AsyncTask<String, Integer, String> {
+    private class MapQuery extends AsyncTask < String, Integer, String > {
         protected void onPreExecute() {
             longitudeTextView.setVisibility(View.GONE);
             latitudeTextView.setVisibility(View.GONE);
         }
 
         @Override
-        protected String doInBackground(String... args) {
+        protected String doInBackground(String...args) {
 
             try {
 
@@ -246,17 +243,16 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(false);
                 XmlPullParser xpp = factory.newPullParser();
-                xpp.setInput( response  , "UTF-8");
+                xpp.setInput(response, "UTF-8");
 
                 // Start parsing
                 String parameter = null;
                 int eventType = xpp.getEventType(); //The parser is currently at START_DOCUMENT
-                while(eventType != XmlPullParser.END_DOCUMENT) {
-                    if(eventType == XmlPullParser.START_TAG) {
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    if (eventType == XmlPullParser.START_TAG) {
                         if (xpp.getName().equals("TraceId")) {
                             traceId = xpp.nextText().substring(0, 32);
-                        }
-                        else if(xpp.getName().equals("ImageUrl")) {
+                        } else if (xpp.getName().equals("ImageUrl")) {
                             imageUrl = xpp.nextText();
                             publishProgress(50);
 
@@ -271,16 +267,14 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                     }
                     eventType = xpp.next(); //move to the next xml event and store it in a variable
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 Log.i(TAG, "Error");
             }
-
             return null;
         }
 
-        public void onProgressUpdate(Integer ... args) {
+        public void onProgressUpdate(Integer...args) {
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setProgress(args[0]);
         }
@@ -306,7 +300,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     // Add actions to top toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.itemZoomIn:
                 zoom += 2;
                 zoom();
@@ -336,8 +330,8 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
     // Add actions to navigation drawer
     @Override
-    public boolean onNavigationItemSelected( MenuItem item) {
-        switch(item.getItemId()) {
+    public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.itemTest:
                 Intent testIntent = new Intent(getApplicationContext(), TestActivity.class);
                 startActivity(testIntent);
@@ -362,8 +356,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
     }
-
-
 
     // zoom
     public void zoom() {
@@ -396,8 +388,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         currentUrl.moveDown();
         req.execute(currentUrl.returnUrl());
     }
-
-
 
     // Class to store api url
     private class ApiUrl {
@@ -441,7 +431,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             return start + latitude + "," + longitude + "?zl=" + zoom + end;
         }
     }
-
 
     // Close The Virtual keyboard
     private void closeKeyboard() {
