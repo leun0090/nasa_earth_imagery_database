@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -46,6 +48,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
     private PlacesAdapter myAdapter;
 
     TextView resultTextView;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +123,10 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
             helpDialog.show();
 
         });
+
+        // Progressbar
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
 
     }
 
@@ -221,7 +228,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
                 JSONObject jsonObj = jsonArr.getJSONObject(0);
                 String resources = jsonObj.getString("resources");
                 JSONArray resourcesArr = new JSONArray(resources);
-
+                publishProgress(50);
                 for (int i = 0; i < resourcesArr.length(); i++) {
                     JSONObject jsonObject = resourcesArr.getJSONObject(i);
                     String name = jsonObject.getString("name");
@@ -237,10 +244,13 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
             return null;
         }
 
-        public void onProgressUpdate(Integer...args) {}
+        public void onProgressUpdate(Integer...args) {
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(args[0]);
+        }
 
         public void onPostExecute(String fromDoInBackground) {
-
+            progressBar.setVisibility(View.GONE);
             resultTextView.setText("There are " + coffeePlaces.size() +" results.");
             coffeeListView.setAdapter(myAdapter = new PlacesAdapter());
         }

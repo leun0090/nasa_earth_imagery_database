@@ -65,7 +65,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     ImageButton upButton;
     ImageButton downButton;
 
-    Button favoriteButton;
+    ImageButton favoriteButton;
     ImageButton coffeeshopButton;
     EditText titleEditText;
     EditText descriptionEditText;
@@ -92,7 +92,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         longitudeTextView = (TextView) findViewById(R.id.longitudeTextView);
         titleEditText = (EditText) findViewById(R.id.titleEditText);
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
-        favoriteButton = (Button) findViewById(R.id.favoriteButton);
+        favoriteButton = (ImageButton) findViewById(R.id.favoriteButton);
         coffeeshopButton = (ImageButton) findViewById(R.id.coffeeshopButton);
         leftButton = (ImageButton) findViewById(R.id.leftButton);
         rightButton = (ImageButton) findViewById(R.id.rightButton);
@@ -280,11 +280,11 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         }
 
         public void onPostExecute(String fromDoInBackground) {
-            progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.INVISIBLE);
             longitudeTextView.setVisibility(View.VISIBLE);
             latitudeTextView.setVisibility(View.VISIBLE);
-            longitudeTextView.setText(longitude);
-            latitudeTextView.setText(latitude);
+            longitudeTextView.setText(currentUrl.longitude);
+            latitudeTextView.setText(currentUrl.latitude);
             mapView.setImageBitmap(image);
         }
     }
@@ -369,24 +369,32 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         MapQuery req = new MapQuery();
         currentUrl.moveRight();
         req.execute(currentUrl.returnUrl());
+        latitudeTextView.setText(currentUrl.latitude);
+        longitudeTextView.setText(currentUrl.longitude);
     }
 
     public void moveLeft() {
         MapQuery req = new MapQuery();
         currentUrl.moveLeft();
         req.execute(currentUrl.returnUrl());
+        latitudeTextView.setText("left");
+        longitudeTextView.setText("left");
     }
 
     public void moveUp() {
         MapQuery req = new MapQuery();
         currentUrl.moveUp();
         req.execute(currentUrl.returnUrl());
+        latitudeTextView.setText(currentUrl.latitude);
+        longitudeTextView.setText(currentUrl.longitude);
     }
 
     public void moveDown() {
         MapQuery req = new MapQuery();
         currentUrl.moveDown();
         req.execute(currentUrl.returnUrl());
+        latitudeTextView.setText(currentUrl.latitude);
+        longitudeTextView.setText(currentUrl.longitude);
     }
 
     // Class to store api url

@@ -24,30 +24,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible" />
-            <ImageView
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="10"
-                android:paddingBottom="5dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp">
+
                 <!--LATITUDE-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_weight="2">
+                    android:layout_weight="1">
                     <TextView
                         android:id="@+id/latitudeLabel"
                         android:layout_width="wrap_content"
@@ -60,12 +50,13 @@
                         android:text="45.23424 N"
                         android:textSize="20dp" />
                 </LinearLayout>
+
                 <!--LONGITUDE-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_weight="2">
+                    android:layout_weight="1">
                     <TextView
                         android:id="@+id/longitudeLabel"
                         android:layout_width="wrap_content"
@@ -78,39 +69,76 @@
                         android:text="75.23423 W"
                         android:textSize="20dp"/>
                 </LinearLayout>
+
+
                 <!--Move -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:layout_weight="2"
-                    android:gravity="right">
-                    <ImageButton
-                        android:id="@+id/downButton"
-                        android:layout_width="20dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/down" />
-                    <ImageButton
-                        android:id="@+id/upButton"
-                        android:layout_width="20dp"
+                        android:gravity="center">
+                        <ImageButton
+                            android:id="@+id/leftButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/left" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/up" />
-                    <ImageButton
-                        android:id="@+id/leftButton"
-                        android:layout_width="20dp"
+                        android:gravity="center">
+                        <ImageButton
+                            android:id="@+id/upButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            app:srcCompat="@drawable/up" />
+                        <ImageButton
+                            android:id="@+id/downButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            app:srcCompat="@drawable/down" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/left" />
-                    <ImageButton
-                        android:id="@+id/rightButton"
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/right" />
+                        android:gravity="center">
+                        <ImageButton
+                            android:id="@+id/rightButton"
+                            android:layout_width="40dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/right" />
+                    </LinearLayout>
+
                 </LinearLayout>
+
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:paddingBottom="5dp"/>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible" />
+
             <!-- FAVORITE-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -135,18 +163,25 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:hint="@string/activity2Description" />
-                <Button
-                    android:id="@+id/favoriteButton"
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/activity2_favoriteButton" />
-                <ImageButton
-                    android:id="@+id/coffeeshopButton"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/coffee" />
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/favoriteButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/heart" />
+                    <ImageButton
+                        android:id="@+id/coffeeshopButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/coffee" />
+                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
