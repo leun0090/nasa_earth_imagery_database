@@ -29,4 +29,10 @@
         android:title="Choice 3"
          />
 
+    <item android:id="@+id/themeItem"
+        android:orderInCategory="500"
+        app:showAsAction="always"
+        android:title="Choice 4"
+        />
+
 </menu>

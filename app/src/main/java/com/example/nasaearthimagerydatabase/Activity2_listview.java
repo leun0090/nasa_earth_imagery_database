@@ -8,7 +8,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -99,7 +98,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
             Dialog helpDialog = new Dialog(Activity2_listview.this);
 
             helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            helpDialog.setContentView(R.layout.help_dialog2);
+            helpDialog.setContentView(R.layout.activity_2_help_dialog);
 
             TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
             helpDescription.setText(selectedCoffee.name);
@@ -153,7 +152,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
                 Dialog helpDialog = new Dialog(Activity2_listview.this);
 
                 helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                helpDialog.setContentView(R.layout.help_dialog2);
+                helpDialog.setContentView(R.layout.activity_2_help_dialog);
 
                 TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
                 helpDescription.setText(R.string.helpExtra);

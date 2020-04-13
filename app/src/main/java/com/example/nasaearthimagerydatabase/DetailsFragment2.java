@@ -134,7 +134,7 @@ public class DetailsFragment2 extends Fragment {
                 CoffeePlace selectedCoffee = coffeePlaces.get(position);
                 Dialog helpDialog = new Dialog(getContext());
                 helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                helpDialog.setContentView(R.layout.help_dialog2);
+                helpDialog.setContentView(R.layout.activity_2_help_dialog);
 
                 TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
                 helpDescription.setText(selectedCoffee.name);

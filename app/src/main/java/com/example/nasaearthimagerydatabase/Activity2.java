@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +53,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     String longitude;
     String urlMap;
     String traceId;
-    int zoom = 14;
+    int zoom = 12;
 
     ProgressBar progressBar;
     ImageView mapView;
@@ -68,12 +70,14 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     ImageButton favoriteButton;
     ImageButton coffeeshopButton;
     EditText titleEditText;
-    EditText descriptionEditText;
+    RatingBar simpleRatingBar;
 
     ApiUrl currentUrl;
 
     Boolean isTablet;
     DetailsFragment2 dFragment;
+
+    Double move_lat_long = 0.05;
 
     // Shared preferences
     SharedPreferences sharedPreferences = null;
@@ -82,6 +86,8 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_2);
 
         // Initialize layout items
@@ -91,13 +97,15 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         latitudeTextView = (TextView) findViewById(R.id.latitudeTextView);
         longitudeTextView = (TextView) findViewById(R.id.longitudeTextView);
         titleEditText = (EditText) findViewById(R.id.titleEditText);
-        descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
         favoriteButton = (ImageButton) findViewById(R.id.favoriteButton);
         coffeeshopButton = (ImageButton) findViewById(R.id.coffeeshopButton);
         leftButton = (ImageButton) findViewById(R.id.leftButton);
         rightButton = (ImageButton) findViewById(R.id.rightButton);
         upButton = (ImageButton) findViewById(R.id.upButton);
         downButton = (ImageButton) findViewById(R.id.downButton);
+
+        simpleRatingBar = (RatingBar) findViewById(R.id.simpleRatingBar);
+        int numberOfStars = simpleRatingBar.getNumStars();
 
         // Load data from previous activity
         latitude = getIntent().getStringExtra("LATITUDE");
@@ -109,6 +117,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             longitude = "-74.0060";
         }
 
+        // urlMap = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/40.7128,-74.0060?zl=14&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
         //urlMap = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=" + Integer.toString(zoom) + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
         currentUrl = new ApiUrl(latitude, longitude, Integer.toString(zoom));
         urlMap = currentUrl.returnUrl();
@@ -119,7 +128,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         String savedLatitude = sharedPreferences.getString("savedLatitude", DEFAULT);
         String savedLongitude = sharedPreferences.getString("savedLongitude", DEFAULT);
         String savedTitle = sharedPreferences.getString("savedTitle", DEFAULT);
-        String savedDescription = sharedPreferences.getString("savedDescription", DEFAULT);
 
         if (savedTitle.equals(DEFAULT)) {
             titleEditText.setText("");
@@ -127,16 +135,9 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             titleEditText.setText(savedTitle);
         }
 
-        if (savedDescription.equals(DEFAULT)) {
-            descriptionEditText.setText("");
-        } else {
-            descriptionEditText.setText(savedDescription);
-        }
-
-
         // Load async task
-        MapQuery req = new MapQuery();
-        req.execute(urlMap);
+        MapQuery init = new MapQuery();
+        init.execute(urlMap);
 
         // Add click listener to favorite button
         favoriteButton.setOnClickListener(c -> {
@@ -144,7 +145,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             // Load shared preferences data into title
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("savedTitle", titleEditText.getText().toString());
-            editor.putString("savedDescription", descriptionEditText.getText().toString());
             editor.commit();
 
             // send to activity3
@@ -152,30 +152,35 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             intent.putExtra("LATITUDE", latitude);
             intent.putExtra("LONGITUDE", longitude);
             intent.putExtra("TITLE", titleEditText.getText().toString());
-            intent.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
+            intent.putExtra("DESCRIPTION", "");
+            intent.putExtra("STARS", numberOfStars);
             startActivity(intent);
         });
 
         // moveLeft
         leftButton.setOnClickListener(c -> {
             Snackbar.make(leftButton, "You have moved left", Snackbar.LENGTH_LONG).show();
-            moveLeft();
+            currentUrl.moveLeft();
+            moveMap();
         });
 
         // moveRight
         rightButton.setOnClickListener(c -> {
             Snackbar.make(rightButton, "You have moved right", Snackbar.LENGTH_LONG).show();
-            moveRight();
+            currentUrl.moveRight();
+            moveMap();
         });
 
         upButton.setOnClickListener(c -> {
             Snackbar.make(upButton, "You have moved up", Snackbar.LENGTH_LONG).show();
-            moveUp();
+            currentUrl.moveUp();
+            moveMap();
         });
 
         downButton.setOnClickListener(c -> {
             Snackbar.make(downButton, "You have moved down", Snackbar.LENGTH_LONG).show();
-            moveDown();
+            currentUrl.moveDown();
+            moveMap();
         });
 
         // Load toolbar
@@ -277,6 +282,11 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         public void onProgressUpdate(Integer...args) {
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setProgress(args[0]);
+
+            leftButton.setVisibility(View.INVISIBLE);
+            rightButton.setVisibility(View.INVISIBLE);
+            upButton.setVisibility(View.INVISIBLE);
+            downButton.setVisibility(View.INVISIBLE);
         }
 
         public void onPostExecute(String fromDoInBackground) {
@@ -286,6 +296,12 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             longitudeTextView.setText(currentUrl.longitude);
             latitudeTextView.setText(currentUrl.latitude);
             mapView.setImageBitmap(image);
+
+            leftButton.setVisibility(View.VISIBLE);
+            rightButton.setVisibility(View.VISIBLE);
+            upButton.setVisibility(View.VISIBLE);
+            downButton.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -302,19 +318,25 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.itemZoomIn:
-                zoom += 2;
+                zoom += 1;
                 zoom();
-                Snackbar.make(findViewById(R.id.itemZoomIn), "You have zoomed in", Snackbar.LENGTH_LONG).show();
+                if (zoom > 10){
+                    move_lat_long = 0.05;
+                }
+                Toast.makeText(getApplicationContext(), "You have zoomed in. Zoom level is now " + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
                 break;
             case R.id.itemZoomOut:
-                zoom -= 2;
+                zoom -= 1;
                 zoom();
-                Snackbar.make(findViewById(R.id.itemZoomOut), "You have zoomed out", Snackbar.LENGTH_LONG).show();
+                if (zoom <= 10){
+                    move_lat_long = 0.5;
+                }
+                Toast.makeText(getApplicationContext(), "You have zoomed out. Zoom level is now " + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
                 break;
             case R.id.helpItem:
                 Dialog helpDialog = new Dialog(Activity2.this);
                 helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                helpDialog.setContentView(R.layout.help_dialog2);
+                helpDialog.setContentView(R.layout.activity_2_help_dialog);
                 Button okButton = helpDialog.findViewById(R.id.okButton);
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -323,6 +345,9 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                     }
                 });
                 helpDialog.show();
+                break;
+            case R.id.themeItem:
+
                 break;
         }
         return true;
@@ -362,40 +387,16 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         MapQuery req = new MapQuery();
         currentUrl.changeZoom(Integer.toString(zoom));
         req.execute(currentUrl.returnUrl());
+
     }
 
-    // move Right
-    public void moveRight() {
+    public void moveMap() {
         MapQuery req = new MapQuery();
-        currentUrl.moveRight();
         req.execute(currentUrl.returnUrl());
         latitudeTextView.setText(currentUrl.latitude);
         longitudeTextView.setText(currentUrl.longitude);
     }
 
-    public void moveLeft() {
-        MapQuery req = new MapQuery();
-        currentUrl.moveLeft();
-        req.execute(currentUrl.returnUrl());
-        latitudeTextView.setText("left");
-        longitudeTextView.setText("left");
-    }
-
-    public void moveUp() {
-        MapQuery req = new MapQuery();
-        currentUrl.moveUp();
-        req.execute(currentUrl.returnUrl());
-        latitudeTextView.setText(currentUrl.latitude);
-        longitudeTextView.setText(currentUrl.longitude);
-    }
-
-    public void moveDown() {
-        MapQuery req = new MapQuery();
-        currentUrl.moveDown();
-        req.execute(currentUrl.returnUrl());
-        latitudeTextView.setText(currentUrl.latitude);
-        longitudeTextView.setText(currentUrl.longitude);
-    }
 
     // Class to store api url
     private class ApiUrl {
@@ -417,22 +418,22 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
         public void moveRight() {
             double longi = Double.parseDouble(this.longitude);
-            this.longitude = Double.toString(longi + 1);
+            this.longitude = Double.toString(longi + move_lat_long);
         }
 
         public void moveLeft() {
             double longi = Double.parseDouble(this.longitude);
-            this.longitude = Double.toString(longi - 1);
+            this.longitude = Double.toString(longi - move_lat_long);
         }
 
         public void moveUp() {
             double lat = Double.parseDouble(this.latitude);
-            this.latitude = Double.toString(lat + 1);
+            this.latitude = Double.toString(lat + move_lat_long);
         }
 
         public void moveDown() {
             double lat = Double.parseDouble(this.latitude);
-            this.latitude = Double.toString(lat - 1);
+            this.latitude = Double.toString(lat - move_lat_long);
         }
 
         public String returnUrl() {
@@ -450,4 +451,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+
 }
