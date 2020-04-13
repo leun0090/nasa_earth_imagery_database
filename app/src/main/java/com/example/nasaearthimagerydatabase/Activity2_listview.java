@@ -34,6 +34,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * <h1>Activity 2 listview</h1>
+ * This activity is uses an asynctask that call the bing api
+ * which fetches a list of coffeeshops
+ *
+ * @author  Pak Leung
+ * @version 1.0
+ */
+
+
 public class Activity2_listview extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "Activity2_Extra";
@@ -143,7 +153,9 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         return true;
     }
 
-    // Add actions to top toolbar
+    /**
+     * Top Toolbar
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -170,7 +182,9 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         return true;
     }
 
-    // Add actions to navigation drawer
+    /**
+     * Navigation adapter
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -199,7 +213,9 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         return false;
     }
 
-    // ASYNC TASK RETRIEVES COFFEE URL
+    /**
+     * This method is used to retrieve data from url using asynctask
+     */
     private class CoffeeQuery extends AsyncTask < String, Integer, String > {
 
         protected void onPreExecute() {}
@@ -255,7 +271,9 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         }
     }
 
-    // Listview adapter
+    /**
+     * CoffeeShop listview adapter
+     */
     private class PlacesAdapter extends BaseAdapter {
         public int getCount() {
             return coffeePlaces.size();

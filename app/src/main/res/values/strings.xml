@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Nasa Earth Imagery Database</string>
+    <string name="app_name">BING MAPS</string>
     <string name="activity2_favoriteSnack">Your map location has been favorited</string>
     <string name="activity2_favoriteButton">Add To Favorites</string>
     <string name="open">Open</string>

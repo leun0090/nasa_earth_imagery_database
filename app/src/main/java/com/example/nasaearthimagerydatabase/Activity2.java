@@ -41,6 +41,15 @@ import java.net.URL;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+/**
+ * <h1>Activity 2</h1>
+ * This activity is uses an asynctask that call the bing api
+ * which fetches an image
+ *
+ * @author  Pak Leung
+ * @version 1.0
+ */
+
 public class Activity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     String testUrl = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/43.6532,-79.3832?zl=18&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
@@ -197,7 +206,11 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        // Fragment + View Coffee button
+        /**
+         * This function is loads the fragment when coffeeshopbutton is pressed
+         * if it is on a tablet. Else go to activity2_listview if on mobile
+         *
+         */
         dFragment = new DetailsFragment2();
         isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
         coffeeshopButton.setOnClickListener(new View.OnClickListener() {
@@ -218,15 +231,20 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                             .replace(R.id.fragmentLocation, dFragment)
                             .commit();
                 } else {
-                    Intent extraIntent = new Intent(getApplicationContext(), Activity2_listview.class);
-                    extraIntent.putExtra("LATITUDE", latitude);
-                    extraIntent.putExtra("LONGITUDE", longitude);
-                    startActivity(extraIntent);
+                    Intent activityTwoListviewIntent = new Intent(getApplicationContext(), Activity2_listview.class);
+                    activityTwoListviewIntent.putExtra("LATITUDE", latitude);
+                    activityTwoListviewIntent.putExtra("LONGITUDE", longitude);
+                    startActivity(activityTwoListviewIntent);
                 }
             }
         });
     }
 
+    /**
+     * This method uses an synctask that calls the bing api
+     * which returns an image.
+     *
+     */
     private class MapQuery extends AsyncTask < String, Integer, String > {
         protected void onPreExecute() {
             longitudeTextView.setVisibility(View.GONE);
@@ -305,7 +323,9 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
-    // Load top toolbar
+    /**
+     * Initialize top toolbar
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -313,7 +333,10 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         return true;
     }
 
-    // Add actions to top toolbar
+    /**
+     * Top toolbar items
+     *
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -346,14 +369,14 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 });
                 helpDialog.show();
                 break;
-            case R.id.themeItem:
-
-                break;
         }
         return true;
     }
 
-    // Add actions to navigation drawer
+    /**
+     * Navigation drawer items
+     *
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -382,7 +405,11 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         return false;
     }
 
-    // zoom
+    /**
+     * This function is called when the zoom keys on top toolbar
+     * are pressed. This calls the api again with new parameters
+     *
+     */
     public void zoom() {
         MapQuery req = new MapQuery();
         currentUrl.changeZoom(Integer.toString(zoom));
@@ -390,6 +417,11 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
+    /**
+     * This function is called when the arrow keys
+     * are pressed. This calls the api again with new parameters
+     *
+     */
     public void moveMap() {
         MapQuery req = new MapQuery();
         req.execute(currentUrl.returnUrl());
@@ -398,7 +430,9 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     }
 
 
-    // Class to store api url
+    /**
+     * This class is used to store the api
+     */
     private class ApiUrl {
         String start = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/";
         String latitude = "";
@@ -441,7 +475,9 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
-    // Close The Virtual keyboard
+    /**
+     * Close the virtual keyboard
+     */
     private void closeKeyboard() {
         // current edittext
         View view = this.getCurrentFocus();

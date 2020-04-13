@@ -24,7 +24,13 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
+ * <h1>Details Fragment for Activity 2</h1>
+ * This fragment stores the coffeeshop listview
+ * The listview is populated by an asynctask which calls
+ * the bing location search api
+ *
+ * @author  Pak Leung
+ * @version 1.0
  */
 public class DetailsFragment2 extends Fragment {
 
