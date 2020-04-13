@@ -1,5 +1,6 @@
 package com.example.nasaearthimagerydatabase;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -38,6 +39,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -76,10 +78,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     ImageButton upButton;
     ImageButton downButton;
 
-    ImageButton favoriteButton;
-    ImageButton coffeeshopButton;
-    EditText titleEditText;
-    RatingBar simpleRatingBar;
+    Button favoriteButton;
 
     ApiUrl currentUrl;
 
@@ -95,8 +94,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_2);
 
         // Initialize layout items
@@ -105,16 +102,12 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         mapView = (ImageView) findViewById(R.id.mapView);
         latitudeTextView = (TextView) findViewById(R.id.latitudeTextView);
         longitudeTextView = (TextView) findViewById(R.id.longitudeTextView);
-        titleEditText = (EditText) findViewById(R.id.titleEditText);
-        favoriteButton = (ImageButton) findViewById(R.id.favoriteButton);
-        coffeeshopButton = (ImageButton) findViewById(R.id.coffeeshopButton);
+        favoriteButton = (Button) findViewById(R.id.favoriteButton);
         leftButton = (ImageButton) findViewById(R.id.leftButton);
         rightButton = (ImageButton) findViewById(R.id.rightButton);
         upButton = (ImageButton) findViewById(R.id.upButton);
         downButton = (ImageButton) findViewById(R.id.downButton);
 
-        simpleRatingBar = (RatingBar) findViewById(R.id.simpleRatingBar);
-        int numberOfStars = simpleRatingBar.getNumStars();
 
         // Load data from previous activity
         latitude = getIntent().getStringExtra("LATITUDE");
@@ -130,40 +123,60 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         //urlMap = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=" + Integer.toString(zoom) + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
         currentUrl = new ApiUrl(latitude, longitude, Integer.toString(zoom));
         urlMap = currentUrl.returnUrl();
-
-
-        // Load data from sharedpreferences
-        sharedPreferences = getSharedPreferences("ActivityTwo", Context.MODE_PRIVATE);
-        String savedLatitude = sharedPreferences.getString("savedLatitude", DEFAULT);
-        String savedLongitude = sharedPreferences.getString("savedLongitude", DEFAULT);
-        String savedTitle = sharedPreferences.getString("savedTitle", DEFAULT);
-
-        if (savedTitle.equals(DEFAULT)) {
-            titleEditText.setText("");
-        } else {
-            titleEditText.setText(savedTitle);
-        }
-
-        // Load async task
         MapQuery init = new MapQuery();
         init.execute(urlMap);
+
+        // Load data from sharedpreferences
+//        sharedPreferences = getSharedPreferences("ActivityTwo", Context.MODE_PRIVATE);
+//        String savedLatitude = sharedPreferences.getString("savedLatitude", DEFAULT);
+//        String savedLongitude = sharedPreferences.getString("savedLongitude", DEFAULT);
+//        String savedTitle = sharedPreferences.getString("savedTitle", DEFAULT);
+//        if (savedTitle.equals(DEFAULT)) {
+//            titleEditText.setText("");
+//        } else {
+//            titleEditText.setText(savedTitle);
+//        }
+
 
         // Add click listener to favorite button
         favoriteButton.setOnClickListener(c -> {
 
             // Load shared preferences data into title
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("savedTitle", titleEditText.getText().toString());
-            editor.commit();
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.putString("savedTitle", titleEditText.getText().toString());
+//            editor.commit();
+//
+            Dialog favoriteDialog = new Dialog(Activity2.this);
+            favoriteDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            favoriteDialog.setContentView(R.layout.activity_2_favorite_dialog);
+            EditText titleEditText = (EditText) favoriteDialog.findViewById(R.id.titleEditText);
+            RatingBar simpleRatingBar = (RatingBar) favoriteDialog.findViewById(R.id.simpleRatingBar);
+            EditText descriptionEditText = (EditText) favoriteDialog.findViewById(R.id.descriptionEditText);
 
-            // send to activity3
-            Intent intent = new Intent(getApplicationContext(), Activity3.class);
-            intent.putExtra("LATITUDE", latitude);
-            intent.putExtra("LONGITUDE", longitude);
-            intent.putExtra("TITLE", titleEditText.getText().toString());
-            intent.putExtra("DESCRIPTION", "");
-            intent.putExtra("STARS", numberOfStars);
-            startActivity(intent);
+
+            Button okButton = favoriteDialog.findViewById(R.id.okButton);
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), Activity3.class);
+                    intent.putExtra("LATITUDE", latitude);
+                    intent.putExtra("LONGITUDE", longitude);
+                    intent.putExtra("TITLE", titleEditText.getText().toString());
+                    intent.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
+                    intent.putExtra("STARS", simpleRatingBar.getNumStars());
+                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "Data was saved successfully", Toast.LENGTH_LONG).show();
+                    favoriteDialog.cancel();
+                }
+            });
+            Button cancelButton = favoriteDialog.findViewById(R.id.cancelButton);
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    favoriteDialog.cancel();
+                }
+            });
+            favoriteDialog.show();
         });
 
         // moveLeft
@@ -192,7 +205,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             moveMap();
         });
 
-        // Load toolbar
+        // Load top toolbar
         Toolbar tBar = findViewById(R.id.toolbar);
         setSupportActionBar(tBar);
 
@@ -205,39 +218,74 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // load bottom toolbar
 
         /**
          * This function is loads the fragment when coffeeshopbutton is pressed
          * if it is on a tablet. Else go to activity2_listview if on mobile
          *
          */
+
+//        coffeeshopButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getApplicationContext(), "Coffee shop list is only available in USA at this time. ", Toast.LENGTH_LONG).show();
+//                Bundle dataToPass = new Bundle();
+//                dataToPass.putString("LATITUDE", latitude);
+//                dataToPass.putString("LONGITUDE", longitude);
+//                if (isTablet) {
+//                    dFragment.setArguments(dataToPass);
+//                    getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.fragmentLocation, dFragment)
+//                            .commit();
+//                } else {
+//                    Intent activityTwoListviewIntent = new Intent(getApplicationContext(), Activity2_listview.class);
+//                    activityTwoListviewIntent.putExtra("LATITUDE", latitude);
+//                    activityTwoListviewIntent.putExtra("LONGITUDE", longitude);
+//                    startActivity(activityTwoListviewIntent);
+//                }
+//            }
+//        });
+
+
+        // Bottom menu
         dFragment = new DetailsFragment2();
-        isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
-        coffeeshopButton.setOnClickListener(new View.OnClickListener() {
+        isTablet = findViewById(R.id.fragmentLocation) != null;
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.itemHeart:
+                        Intent intent = new Intent(getApplicationContext(), Activity3.class);
+                        startActivity(intent);
+                    break;
+                    case R.id.itemCoffee:
+                        Toast.makeText(getApplicationContext(), "Coffee shop list is only available in USA at this time. ", Toast.LENGTH_LONG).show();
 
-                // Show Toast
-                Toast.makeText(getApplicationContext(), "Coffee shop list is only available in USA at this time. ", Toast.LENGTH_LONG).show();
+                        Bundle dataToPass = new Bundle();
+                        dataToPass.putString("LATITUDE", latitude);
+                        dataToPass.putString("LONGITUDE", longitude);
 
-                Bundle dataToPass = new Bundle();
-                dataToPass.putString("LATITUDE", latitude);
-                dataToPass.putString("LONGITUDE", longitude);
-
-                if (isTablet) {
-                    dFragment.setArguments(dataToPass);
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragmentLocation, dFragment)
-                            .commit();
-                } else {
-                    Intent activityTwoListviewIntent = new Intent(getApplicationContext(), Activity2_listview.class);
-                    activityTwoListviewIntent.putExtra("LATITUDE", latitude);
-                    activityTwoListviewIntent.putExtra("LONGITUDE", longitude);
-                    startActivity(activityTwoListviewIntent);
+                        if (isTablet) {
+                            dFragment.setArguments(dataToPass);
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.fragmentLocation, dFragment)
+                                    .commit();
+                        } else {
+                            Intent activityTwoListviewIntent = new Intent(getApplicationContext(), Activity2_listview.class);
+                            activityTwoListviewIntent.putExtra("LATITUDE", latitude);
+                            activityTwoListviewIntent.putExtra("LONGITUDE", longitude);
+                            startActivity(activityTwoListviewIntent);
+                        }
+                    break;
                 }
+                return true;
             }
         });
+
     }
 
     /**
@@ -308,7 +356,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         }
 
         public void onPostExecute(String fromDoInBackground) {
-            progressBar.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.GONE);
             longitudeTextView.setVisibility(View.VISIBLE);
             latitudeTextView.setVisibility(View.VISIBLE);
             longitudeTextView.setText(currentUrl.longitude);
