@@ -1,29 +1,55 @@
 package com.example.nasaearthimagerydatabase;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.navigation.NavigationView;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 
-public class TestActivity1 extends AppCompatActivity {
-
-//    https://www.youtube.com/watch?v=Tdb_WSEEZbQ
+public class TestActivity1 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "TestActivity";
 
@@ -34,17 +60,26 @@ public class TestActivity1 extends AppCompatActivity {
     EditText longitudeEditText;
     Button randomButton;
     Button searchButton;
+    Button btnGetLocation;
+
+    private MenuItem itemZoomIn;
+    private MenuItem itemZoomOut;
+
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_test1);
+
+        closeKeyboard();
 
         // Initialize components
         latitudeEditText = (EditText) findViewById(R.id.latitudeEditText);
         longitudeEditText = (EditText) findViewById(R.id.longitudeEditText);
         randomButton = (Button) findViewById(R.id.randomButton);
         searchButton = (Button) findViewById(R.id.searchButton);
+        btnGetLocation = (Button) findViewById(R.id.btnGetLocation);
 
         randomButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +101,149 @@ public class TestActivity1 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Load top toolbar
+        Toolbar tBar = findViewById(R.id.toolbar);
+        setSupportActionBar(tBar);
+
+        //Load NavigationDrawer:
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
+                drawer, tBar, R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        // Get current location
+        btnGetLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Get current location
+                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    Activity#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for Activity#requestPermissions for more details.
+                    return;
+                }
+
+                String locationManagerString = "";
+
+                if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)) {
+                    locationManagerString = locationManager.NETWORK_PROVIDER;
+                }
+                else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    locationManagerString = locationManager.GPS_PROVIDER;
+                }
+
+                locationManager.requestLocationUpdates(locationManagerString, 0, 0, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+
+                        latitude = Double.toString(location.getLatitude());
+                        longitude= Double.toString(location.getLongitude());
+                        latitudeEditText.setText( latitude);
+                        longitudeEditText.setText(longitude);
+                        Toast.makeText(getApplicationContext(), "Current latitude and longitude: " + latitude + ", " + longitude, Toast.LENGTH_LONG).show();
+                    }
+                    @Override
+                    public void onStatusChanged(String s, int i, Bundle bundle) {
+                    }
+                    @Override
+                    public void onProviderEnabled(String s) {
+                    }
+                    @Override
+                    public void onProviderDisabled(String s) {
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * Initialize top toolbar
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_menu2, menu);
+
+        itemZoomIn = menu.findItem(R.id.itemZoomIn);
+        itemZoomOut = menu.findItem(R.id.itemZoomOut);
+        itemZoomIn.setVisible(false);
+        itemZoomOut.setVisible(false);
+
+        return true;
+    }
+
+    /**
+     * Top toolbar items
+     *
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.helpItem:
+                Dialog helpDialog = new Dialog(TestActivity1.this);
+                helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                helpDialog.setContentView(R.layout.activity_2_help_dialog);
+                Button okButton = helpDialog.findViewById(R.id.okButton);
+                TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
+                helpDescription.setText("Enter latitude and longitude or use the generate random location button.");
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        helpDialog.cancel();
+                    }
+                });
+                helpDialog.show();
+                break;
+        }
+        return true;
+    }
+
+    /**
+     * Navigation drawer items
+     *
+     */
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemTest:
+                Intent testIntent = new Intent(getApplicationContext(), TestActivity1.class);
+                startActivity(testIntent);
+                break;
+
+            case R.id.activityOne:
+                Intent activityOneIntent = new Intent(getApplicationContext(), Activity1.class);
+                startActivity(activityOneIntent);
+                break;
+
+            case R.id.activityTwo:
+                Intent activityTwoIntent = new Intent(getApplicationContext(), Activity2.class);
+                startActivity(activityTwoIntent);
+                break;
+
+            case R.id.activityThree:
+                Intent activityThreeIntent = new Intent(getApplicationContext(), Activity3.class);
+                startActivity(activityThreeIntent);
+                break;
+        }
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return false;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 
 
@@ -119,6 +297,22 @@ public class TestActivity1 extends AppCompatActivity {
         public void onPostExecute(String fromDoInBackground) {
             latitudeEditText.setText(latitude);
             longitudeEditText.setText(longitude);
+            Toast.makeText(getApplicationContext(), "Generated latitude and longitude: " + latitude + ", " + longitude, Toast.LENGTH_LONG).show();
         }
     }
+
+
+    /**
+     * Close the virtual keyboard
+     */
+    private void closeKeyboard() {
+        // current edittext
+        View view = this.getCurrentFocus();
+        // if there is a view that has focus
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
 }

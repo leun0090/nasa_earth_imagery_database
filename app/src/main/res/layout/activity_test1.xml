@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TestActivity1"
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"/>
+
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:openDrawer="start">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/search_map"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/latitudeEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="latitude"
+                android:text="43.6532"
+                tools:layout_editor_absoluteX="123dp"
+                tools:layout_editor_absoluteY="150dp" />
+
+            <EditText
+                android:id="@+id/longitudeEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="longitude"
+                android:text="-79.3832"
+                tools:layout_editor_absoluteX="127dp"
+                tools:layout_editor_absoluteY="336dp" />
+
+
+            <Button
+                android:id="@+id/searchButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:drawableLeft="@android:drawable/ic_menu_search"
+                android:text="Search Location"
+                android:textSize="18sp"/>
+
+
+            <TextView
+                android:id="@+id/showLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Options:"
+                android:textSize="24sp" />
+
+
+            <Button
+                android:id="@+id/randomButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:drawableLeft="@drawable/gps_search"
+                android:text="Generate Random Location"
+                android:textSize="18sp"/>
+
+            <Button
+                android:id="@+id/btnGetLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:drawableLeft="@drawable/gps"
+                android:text="Get Current Location"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/activity_2_header_layout"
+            app:menu="@menu/drawer_menu2"
+            android:id="@+id/nav_view"/>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</LinearLayout>

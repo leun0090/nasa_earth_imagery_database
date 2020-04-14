@@ -23,4 +23,7 @@
     <string name="activity2Description">Description</string>
 
     <string name="activity2Hide">Hide</string>
+
+
+    <string name="map_key" translatable="false">AIzaSyB8hWWmMuBRrR0gUlkBjRQI3p15s7gAMxo</string>
 </resources>
