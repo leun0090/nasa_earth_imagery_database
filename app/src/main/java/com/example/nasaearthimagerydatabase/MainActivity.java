@@ -40,6 +40,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        // Backup Activities 1
+        activityButton1.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intentTest1 = new Intent(getApplicationContext(), TestActivity1.class);
+                startActivity(intentTest1);
+                return true;
+            }
+        });
+
 
     }
 }

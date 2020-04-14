@@ -19,6 +19,7 @@ import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -33,6 +34,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * <h1>Activity 2 listview</h1>
+ * This activity is uses an asynctask that call the bing api
+ * which fetches a list of coffeeshops
+ *
+ * @author  Pak Leung
+ * @version 1.0
+ */
+
+
 public class Activity2_listview extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "Activity2_Extra";
@@ -46,6 +57,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
     private PlacesAdapter myAdapter;
 
     TextView resultTextView;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +108,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
             Dialog helpDialog = new Dialog(Activity2_listview.this);
 
             helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            helpDialog.setContentView(R.layout.help_dialog2);
+            helpDialog.setContentView(R.layout.activity_2_help_dialog);
 
             TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
             helpDescription.setText(selectedCoffee.name);
@@ -121,6 +133,10 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
 
         });
 
+        // Progressbar
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+
     }
 
     // Load top toolbar
@@ -137,7 +153,9 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         return true;
     }
 
-    // Add actions to top toolbar
+    /**
+     * Top Toolbar
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -146,7 +164,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
                 Dialog helpDialog = new Dialog(Activity2_listview.this);
 
                 helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                helpDialog.setContentView(R.layout.help_dialog2);
+                helpDialog.setContentView(R.layout.activity_2_help_dialog);
 
                 TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
                 helpDescription.setText(R.string.helpExtra);
@@ -164,12 +182,14 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         return true;
     }
 
-    // Add actions to navigation drawer
+    /**
+     * Navigation adapter
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.itemTest:
-                Intent testIntent = new Intent(getApplicationContext(), TestActivity.class);
+                Intent testIntent = new Intent(getApplicationContext(), TestActivity1.class);
                 startActivity(testIntent);
                 break;
 
@@ -193,7 +213,9 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         return false;
     }
 
-    // ASYNC TASK RETRIEVES COFFEE URL
+    /**
+     * This method is used to retrieve data from url using asynctask
+     */
     private class CoffeeQuery extends AsyncTask < String, Integer, String > {
 
         protected void onPreExecute() {}
@@ -221,7 +243,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
                 JSONObject jsonObj = jsonArr.getJSONObject(0);
                 String resources = jsonObj.getString("resources");
                 JSONArray resourcesArr = new JSONArray(resources);
-
+                publishProgress(50);
                 for (int i = 0; i < resourcesArr.length(); i++) {
                     JSONObject jsonObject = resourcesArr.getJSONObject(i);
                     String name = jsonObject.getString("name");
@@ -237,16 +259,21 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
             return null;
         }
 
-        public void onProgressUpdate(Integer...args) {}
+        public void onProgressUpdate(Integer...args) {
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(args[0]);
+        }
 
         public void onPostExecute(String fromDoInBackground) {
-
+            progressBar.setVisibility(View.GONE);
             resultTextView.setText("There are " + coffeePlaces.size() +" results.");
             coffeeListView.setAdapter(myAdapter = new PlacesAdapter());
         }
     }
 
-    // Listview adapter
+    /**
+     * CoffeeShop listview adapter
+     */
     private class PlacesAdapter extends BaseAdapter {
         public int getCount() {
             return coffeePlaces.size();

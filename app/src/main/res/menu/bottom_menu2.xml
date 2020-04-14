@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/itemHeart"
+        android:icon="@drawable/heart"
+        android:title="Favorites List"
+        app:showAsAction="always"
+        android:orderInCategory="100"/>
+
+    <item android:id="@+id/itemCoffee"
+        android:title="Coffee Shop List"
+        android:icon="@drawable/coffee"
+        android:orderInCategory="200"
+        app:showAsAction="always"/>
+
+</menu>

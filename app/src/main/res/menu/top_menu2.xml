@@ -8,9 +8,10 @@
 <!--            android:icon="@android:drawable/ic_search_category_default"-->
 <!--            app:showAsAction="always|collapseActionView"-->
 <!--            android:title="Search"/>-->
+
+
     <item android:id="@+id/itemZoomOut"
         android:icon="@drawable/zoom_out"
-
         android:title="Choice 2"
         app:showAsAction="always"
         android:orderInCategory="200"/>

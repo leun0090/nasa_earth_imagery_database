@@ -1,7 +1,13 @@
 package com.example.nasaearthimagerydatabase;
 
-
-// Coffee place
+/**
+ * <h1>Coffee Place</h1>
+ * The class stores the coffeeshop object which
+ * is used in the Activity2_listview
+ *
+ * @author  Pak Leung
+ * @version 1.0
+ */
 public class CoffeePlace {
     public String name;
     public String address;
