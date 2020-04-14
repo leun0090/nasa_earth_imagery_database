@@ -48,7 +48,9 @@
         <RatingBar
             android:id="@+id/simpleRatingBar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"/>
 
     </LinearLayout>
     <LinearLayout

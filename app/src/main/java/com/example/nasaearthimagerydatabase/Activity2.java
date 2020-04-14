@@ -162,9 +162,12 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                     intent.putExtra("LONGITUDE", longitude);
                     intent.putExtra("TITLE", titleEditText.getText().toString());
                     intent.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
-                    intent.putExtra("STARS", simpleRatingBar.getNumStars());
+                    intent.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
+
+                    //Toast.makeText(getApplicationContext(), "stars " + String.valueOf(simpleRatingBar.getRating()), Toast.LENGTH_LONG).show();
                     startActivity(intent);
-                    Toast.makeText(getApplicationContext(), "Data was saved successfully", Toast.LENGTH_LONG).show();
+
+                    closeKeyboard();
                     favoriteDialog.cancel();
                 }
             });
