@@ -15,7 +15,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -226,32 +225,10 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
          *
          */
 
-//        coffeeshopButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(getApplicationContext(), "Coffee shop list is only available in USA at this time. ", Toast.LENGTH_LONG).show();
-//                Bundle dataToPass = new Bundle();
-//                dataToPass.putString("LATITUDE", latitude);
-//                dataToPass.putString("LONGITUDE", longitude);
-//                if (isTablet) {
-//                    dFragment.setArguments(dataToPass);
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.fragmentLocation, dFragment)
-//                            .commit();
-//                } else {
-//                    Intent activityTwoListviewIntent = new Intent(getApplicationContext(), Activity2_listview.class);
-//                    activityTwoListviewIntent.putExtra("LATITUDE", latitude);
-//                    activityTwoListviewIntent.putExtra("LONGITUDE", longitude);
-//                    startActivity(activityTwoListviewIntent);
-//                }
-//            }
-//        });
-
-
         // Bottom menu
         dFragment = new DetailsFragment2();
         isTablet = findViewById(R.id.fragmentLocation) != null;
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -429,7 +406,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.itemTest:
-                Intent testIntent = new Intent(getApplicationContext(), TestActivity.class);
+                Intent testIntent = new Intent(getApplicationContext(), TestActivity1.class);
                 startActivity(testIntent);
                 break;
 

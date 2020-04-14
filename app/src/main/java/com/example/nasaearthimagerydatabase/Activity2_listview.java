@@ -189,7 +189,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.itemTest:
-                Intent testIntent = new Intent(getApplicationContext(), TestActivity.class);
+                Intent testIntent = new Intent(getApplicationContext(), TestActivity1.class);
                 startActivity(testIntent);
                 break;
 

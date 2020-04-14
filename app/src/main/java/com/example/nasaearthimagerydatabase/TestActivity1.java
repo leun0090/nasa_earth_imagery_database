@@ -21,7 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-public class TestActivity extends AppCompatActivity {
+public class TestActivity1 extends AppCompatActivity {
 
 //    https://www.youtube.com/watch?v=Tdb_WSEEZbQ
 
