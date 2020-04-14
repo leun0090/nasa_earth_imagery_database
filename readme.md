@@ -21,3 +21,8 @@ Add inside dependencies in build.gradle
 
 ```implementation 'com.android.support:design:27.1.1'```
 
+
+### Current location
+
+```implementation 'com.google.android.gms:play-services-maps:17.0.0'```
+```implementation 'com.google.android.gms:play-services-location:17.0.0'```
