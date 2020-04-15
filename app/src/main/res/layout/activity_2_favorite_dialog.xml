@@ -5,7 +5,8 @@
     android:layout_width="300dp"
     android:layout_height="400dp"
     android:orientation="vertical"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="@color/colorBackground">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +37,8 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:hint="@string/activity2Title" />
+            android:hint="@string/activity2Title"
+            android:textColorHint="@color/colorText" />
         <EditText
             android:id="@+id/descriptionEditText"
             android:layout_width="match_parent"
@@ -44,7 +46,8 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:hint="@string/activity2Description" />
+            android:hint="@string/activity2Description"
+            android:textColorHint="@color/colorText" />
         <RatingBar
             android:id="@+id/simpleRatingBar"
             android:layout_width="wrap_content"
@@ -65,11 +68,16 @@
             android:id="@+id/okButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Favorite" />
+            android:textColor="#FFF"
+            android:text="Favorite"
+            android:background="@color/colorPrimary"
+            android:layout_marginBottom="10dp"/>
         <Button
             android:id="@+id/cancelButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cancel" />
+            android:text="Cancel"
+            android:textColor="#FFF"
+            android:background="@color/colorPrimary"/>
     </LinearLayout>
 </LinearLayout>

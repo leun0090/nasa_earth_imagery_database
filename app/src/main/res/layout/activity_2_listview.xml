@@ -8,12 +8,16 @@
     tools:context=".Activity2_listview"
     android:orientation="vertical"
     android:gravity="center"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp">
+    android:background="@color/colorBackground">
+
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"/>
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimaryDark"
+        app:titleTextColor="#FFF"
+        app:subtitleTextColor="#FFF"/>
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -38,7 +42,8 @@
                 android:gravity="center"
                 android:textSize="16sp"
                 android:paddingTop="5dp"
-                android:paddingBottom="10dp"/>
+                android:paddingBottom="10dp"
+                android:textColor="@color/colorText"/>
             <ListView
                 android:id="@+id/theListView"
                 android:layout_width="match_parent"
@@ -49,7 +54,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/activity2Hide"
-                android:layout_alignParentBottom="true"/>
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorPrimary"
+                android:textColor="#FFF"/>
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
             android:layout_width="wrap_content"
@@ -58,6 +65,9 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/activity_2_header_layout"
             app:menu="@menu/drawer_menu2"
-            android:id="@+id/nav_view"/>
+            android:id="@+id/nav_view"
+            android:background="@color/colorBackground"
+            app:itemIconTint="@color/colorText"
+            app:itemTextColor="@color/colorText"/>
     </androidx.drawerlayout.widget.DrawerLayout>
 </LinearLayout>

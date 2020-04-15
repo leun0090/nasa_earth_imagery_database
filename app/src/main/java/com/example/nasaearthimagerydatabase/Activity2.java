@@ -3,6 +3,7 @@ package com.example.nasaearthimagerydatabase;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -95,6 +96,16 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_2);
 
+        // Set dark mode
+//        sharedPreferences = getSharedPreferences("ActivityTwo", Context.MODE_PRIVATE);
+//        String darkMode = sharedPreferences.getString("DARKMODE",DEFAULT);
+//        if (darkMode.equals("DARK")) {
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//        }
+//        else {
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//        }
+
         // Initialize layout items
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -125,26 +136,9 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         MapQuery init = new MapQuery();
         init.execute(urlMap);
 
-        // Load data from sharedpreferences
-//        sharedPreferences = getSharedPreferences("ActivityTwo", Context.MODE_PRIVATE);
-//        String savedLatitude = sharedPreferences.getString("savedLatitude", DEFAULT);
-//        String savedLongitude = sharedPreferences.getString("savedLongitude", DEFAULT);
-//        String savedTitle = sharedPreferences.getString("savedTitle", DEFAULT);
-//        if (savedTitle.equals(DEFAULT)) {
-//            titleEditText.setText("");
-//        } else {
-//            titleEditText.setText(savedTitle);
-//        }
-
 
         // Add click listener to favorite button
         favoriteButton.setOnClickListener(c -> {
-
-            // Load shared preferences data into title
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.putString("savedTitle", titleEditText.getText().toString());
-//            editor.commit();
-//
             Dialog favoriteDialog = new Dialog(Activity2.this);
             favoriteDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             favoriteDialog.setContentView(R.layout.activity_2_favorite_dialog);
@@ -408,11 +402,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.itemTest:
-                Intent testIntent = new Intent(getApplicationContext(), TestActivity1.class);
-                startActivity(testIntent);
-                break;
-
             case R.id.activityOne:
                 Intent activityOneIntent = new Intent(getApplicationContext(), Activity1.class);
                 startActivity(activityOneIntent);
