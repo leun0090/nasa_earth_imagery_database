@@ -23,12 +23,12 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences = null;
     EditText emailText;
+    public static final String DEFAULT="N/A";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         Button activityButton1 = findViewById(R.id.activityButton1);
         Button activityButton2 = findViewById(R.id.activityButton2);
@@ -38,52 +38,8 @@ public class MainActivity extends AppCompatActivity {
         TextView darkModeTextView = findViewById(R.id.darkModeTextView);
         emailText = findViewById(R.id.emailText);
 
-        Intent intent1 = new Intent(getApplicationContext(), Activity1.class);
-        activityButton1.setOnClickListener(click -> startActivity(intent1));
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email  = emailText.getText().toString();
-                if (email.equals("")) {
-                    Toast.makeText(getApplicationContext(), R.string.email_error1, Toast.LENGTH_LONG).show();
-                }
-                else if (!isEmailValid(email)) {
-                    Toast.makeText(getApplicationContext(), R.string.email_error2, Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Intent intentActivity1 = new Intent(getApplicationContext(), Activity1.class);
-                    intentActivity1.putExtra("EMAIL", email);
-                    startActivity(intentActivity1);
-                }
-
-
-            }
-        });
-
-        activityButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Activity2.class));
-            }
-        });
-
-        activityButton3.setOnClickListener(c -> {
-                startActivity(new Intent(MainActivity.this, Activity3.class));
-        });
-
-
-        // Backup Activities 1
-        activityButton1.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                startActivity(new Intent(MainActivity.this, TestActivity1.class));
-                return true;
-            }
-        });
-
         // SHARED PREFERENCES FOR DARK MODE
-        sharedPreferences = getSharedPreferences("DarkMode", Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("Bing", Context.MODE_PRIVATE);
         String darkMode = sharedPreferences.getString("DARKMODE",DEFAULT);
         if (darkMode.equals("DARK")) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -114,6 +70,68 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        // login email
+        String savedEmail = sharedPreferences.getString("EMAIL",DEFAULT);
+        if (savedEmail.equals(DEFAULT)) {
+            emailText.setText("");
+        }
+        else {
+            emailText.setText(savedEmail);
+        }
+        
+        // Got to Activity 1
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email  = emailText.getText().toString();
+                if (email.equals("")) {
+                    Toast.makeText(getApplicationContext(), R.string.email_error1, Toast.LENGTH_LONG).show();
+                }
+                else if (!isEmailValid(email)) {
+                    Toast.makeText(getApplicationContext(), R.string.email_error2, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intentActivity1 = new Intent(getApplicationContext(), Activity1.class);
+                    startActivity(intentActivity1);
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("EMAIL", email);
+                    editor.commit();
+                }
+
+
+            }
+        });
+
+
+
+        // TEST BUTTONS - TO BE DELETED
+        activityButton1.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                startActivity(new Intent(MainActivity.this, TestActivity1.class));
+                return true;
+            }
+        });
+
+        activityButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Activity2.class));
+            }
+        });
+
+        activityButton3.setOnClickListener(c -> {
+            startActivity(new Intent(MainActivity.this, Activity3.class));
+        });
+
+
+        // Activity 1
+        Intent intent1 = new Intent(getApplicationContext(), Activity1.class);
+        activityButton1.setOnClickListener(click -> startActivity(intent1));
+
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
