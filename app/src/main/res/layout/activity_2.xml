@@ -163,10 +163,10 @@
                     android:id="@+id/favoriteButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="5dp"
                     android:drawableLeft="@android:drawable/btn_star"
                     android:text="@string/activity2_favoriteButton"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textColor="#FFF"
                     android:background="@color/colorPrimary" />
             </LinearLayout>

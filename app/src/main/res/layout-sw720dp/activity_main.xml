@@ -10,21 +10,29 @@
     android:background="@drawable/earth_tablet">
 
     <LinearLayout
-        android:layout_width="500dp"
+        android:layout_width="600dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/colorBackground"
-        android:paddingTop="60dp"
-        android:paddingBottom="60dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="40dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:layout_gravity="center"
         android:gravity="center">
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:srcCompat="@drawable/search_map"
+            android:layout_marginBottom="10dp"
+            />
+
         <TextView
             android:id="@+id/textView"
-            android:layout_width="200dp"
-            android:layout_height="120dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/app_name"
             android:textColor="@color/colorPrimary"
@@ -35,7 +43,7 @@
         <TextView
             android:id="@+id/subtitle"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/app_name_subtitle"
             android:textColor="@color/colorPrimary"
