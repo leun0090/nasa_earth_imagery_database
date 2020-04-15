@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -125,6 +126,12 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
 
             TextView helpDescription4 = (TextView) helpDialog.findViewById(R.id.helpDescription4);
             helpDescription4.setText(selectedCoffee.website);
+
+            ImageView imageView = helpDialog.findViewById(R.id.imageView);
+            imageView.setVisibility(View.GONE);
+
+            ImageView coffeeImageView = helpDialog.findViewById(R.id.coffeeImageView);
+            coffeeImageView.setVisibility(View.VISIBLE);
 
             Button okButton = helpDialog.findViewById(R.id.okButton);
             okButton.setOnClickListener(new View.OnClickListener() {

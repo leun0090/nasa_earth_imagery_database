@@ -180,7 +180,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:drawableLeft="@android:drawable/btn_star"
+                        android:drawableLeft="@drawable/material_star"
                         android:text="@string/activity2_favoriteButton"
                         android:textSize="18sp"
                         android:textColor="#FFF"

@@ -2,8 +2,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
-    android:layout_height="400dp"
+    android:layout_width="350dp"
+    android:layout_height="450dp"
     android:orientation="vertical"
     android:layout_gravity="center"
     android:background="@color/colorBackground">
@@ -19,6 +19,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/help" />
+
+        <ImageView
+            android:id="@+id/coffeeImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/coffee_cup"
+            android:visibility="gone"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,6 +37,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center_vertical"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/helpDescription"
             android:layout_width="wrap_content"
@@ -64,6 +73,8 @@
         android:layout_weight="1"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         >
         <Button
             android:id="@+id/okButton"
@@ -72,6 +83,6 @@
             android:text="@string/okButton"
             android:background="@color/colorPrimary"
             android:textColor="#FFF"
-            android:layout_marginBottom="20dp"/>
+            />
     </LinearLayout>
 </LinearLayout>

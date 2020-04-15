@@ -145,7 +145,6 @@ public class TestActivity1 extends AppCompatActivity implements NavigationView.O
                         longitude= Double.toString(location.getLongitude());
                         latitudeEditText.setText( latitude);
                         longitudeEditText.setText(longitude);
-                        Toast.makeText(getApplicationContext(), "Current latitude and longitude: " + latitude + ", " + longitude, Toast.LENGTH_LONG).show();
                     }
                     @Override
                     public void onStatusChanged(String s, int i, Bundle bundle) {
