@@ -2,31 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-
-    <!--    <item android:id="@+id/search_item"-->
-    <!--        android:orderInCategory="50"-->
-    <!--        app:actionViewClass="android.widget.SearchView"-->
-    <!--        android:icon="@android:drawable/ic_search_category_default"-->
-    <!--        app:showAsAction="always|collapseActionView"-->
-    <!--        android:title="Search"/>    &lt;!&ndash; This uses showAsAction=always, so look at icon= parameter &ndash;&gt;-->
-
     <item android:id="@+id/itemTest"
         android:title="Test Page"
         android:orderInCategory="100"
         app:showAsAction="always"/>
 
     <item android:id="@+id/activityOne"
+        android:icon="@drawable/search"
         android:title="Activity One"
         android:orderInCategory="200"
         app:showAsAction="always"/>
 
     <item android:id="@+id/activityTwo"
+        android:icon="@drawable/globe"
         android:title="Activity Two"
         android:orderInCategory="300"
         app:showAsAction="always"/>
 
     <item android:id="@+id/activityThree"
+        android:icon="@drawable/heart"
         android:title="Activity Three"
         android:orderInCategory="400"
         app:showAsAction="always"/>

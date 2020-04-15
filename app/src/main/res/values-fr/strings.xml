@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Base de données d\'images de la Terre de la NASA</string>
+    <string name="app_name">Cartes Bing</string>
     <string name="activity2_favoriteButton">Ajouter aux Favoris</string>
     <string name="open">Ouvrir</string>
     <string name="close">Fermer</string>

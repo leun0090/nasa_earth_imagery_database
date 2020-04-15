@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         Button activityButton2 = findViewById(R.id.activityButton2);
         Button activityButton3 = findViewById(R.id.activityButton3);
 
-        Intent intent1 = new Intent(this, Activity1.class);
+        Intent intent1 = new Intent(getApplicationContext(), Activity1.class);
         activityButton1.setOnClickListener(click -> startActivity(intent1));
 
 
@@ -36,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.this.startActivity(intent3);
         });
 
+
+        // Backup Activities 1
+        activityButton1.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intentTest1 = new Intent(getApplicationContext(), TestActivity1.class);
+                startActivity(intentTest1);
+                return true;
+            }
+        });
 
 
     }

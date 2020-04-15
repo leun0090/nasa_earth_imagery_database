@@ -2,21 +2,18 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginRight="20dp"
-    android:layout_marginLeft="20dp">
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Activity 2 - Display map" />
+        android:text="Activity 1" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Version: 4" />
+        android:text="Version 1.0" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name: Pak Leung" />
-
+        android:text="Denesh Canjimavadivel" />
 </LinearLayout>

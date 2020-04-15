@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,16 +8,13 @@
     tools:context=".Activity2"
     android:orientation="vertical"
     android:gravity="center"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     >
-
-
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/toolbar"/>
-
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -27,6 +25,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="15" />
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
@@ -34,26 +37,17 @@
                 android:layout_height="wrap_content"
                 android:visibility="invisible" />
 
-            <ImageView
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="10"
-                android:paddingBottom="5dp"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp">
+                android:orientation="horizontal">
 
                 <!--LATITUDE-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_weight="2">
+                    android:layout_weight="1">
                     <TextView
                         android:id="@+id/latitudeLabel"
                         android:layout_width="wrap_content"
@@ -67,13 +61,12 @@
                         android:textSize="20dp" />
                 </LinearLayout>
 
-
-                    <!--LONGITUDE-->
+                <!--LONGITUDE-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_weight="2">
+                    android:layout_weight="1">
                     <TextView
                         android:id="@+id/longitudeLabel"
                         android:layout_width="wrap_content"
@@ -91,81 +84,79 @@
                 <!--Move -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:layout_weight="2"
-                    android:gravity="right">
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <ImageButton
+                            android:id="@+id/leftButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/left" />
+                    </LinearLayout>
 
-                    <ImageButton
-                        android:id="@+id/downButton"
-                        android:layout_width="20dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/down" />
-                    <ImageButton
-                        android:id="@+id/upButton"
-                        android:layout_width="20dp"
+                        android:gravity="center">
+                        <ImageButton
+                            android:id="@+id/upButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            app:srcCompat="@drawable/up" />
+                        <ImageButton
+                            android:id="@+id/downButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            app:srcCompat="@drawable/down" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/up" />
-                    <ImageButton
-                        android:id="@+id/leftButton"
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/left" />
-                    <ImageButton
-                        android:id="@+id/rightButton"
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/right" />
+                        android:gravity="center">
+                        <ImageButton
+                            android:id="@+id/rightButton"
+                            android:layout_width="40dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/right" />
+                    </LinearLayout>
                 </LinearLayout>
-
             </LinearLayout>
 
-            <!-- FAVORITE-->
+            <!-- Add to Favorites button-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:layout_marginBottom="10dp">
-                <EditText
-                    android:id="@+id/titleEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:hint="@string/activity2Title" />
-
-                <EditText
-                    android:id="@+id/descriptionEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:hint="@string/activity2Description" />
-
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
                 <Button
                     android:id="@+id/favoriteButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/activity2_favoriteButton" />
-
-
-                <ImageButton
-                    android:id="@+id/viewButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/coffee" />
-
+                    android:padding="16dp"
+                    android:drawableLeft="@android:drawable/btn_star"
+                    android:text="Add to Favorites"
+                    android:textSize="18sp"/>
             </LinearLayout>
+
+            <!--   Bottom navigation  https://www.youtube.com/watch?v=tPV8xA7m-iw-->
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:menu="@menu/bottom_menu2"
+                android:background="?android:attr/windowBackground" />
 
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
@@ -173,10 +164,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:headerLayout="@layout/header_layout2"
+            app:headerLayout="@layout/activity_2_header_layout"
             app:menu="@menu/drawer_menu2"
             android:id="@+id/nav_view"/>
     </androidx.drawerlayout.widget.DrawerLayout>
-
-
 </LinearLayout>

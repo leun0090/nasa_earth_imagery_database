@@ -6,14 +6,12 @@
     android:layout_height="400dp"
     android:orientation="vertical"
     android:layout_gravity="center">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="5"
         android:background="@color/colorPrimary"
         android:gravity="center_vertical">
-
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
@@ -21,7 +19,6 @@
             android:layout_weight="1"
             app:srcCompat="@drawable/help" />
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,30 +34,25 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="@string/helpDescription" />
-
         <TextView
             android:id="@+id/helpDescription2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:text="" />
-
         <TextView
             android:id="@+id/helpDescription3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:text="" />
-
         <TextView
             android:id="@+id/helpDescription4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:text="" />
-
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,10 +66,4 @@
             android:layout_height="wrap_content"
             android:text="@string/okButton" />
     </LinearLayout>
-
-
-
-
-
-
 </LinearLayout>
