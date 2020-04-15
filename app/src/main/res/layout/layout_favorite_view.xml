@@ -19,45 +19,9 @@
 
     <ImageView
         android:id="@+id/loc_star"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/star"
-        android:scaleType="centerInside" />
-
-    <ImageView
-        android:id="@+id/loc_star2"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_toRightOf="@+id/loc_star"
-        android:layout_alignTop="@+id/loc_star"
-        android:background="@drawable/star"
-        android:scaleType="centerInside" />
-
-    <ImageView
-        android:id="@+id/loc_star3"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_toRightOf="@+id/loc_star2"
-        android:layout_alignTop="@+id/loc_star2"
-        android:background="@drawable/star"
-        android:scaleType="centerInside" />
-
-    <ImageView
-        android:id="@+id/loc_star4"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_toRightOf="@+id/loc_star3"
-        android:layout_alignTop="@+id/loc_star3"
-        android:background="@drawable/star"
-        android:scaleType="centerInside" />
-
-    <ImageView
-        android:id="@+id/loc_star5"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_toRightOf="@+id/loc_star4"
-        android:layout_alignTop="@+id/loc_star4"
         android:background="@drawable/star"
         android:scaleType="centerInside" />
 
