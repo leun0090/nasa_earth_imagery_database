@@ -27,18 +27,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/progressLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Please wait... Parsing should take TWO MINUTES..." />
-
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <ListView
                 android:layout_width="match_parent"

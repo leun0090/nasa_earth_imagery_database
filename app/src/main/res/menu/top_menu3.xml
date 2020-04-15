@@ -4,7 +4,7 @@
 
 
     <item android:id="@+id/item1"
-        android:icon="@drawable/star"
+        android:icon="@drawable/addnew"
         android:title="Choice 1"
         app:showAsAction="always"
         android:orderInCategory="200"/> <!-- This uses showAsAction=never, so look at title= parameter -->
@@ -16,7 +16,7 @@
         android:title="Choice 3"/>
 
     <item android:id="@+id/item3"
-        android:icon="@drawable/view"
+        android:icon="@drawable/delete"
         android:orderInCategory="400"
         app:showAsAction="always"
         android:title="About"/>
