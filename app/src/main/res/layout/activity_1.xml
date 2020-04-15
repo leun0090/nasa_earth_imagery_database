@@ -7,13 +7,6 @@
     tools:context=".Activity1"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressbar1"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:visibility="invisible" />
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -21,17 +14,84 @@
         android:gravity="bottom"
         android:background="@color/colorPrimaryDark" />
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressbar1"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:visibility="invisible" />
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="start">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/Enter1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter Coordintes:"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/LatEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="20dp"
+                android:hint="Latitude" />
+
+            <EditText
+                android:id="@+id/LongEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="20dp"
+                android:hint="Longtitude" />
+
+            <Button
+                android:id="@+id/SearchBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginBottom="10dp"
+                android:text="Search" />
+
+            <Button
+                android:id="@+id/CurrLoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginBottom="30dp"
+                android:text="Current Location" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search History"
+                android:textSize="15dp" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:transcriptMode="alwaysScroll"
+                android:stackFromBottom="true"/>
+
         </LinearLayout>
+
         <com.google.android.material.navigation.NavigationView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -41,68 +101,5 @@
             app:menu="@menu/top_menu1"
             android:id="@+id/nav_view"/>
     </androidx.drawerlayout.widget.DrawerLayout>
-
-    <TextView
-        android:id="@+id/Enter1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter Coordintes:"
-        android:textSize="20dp" />
-
-    <EditText
-        android:id="@+id/LongEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="20dp"
-        android:hint="Longtitude" />
-
-    <EditText
-        android:id="@+id/LatEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="20dp"
-        android:hint="Latitude" />
-
-    <Button
-        android:id="@+id/SearchBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginBottom="10dp"
-        android:text="Search"
-        />
-
-    <Button
-        android:id="@+id/CurrLoc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginBottom="30dp"
-        android:text="Current Location"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search History"
-        android:textSize="15dp"
-        />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:transcriptMode="alwaysScroll"
-        android:stackFromBottom="true"/>
-
-
 
 </LinearLayout>
