@@ -33,17 +33,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/resultTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/colorText"/>
             <!--DATA-->
-            <TextView
-                android:id="@+id/resultTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:gravity="center"
-                android:textSize="16sp"
-                android:paddingTop="5dp"
-                android:paddingBottom="10dp"
-                android:textColor="@color/colorText"/>
+
             <ListView
                 android:id="@+id/theListView"
                 android:layout_width="match_parent"

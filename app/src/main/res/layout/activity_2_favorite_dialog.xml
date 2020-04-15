@@ -69,15 +69,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#FFF"
-            android:text="Favorite"
+            android:text="@string/favorite"
             android:background="@color/colorPrimary"
             android:layout_marginBottom="10dp"/>
         <Button
             android:id="@+id/cancelButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="#FFF"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary"
+            android:layout_marginBottom="10dp"/>
     </LinearLayout>
 </LinearLayout>

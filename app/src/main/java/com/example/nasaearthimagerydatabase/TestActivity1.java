@@ -28,6 +28,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -72,7 +73,7 @@ public class TestActivity1 extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test1);
 
-        closeKeyboard();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // Initialize components
         latitudeEditText = (EditText) findViewById(R.id.latitudeEditText);
@@ -124,13 +125,6 @@ public class TestActivity1 extends AppCompatActivity implements NavigationView.O
                 // Get current location
                 locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                 if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    Activity#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for Activity#requestPermissions for more details.
                     return;
                 }
 
@@ -196,7 +190,7 @@ public class TestActivity1 extends AppCompatActivity implements NavigationView.O
                 helpDialog.setContentView(R.layout.activity_2_help_dialog);
                 Button okButton = helpDialog.findViewById(R.id.okButton);
                 TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
-                helpDescription.setText("Enter latitude and longitude or use the generate random location button.");
+                helpDescription.setText("Enter a latitude and a longitude and click search locationtest.");
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -296,18 +290,5 @@ public class TestActivity1 extends AppCompatActivity implements NavigationView.O
         }
     }
 
-
-    /**
-     * Close the virtual keyboard
-     */
-    private void closeKeyboard() {
-        // current edittext
-        View view = this.getCurrentFocus();
-        // if there is a view that has focus
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
 
 }

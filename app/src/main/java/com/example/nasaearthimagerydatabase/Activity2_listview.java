@@ -265,7 +265,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
 
         public void onPostExecute(String fromDoInBackground) {
             progressBar.setVisibility(View.GONE);
-            resultTextView.setText("There are " + coffeePlaces.size() +" results.");
+            resultTextView.setText("Total: " + coffeePlaces.size());
             coffeeListView.setAdapter(myAdapter = new PlacesAdapter());
         }
     }

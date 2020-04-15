@@ -71,6 +71,7 @@
             android:layout_height="wrap_content"
             android:text="@string/okButton"
             android:background="@color/colorPrimary"
-            android:textColor="#FFF"/>
+            android:textColor="#FFF"
+            android:layout_marginBottom="20dp"/>
     </LinearLayout>
 </LinearLayout>

@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -96,16 +97,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_2);
 
-        // Set dark mode
-//        sharedPreferences = getSharedPreferences("ActivityTwo", Context.MODE_PRIVATE);
-//        String darkMode = sharedPreferences.getString("DARKMODE",DEFAULT);
-//        if (darkMode.equals("DARK")) {
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//        }
-//        else {
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//        }
-
         // Initialize layout items
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -146,6 +137,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             RatingBar simpleRatingBar = (RatingBar) favoriteDialog.findViewById(R.id.simpleRatingBar);
             EditText descriptionEditText = (EditText) favoriteDialog.findViewById(R.id.descriptionEditText);
 
+            favoriteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
             Button okButton = favoriteDialog.findViewById(R.id.okButton);
             okButton.setOnClickListener(new View.OnClickListener() {
@@ -177,26 +169,26 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
         // moveLeft
         leftButton.setOnClickListener(c -> {
-            Snackbar.make(leftButton, "You have moved left", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(leftButton, R.string.move_left, Snackbar.LENGTH_LONG).show();
             currentUrl.moveLeft();
             moveMap();
         });
 
         // moveRight
         rightButton.setOnClickListener(c -> {
-            Snackbar.make(rightButton, "You have moved right", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(rightButton, R.string.move_right, Snackbar.LENGTH_LONG).show();
             currentUrl.moveRight();
             moveMap();
         });
 
         upButton.setOnClickListener(c -> {
-            Snackbar.make(upButton, "You have moved up", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(upButton, R.string.move_top, Snackbar.LENGTH_LONG).show();
             currentUrl.moveUp();
             moveMap();
         });
 
         downButton.setOnClickListener(c -> {
-            Snackbar.make(downButton, "You have moved down", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(downButton, R.string.move_bottom, Snackbar.LENGTH_LONG).show();
             currentUrl.moveDown();
             moveMap();
         });
@@ -236,7 +228,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                         startActivity(intent);
                     break;
                     case R.id.itemCoffee:
-                        Toast.makeText(getApplicationContext(), "Coffee shop list is only available in USA at this time. ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.coffee_warning, Toast.LENGTH_LONG).show();
 
                         Bundle dataToPass = new Bundle();
                         dataToPass.putString("LATITUDE", latitude);
@@ -368,7 +360,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 if (zoom > 10){
                     move_lat_long = 0.05;
                 }
-                Toast.makeText(getApplicationContext(), "You have zoomed in. Zoom level is now " + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.zoom_in + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
                 break;
             case R.id.itemZoomOut:
                 zoom -= 1;
@@ -376,7 +368,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 if (zoom <= 10){
                     move_lat_long = 0.5;
                 }
-                Toast.makeText(getApplicationContext(), "You have zoomed out. Zoom level is now " + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.zoom_out + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
                 break;
             case R.id.helpItem:
                 Dialog helpDialog = new Dialog(Activity2.this);

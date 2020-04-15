@@ -1,29 +1,54 @@
 <resources>
-    <string name="app_name">BING MAPS</string>
-    <string name="activity2_favoriteSnack">Your map location has been favorited</string>
-    <string name="activity2_favoriteButton">Add To Favorites</string>
-    <string name="open">Open</string>
-    <string name="close">Close</string>
-    <string name="delete_this">Do you want to delete this location?</string>
-    <string name="select_row">The selected row is:</string>
-    <string name="dataB_id">"\nThe database id: "</string>
-    <string name="yyes">Yes</string>
-    <string name="nnoo">No</string>
-
 
     <!-- main activity -->
     <string name="mainTitle">NASA IMAGERY DATABASE</string>
+    <string name="app_name">BINGIFY</string>
+    <string name="app_name_subtitle">Discover the amazing world of BING maps</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="email_error1">Please enter your email address</string>
+    <string name="email_error2">Please enter a correct email address</string>
+
+    <!-- Activity 1 -->
 
     <!-- Activity 2 text -->
     <string name="helpDescription">You are currently viewing a map. Tap on the zoom in or out icons on the toolbar. Then enter a title to favorite this location.</string>
     <string name="okButton">Ok</string>
     <string name="helpExtra">Click on the items in the list to view more details</string>
-
     <string name="activity2Title">Title</string>
     <string name="activity2Description">Description</string>
-
     <string name="activity2Hide">Hide</string>
+    <string name="activity2_favoriteSnack">Your map location has been favorited</string>
+    <string name="activity2_favoriteButton">Add To Favorites</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="activity2_favorites_list">Favorites List</string>
+    <string name="activity2_coffee_list">Coffee Shop List</string>
+    <string name="search_location">Search Location</string>
+    <string name="view_map">View Map</string>
+    <string name="browser_favorites">Browse Favorite Locations</string>
+    <string name="move_left">You have moved left</string>
+    <string name="move_right">You have moved right</string>
+    <string name="move_top">You have moved top</string>
+    <string name="move_bottom">You have moved bottom</string>
+    <string name="coffee_warning">Coffee shop list is only available in USA at this time. </string>
+    <string name="zoom_in">You have zoomed in. Zoom level is now </string>
+    <string name="zoom_out">You have zoomed out. Zoom level is now </string>
+    <string name="header_title">Activity 2 - View map</string>
+    <string name="header_name">Name: Pak Leung</string>
+    <string name="header_version">Version: 1</string>
+    <string name="favorite">Favorite</string>
+    <string name="cancel">Cancel</string>
 
+
+    <!-- Activity 3 -->
+    <string name="delete_this">Do you want to delete this location?</string>
+    <string name="select_row">The selected row is:</string>
+    <string name="dataB_id">"\nThe database id: "</string>
+    <string name="yyes">Yes</string>
+    <string name="nnoo">No</string>
 
     <string name="map_key" translatable="false">AIzaSyB8hWWmMuBRrR0gUlkBjRQI3p15s7gAMxo</string>
 </resources>

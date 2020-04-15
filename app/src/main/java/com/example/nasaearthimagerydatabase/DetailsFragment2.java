@@ -43,6 +43,7 @@ public class DetailsFragment2 extends Fragment {
     private ListView coffeeListView;
     private PlacesAdapter myAdapter;
     View result;
+    TextView resultTextView;
 
     public void setTablet(boolean tablet) {
         isTablet = tablet;
@@ -50,6 +51,7 @@ public class DetailsFragment2 extends Fragment {
 
     public DetailsFragment2() {
         coffeePlaces = new ArrayList < CoffeePlace > ();
+
     }
 
     @Override
@@ -67,6 +69,8 @@ public class DetailsFragment2 extends Fragment {
         req.execute(coffeeUrl);
 
         result = inflater.inflate(R.layout.fragment_details2, container, false);
+
+        resultTextView = (TextView)  result.findViewById(R.id.resultTextView);
 
         // get the delete button, and add a click listener:
         Button hideButton = (Button) result.findViewById(R.id.hideButton);
@@ -135,6 +139,8 @@ public class DetailsFragment2 extends Fragment {
             // ListView
             coffeeListView = (ListView) result.findViewById(R.id.theListView);
             coffeeListView.setAdapter(myAdapter = new PlacesAdapter());
+
+            resultTextView.setText("Total: " + coffeePlaces.size());
 
             coffeeListView.setOnItemClickListener((parent, view, position, id) -> {
                 CoffeePlace selectedCoffee = coffeePlaces.get(position);

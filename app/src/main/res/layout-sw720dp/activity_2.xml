@@ -181,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:padding="16dp"
                         android:drawableLeft="@android:drawable/btn_star"
-                        android:text="Add to Favorites"
+                        android:text="@string/activity2_favoriteButton"
                         android:textSize="18sp"
                         android:textColor="#FFF"
                         android:background="@color/colorPrimary"/>

@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,11 +22,13 @@ import static com.example.nasaearthimagerydatabase.Activity2.DEFAULT;
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences = null;
+    EditText emailText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         Button activityButton1 = findViewById(R.id.activityButton1);
         Button activityButton2 = findViewById(R.id.activityButton2);
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Button loginButton = findViewById(R.id.loginButton);
         Switch switch_button  = (Switch) findViewById(R.id.simpleSwitch);
         TextView darkModeTextView = findViewById(R.id.darkModeTextView);
+        emailText = findViewById(R.id.emailText);
 
         Intent intent1 = new Intent(getApplicationContext(), Activity1.class);
         activityButton1.setOnClickListener(click -> startActivity(intent1));
@@ -40,7 +44,20 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Activity1.class));
+                String email  = emailText.getText().toString();
+                if (email.equals("")) {
+                    Toast.makeText(getApplicationContext(), R.string.email_error1, Toast.LENGTH_LONG).show();
+                }
+                else if (!isEmailValid(email)) {
+                    Toast.makeText(getApplicationContext(), R.string.email_error2, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intentActivity1 = new Intent(getApplicationContext(), Activity1.class);
+                    intentActivity1.putExtra("EMAIL", email);
+                    startActivity(intentActivity1);
+                }
+
+
             }
         });
 
@@ -60,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         activityButton1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                startActivity(new Intent(getApplicationContext(), TestActivity1.class));
+                startActivity(new Intent(MainActivity.this, TestActivity1.class));
                 return true;
             }
         });
@@ -72,12 +89,12 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             saveDarkSharedPrefs("DARK");
             switch_button.setChecked(true);
-            darkModeTextView.setText("Dark Mode");
+            darkModeTextView.setText(R.string.dark_mode);
         }
         else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             saveDarkSharedPrefs("LIGHT");
-            darkModeTextView.setText("Light Mode");
+            darkModeTextView.setText(R.string.light_mode);
         }
 
 
@@ -87,12 +104,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    darkModeTextView.setText("Dark Mode");
+                    darkModeTextView.setText(R.string.dark_mode);
                     saveDarkSharedPrefs("DARK");
                 }
                 else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    darkModeTextView.setText("Light Mode");
+                    darkModeTextView.setText(R.string.light_mode);
                     saveDarkSharedPrefs("LIGHT");
                 }
             }
@@ -120,5 +137,9 @@ public class MainActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

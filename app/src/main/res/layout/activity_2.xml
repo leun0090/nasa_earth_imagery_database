@@ -37,7 +37,8 @@
                 android:id="@+id/mapView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="15" />
+                android:layout_weight="15"
+                android:paddingBottom="10dp"/>
 
 
             <!-- Latitude, longitude and arrows -->
@@ -47,6 +48,7 @@
                 android:orientation="horizontal"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp">
+                <!-- LATITUDE -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -67,6 +69,7 @@
                         android:maxLength="10"
                         android:textColor="@color/colorText"/>
                 </LinearLayout>
+                <!-- LONGITUDE -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -87,13 +90,13 @@
                         android:maxLength="10"
                         android:textColor="@color/colorText" />
                 </LinearLayout>
+                <!-- ARROWS -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:layout_weight="1"
-                    android:layout_gravity="center"
-                    >
+                    android:layout_gravity="center">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -162,7 +165,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:drawableLeft="@android:drawable/btn_star"
-                    android:text="Add to Favorites"
+                    android:text="@string/activity2_favoriteButton"
                     android:textSize="18sp"
                     android:textColor="#FFF"
                     android:background="@color/colorPrimary" />
