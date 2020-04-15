@@ -10,7 +10,7 @@
         android:orderInCategory="200"/> <!-- This uses showAsAction=never, so look at title= parameter -->
 
     <item android:id="@+id/item2"
-        android:icon="@drawable/delete"
+        android:icon="@drawable/reload"
         android:orderInCategory="300"
         app:showAsAction="always"
         android:title="Choice 3"/>

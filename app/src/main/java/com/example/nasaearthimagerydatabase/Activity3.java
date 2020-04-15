@@ -153,6 +153,8 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
                 message = "You clicked on item 1";
                 break;
             case R.id.item2:
+                dbHelper.deleteTable();
+                viewFavorites();
                 message = "You clicked on item 2";
                 break;
             case R.id.item3:
