@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TestActivity3"
+    android:orientation="vertical"
+    android:background="@color/colorBackground">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimaryDark"
+        app:titleTextColor="#FFF"
+        app:subtitleTextColor="#FFF"/>
+
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:openDrawer="start">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView3"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:srcCompat="@drawable/favorite_map"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_weight="1"-->
+<!--                />-->
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/the_list"
+                />
+
+
+            <EditText
+                android:id="@+id/chatEdit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Add place"
+                android:textColorHint="@color/colorText"
+                android:textColor="@color/colorText"
+                android:backgroundTint="@color/colorPrimary"/>
+
+            <Button
+                android:id="@+id/receiveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                android:textColor="#FFF"
+                android:background="@color/colorPrimary">
+            </Button>
+
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/activity_2_header_layout"
+            app:menu="@menu/drawer_menu2"
+            android:id="@+id/nav_view"
+            android:background="@color/colorBackground"
+            app:itemIconTint="@color/colorText"
+            app:itemTextColor="@color/colorText"/>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</LinearLayout>

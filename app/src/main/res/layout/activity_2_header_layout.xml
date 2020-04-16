@@ -3,18 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginTop="20dp"
     android:layout_marginRight="20dp"
-    android:layout_marginLeft="20dp">
+    android:layout_marginLeft="70dp">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Activity 2 - Display map" />
+        android:text="@string/header_title"
+        android:textColor="@color/colorText"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Version: 4" />
+        android:text="@string/header_version"
+        android:textColor="@color/colorText"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name: Pak Leung" />
+        android:text="@string/header_name"
+        android:textColor="@color/colorText"/>
 </LinearLayout>

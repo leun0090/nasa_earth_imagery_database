@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import org.json.JSONArray;
@@ -43,6 +44,7 @@ public class DetailsFragment2 extends Fragment {
     private ListView coffeeListView;
     private PlacesAdapter myAdapter;
     View result;
+    TextView resultTextView;
 
     public void setTablet(boolean tablet) {
         isTablet = tablet;
@@ -50,6 +52,7 @@ public class DetailsFragment2 extends Fragment {
 
     public DetailsFragment2() {
         coffeePlaces = new ArrayList < CoffeePlace > ();
+
     }
 
     @Override
@@ -67,6 +70,8 @@ public class DetailsFragment2 extends Fragment {
         req.execute(coffeeUrl);
 
         result = inflater.inflate(R.layout.fragment_details2, container, false);
+
+        resultTextView = (TextView)  result.findViewById(R.id.resultTextView);
 
         // get the delete button, and add a click listener:
         Button hideButton = (Button) result.findViewById(R.id.hideButton);
@@ -136,6 +141,8 @@ public class DetailsFragment2 extends Fragment {
             coffeeListView = (ListView) result.findViewById(R.id.theListView);
             coffeeListView.setAdapter(myAdapter = new PlacesAdapter());
 
+            resultTextView.setText("Total: " + coffeePlaces.size());
+
             coffeeListView.setOnItemClickListener((parent, view, position, id) -> {
                 CoffeePlace selectedCoffee = coffeePlaces.get(position);
                 Dialog helpDialog = new Dialog(getContext());
@@ -150,6 +157,12 @@ public class DetailsFragment2 extends Fragment {
                 helpDescription3.setText(selectedCoffee.telephone);
                 TextView helpDescription4 = (TextView) helpDialog.findViewById(R.id.helpDescription4);
                 helpDescription4.setText(selectedCoffee.website);
+
+                ImageView imageView = helpDialog.findViewById(R.id.imageView);
+                imageView.setVisibility(View.GONE);
+
+                ImageView coffeeImageView = helpDialog.findViewById(R.id.coffeeImageView);
+                coffeeImageView.setVisibility(View.VISIBLE);
 
                 Button okButton = helpDialog.findViewById(R.id.okButton);
                 okButton.setOnClickListener(new View.OnClickListener() {

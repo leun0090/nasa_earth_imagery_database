@@ -4,14 +4,17 @@
 
     <item android:id="@+id/itemHeart"
         android:icon="@drawable/heart"
-        android:title="Favorites List"
+        android:title="@string/activity2_favorites_list"
         app:showAsAction="always"
-        android:orderInCategory="100"/>
+        android:orderInCategory="200"
+        android:textColor="@color/colorText" />
 
     <item android:id="@+id/itemCoffee"
-        android:title="Coffee Shop List"
+        android:title="@string/activity2_coffee_list"
         android:icon="@drawable/coffee"
-        android:orderInCategory="200"
-        app:showAsAction="always"/>
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:textColor="@color/colorText"
+        />
 
 </menu>

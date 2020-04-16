@@ -48,7 +48,7 @@ public class MapElement {
         //        "/19?dir=180&ms=500,500&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
         this.image_path = getSubPath(path);
         if (this.image_path!=null)
-        this.image = getBitmapFromURL(this.image_path);
+            this.image = getBitmapFromURL(this.image_path);
     }
 
     public MapElement(long id, String title, String latitude, String longitude, String description, Bitmap image, int favorite, int zoom) {

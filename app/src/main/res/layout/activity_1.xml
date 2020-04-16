@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activity1"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorBackground" >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -32,63 +33,92 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/search_location">
+
+
+                <TextView
+                    android:id="@+id/Enter1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/coordinatesText"
+                    android:textSize="20dp"
+                    android:textColor="@color/colorText"
+                    android:backgroundTint="@color/colorPrimary"/>
+
+                <EditText
+                    android:id="@+id/LatEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:hint="@string/latitude"
+                    android:textColorHint="@color/colorText"
+                    android:textColor="@color/colorText"
+                    android:backgroundTint="@color/colorPrimary"/>
+
+                <EditText
+                    android:id="@+id/LongEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:hint="@string/longitude"
+                    android:textColorHint="@color/colorText"
+                    android:textColor="@color/colorText"
+                    android:backgroundTint="@color/colorPrimary"/>
+
+                <Button
+                    android:id="@+id/SearchBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="75dp"
+                    android:layout_marginLeft="75dp"
+                    android:text="@string/search" />
+
+                <Button
+                    android:id="@+id/RandomLoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="75dp"
+                    android:layout_marginLeft="75dp"
+                    android:text="@string/randLocText" />
+
+                <Button
+                    android:id="@+id/CurrLoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="75dp"
+                    android:layout_marginLeft="75dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/currLocText" />
+            </LinearLayout>
+
             <TextView
-                android:id="@+id/Enter1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enter Coordintes:"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/LatEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="20dp"
-                android:hint="Latitude" />
-
-            <EditText
-                android:id="@+id/LongEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="20dp"
-                android:hint="Longtitude" />
-
-            <Button
-                android:id="@+id/SearchBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginBottom="10dp"
-                android:text="Search" />
-
-            <Button
-                android:id="@+id/CurrLoc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginBottom="30dp"
-                android:text="Current Location" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Search History"
-                android:textSize="15dp" />
+                android:text="@string/historyText"
+                android:textSize="15dp"
+                android:textColor="@color/colorText"
+                android:backgroundTint="@color/colorPrimary"/>
 
             <ListView
+                android:id="@+id/searchListView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:transcriptMode="alwaysScroll"
-                android:stackFromBottom="true"/>
+                android:stackFromBottom="true"
+                android:backgroundTint="@color/colorPrimary"/>
 
         </LinearLayout>
 

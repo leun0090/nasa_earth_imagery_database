@@ -2,12 +2,15 @@ package com.example.nasaearthimagerydatabase;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -63,6 +67,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_2_listview);
+
 
         resultTextView = (TextView) findViewById(R.id.resultTextView);
 
@@ -121,6 +126,12 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
 
             TextView helpDescription4 = (TextView) helpDialog.findViewById(R.id.helpDescription4);
             helpDescription4.setText(selectedCoffee.website);
+
+            ImageView imageView = helpDialog.findViewById(R.id.imageView);
+            imageView.setVisibility(View.GONE);
+
+            ImageView coffeeImageView = helpDialog.findViewById(R.id.coffeeImageView);
+            coffeeImageView.setVisibility(View.VISIBLE);
 
             Button okButton = helpDialog.findViewById(R.id.okButton);
             okButton.setOnClickListener(new View.OnClickListener() {
@@ -188,11 +199,6 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.itemTest:
-                Intent testIntent = new Intent(getApplicationContext(), TestActivity1.class);
-                startActivity(testIntent);
-                break;
-
             case R.id.activityOne:
                 Intent activityOneIntent = new Intent(getApplicationContext(), Activity1.class);
                 startActivity(activityOneIntent);
@@ -266,7 +272,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
 
         public void onPostExecute(String fromDoInBackground) {
             progressBar.setVisibility(View.GONE);
-            resultTextView.setText("There are " + coffeePlaces.size() +" results.");
+            resultTextView.setText("Total: " + coffeePlaces.size());
             coffeeListView.setAdapter(myAdapter = new PlacesAdapter());
         }
     }

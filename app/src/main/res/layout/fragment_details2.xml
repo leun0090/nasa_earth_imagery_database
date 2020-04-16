@@ -7,17 +7,39 @@
     tools:context=".DetailsFragment2">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground">
         <ListView
             android:id="@+id/theListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackground"
+            android:layout_above="@+id/hideButton"
+            >
+            <TextView
+                android:id="@+id/resultTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:gravity="center"
+                android:textSize="16sp"
+                android:paddingTop="5dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/colorText"
+                android:layout_above="@+id/hideButton"/>
+        </LinearLayout>
+
         <Button
             android:id="@+id/hideButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/activity2Hide"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:textColor="#FFF"
+            android:background="@color/colorPrimary"/>
     </RelativeLayout>
 </FrameLayout>

@@ -1,30 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Cartes Bing</string>
-    <string name="activity2_favoriteButton">Ajouter des emplacements de démonstration</string>
-    <string name="open">Ouvrir</string>
-    <string name="close">Fermer</string>
-    <string name="activity2_favoriteSnack">Votre emplacement sur la carte a été privilégié</string>
-    <string name="delete_this">Do you want to delete this location?</string>
-    <string name="select_row">The selected row is:</string>
-    <string name="dataB_id">"\nThe database id: "</string>
-    <string name="yyes">Yes</string>
-    <string name="nnoo">No</string>
-
 
     <!-- main activity -->
-    <string name="mainTitle">base de données d\'images de la nasa</string>
-    <string name="helpDescription">Vous consultez actuellement une carte. Appuyez sur les icônes de zoom avant ou arrière dans la barre d\'outils. Saisissez ensuite un titre pour mettre cet emplacement en favori.</string>
-    <string name="okButton">D\'accord</string>
-    <string name="helpExtra">Cliquez sur les éléments de la liste pour voir plus de détails</string>
+    <string name="mainTitle">NASA IMAGERY DATABASE</string>
+    <string name="app_name">BINGIFIER</string>
+    <string name="app_name_subtitle">Découvrez le monde étonnant des cartes BING</string>
+    <string name="login">s\'identifier</string>
+    <string name="email">Adresse Courriel</string>
+    <string name="light_mode">Mode d\'éclairage</string>
+    <string name="dark_mode">Mode sombre</string>
+    <string name="email_error1">Veuillez saisir votre adresse e-mail</string>
+    <string name="email_error2">Veuillez saisir une adresse e-mail correcte</string>
 
+    <!-- Activity 1 -->
+    <string name="toast1">Vous allez maintenant à l\'activité 2</string>
+    <string name="toast2">Vous allez maintenant à l\'activité 2</string>
+    <string name="latitude">LATITUDE</string>
+    <string name="longitude">LONGITUDE</string>
+    <string name="activity1">Activité 1</string>
+    <string name="alertTitle">Aidez-moi</string>
+    <string name="alertMsg">Veuillez entrer une valeur de latitude et de longitude et cliquez sur le bouton de recherche</string>
+    <string name="ok">OK</string>
+    <string name="snackText">Dernières coordonnées recherchées:</string>
+    <string name="coordinatesText">Entrez les coordonnées:</string>
+    <string name="search">La recherche</string>
+    <string name="randLocText">Générer un emplacement aléatoire</string>
+    <string name="currLocText">Localisation actuelle</string>
+    <string name="historyText">Historique des recherches</string>
+
+    <!-- Activity 2 text -->
+    <string name="helpDescription">Vous consultez actuellement une carte. Appuyez sur les icônes de zoom avant ou arrière dans la barre d\'outils. Saisissez ensuite un titre pour mettre cet emplacement en favori.</string>
+    <string name="okButton">Oui</string>
+    <string name="helpExtra">Cliquez sur les éléments de la liste pour voir plus de détails</string>
     <string name="activity2Title">Titre</string>
     <string name="activity2Description">La description</string>
-
     <string name="activity2Hide">Cacher</string>
-    <string name="deleteDB">Toute base de données supprimée</string>
-    <string name="reload">Base de données supprimée et emplacements de démonstration chargés</string>
-    <string name="addDemo">Ajout d\'emplacements de démonstration à la base de données</string>
-    <string name="total_locations">Emplacements totaux:</string>
-    <string name="advertisement">Votre annonce pourrait être ici.</string>
+    <string name="activity2_favoriteSnack">Votre emplacement sur la carte a été privilégié</string>
+    <string name="activity2_favoriteButton">Ajouter aux Favoris</string>
+    <string name="open">Ouvrir</string>
+    <string name="close">Fermer</string>
+    <string name="activity2_favorites_list">Liste des favoris</string>
+    <string name="activity2_coffee_list">Liste des cafés</string>
+    <string name="search_location">Rechercher Lieu</string>
+    <string name="view_map">Voir la carte</string>
+    <string name="browser_favorites">Emplacements favoris</string>
+    <string name="move_left">Vers la gauche</string>
+    <string name="move_right">Vers la droite</string>
+    <string name="move_top">Vers le nord</string>
+    <string name="move_bottom">Vers le sud</string>
+    <string name="coffee_warning">La liste des cafés n\'est disponible qu\'aux États-Unis pour le moment. </string>
+    <string name="zoom_in">Vous avez zoomé. Le niveau de zoom est maintenant </string>
+    <string name="zoom_out">Vous avez zoomé. Le niveau de zoom est maintenant </string>
+    <string name="header_title">Activity 2 - Voir la carte</string>
+    <string name="header_name">Nom: Pak Leung</string>
+    <string name="header_version">Version: 1</string>
+    <string name="favorite">Favoris</string>
+    <string name="cancel">Annuler</string>
+
+    <!-- Activity 3 -->
+    <string name="delete_this">Voulez-vous supprimer cette localisation?</string>
+    <string name="select_row">La ligne sélectionnée est:</string>
+    <string name="dataB_id">"\nL\'ID de la base de données: "</string>
+    <string name="yyes">Oui</string>
+    <string name="nnoo">Non</string>
+
+    <string name="map_key" translatable="false">AIzaSyB8hWWmMuBRrR0gUlkBjRQI3p15s7gAMxo</string>
+    <string name="deleteDB">All database deleted</string>
+    <string name="reload">Database deleted and demo locations loaded</string>
+    <string name="addDemo">Added demo locations to the database</string>
+    <string name="total_locations">Total Locations:</string>
+    <string name="advertisement">Your advertisement could be here.</string>
+
 </resources>

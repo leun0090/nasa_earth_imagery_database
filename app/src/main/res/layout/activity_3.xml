@@ -7,6 +7,7 @@
     tools:context=".Activity3"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="#EBD4F1"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     >
@@ -58,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
-                    android:textColor="#FF50FF"
+                    android:textColor="#802000"
                     android:layout_weight="1"
                     android:text="94552" />
 
@@ -84,6 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="#8FA6D0"
                     android:text="@string/activity2_favoriteButton" />
 
             </LinearLayout>

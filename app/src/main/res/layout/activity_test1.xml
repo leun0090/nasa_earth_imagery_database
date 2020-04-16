@@ -6,13 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".TestActivity1"
     android:orientation="vertical"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp">
+    android:background="@color/colorBackground">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"/>
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimaryDark"
+        app:titleTextColor="#FFF"
+        app:subtitleTextColor="#FFF"/>
 
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -32,8 +34,9 @@
                 android:id="@+id/imageView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/search_map"
+                app:srcCompat="@drawable/search_location"
                 android:layout_marginTop="20dp"
+                android:layout_weight="2"
                 />
 
             <EditText
@@ -43,7 +46,11 @@
                 android:hint="latitude"
                 android:text="43.6532"
                 tools:layout_editor_absoluteX="123dp"
-                tools:layout_editor_absoluteY="150dp" />
+                tools:layout_editor_absoluteY="150dp"
+                android:textColorHint="@color/colorText"
+                android:textColor="@color/colorText"
+                android:backgroundTint="@color/colorPrimary"
+                />
 
             <EditText
                 android:id="@+id/longitudeEditText"
@@ -52,45 +59,60 @@
                 android:hint="longitude"
                 android:text="-79.3832"
                 tools:layout_editor_absoluteX="127dp"
-                tools:layout_editor_absoluteY="336dp" />
+                tools:layout_editor_absoluteY="336dp"
+                android:textColorHint="@color/colorText"
+                android:textColor="@color/colorText"
+                android:backgroundTint="@color/colorPrimary"
+                />
 
 
             <Button
                 android:id="@+id/searchButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:drawableLeft="@android:drawable/ic_menu_search"
+                android:padding="5dp"
+                android:drawableLeft="@drawable/search"
                 android:text="Search Location"
-                android:textSize="18sp"/>
+                android:textSize="14sp"
+                android:textColor="#FFF"
+                android:background="@color/colorPrimary"
+                android:layout_marginBottom="50dp"
+                />
 
-
-            <TextView
-                android:id="@+id/showLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Options:"
-                android:textSize="24sp" />
-
-
-            <Button
-                android:id="@+id/randomButton"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:drawableLeft="@drawable/gps_search"
-                android:text="Generate Random Location"
-                android:textSize="18sp"/>
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/randomButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:drawableLeft="@drawable/gps_search"
+                    android:text="Generate Random Location"
+                    android:textSize="14sp"
+                    android:textColor="#FFF"
+                    android:background="@color/colorPrimary"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    />
 
-            <Button
-                android:id="@+id/btnGetLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:drawableLeft="@drawable/gps"
-                android:text="Get Current Location"
-                android:textSize="18sp"/>
-
+                <Button
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/btnGetLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:drawableLeft="@drawable/gps"
+                    android:text="Get Current Location"
+                    android:textSize="14sp"
+                    android:textColor="#FFF"
+                    android:background="@color/colorPrimary"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    />
+            </LinearLayout>
         </LinearLayout>
 
         <com.google.android.material.navigation.NavigationView
@@ -100,7 +122,10 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/activity_2_header_layout"
             app:menu="@menu/drawer_menu2"
-            android:id="@+id/nav_view"/>
+            android:id="@+id/nav_view"
+            android:background="@color/colorBackground"
+            app:itemIconTint="@color/colorText"
+            app:itemTextColor="@color/colorText"/>
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </LinearLayout>

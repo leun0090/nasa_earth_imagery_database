@@ -82,8 +82,8 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 Bitmap bmp=null;
                 if (cursor.getBlob(5)!=null) {
-                byte[] byteArray = cursor.getBlob(5);
-                bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);}
+                    byte[] byteArray = cursor.getBlob(5);
+                    bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);}
                 loc[--i] = new MapElement(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), bmp, cursor.getInt(7),cursor.getInt(8));
                 list_map_elements.add(loc[i]);
             }
@@ -109,6 +109,4 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE);;
         db.close();
     }
-
-
 }
