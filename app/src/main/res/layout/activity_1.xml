@@ -44,7 +44,7 @@
                     android:id="@+id/Enter1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Enter Coordintes:"
+                    android:text="@string/coordinatesText"
                     android:textSize="20dp"
                     android:textColor="@color/colorText"
                     android:backgroundTint="@color/colorPrimary"/>
@@ -57,7 +57,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginBottom="20dp"
-                    android:hint="Latitude"
+                    android:hint="@string/latitude"
                     android:textColorHint="@color/colorText"
                     android:textColor="@color/colorText"
                     android:backgroundTint="@color/colorPrimary"/>
@@ -70,7 +70,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginBottom="20dp"
-                    android:hint="Longitude"
+                    android:hint="@string/longitude"
                     android:textColorHint="@color/colorText"
                     android:textColor="@color/colorText"
                     android:backgroundTint="@color/colorPrimary"/>
@@ -82,7 +82,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="75dp"
                     android:layout_marginLeft="75dp"
-                    android:text="Search" />
+                    android:text="@string/search" />
 
                 <Button
                     android:id="@+id/RandomLoc"
@@ -91,7 +91,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="75dp"
                     android:layout_marginLeft="75dp"
-                    android:text="Generate Random Location" />
+                    android:text="@string/randLocText" />
 
                 <Button
                     android:id="@+id/CurrLoc"
@@ -101,13 +101,13 @@
                     android:layout_marginRight="75dp"
                     android:layout_marginLeft="75dp"
                     android:layout_marginBottom="20dp"
-                    android:text="Current Location" />
+                    android:text="@string/currLocText" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Search History"
+                android:text="@string/historyText"
                 android:textSize="15dp"
                 android:textColor="@color/colorText"
                 android:backgroundTint="@color/colorPrimary"/>

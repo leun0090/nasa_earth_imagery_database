@@ -5,12 +5,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,20 +28,26 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
-
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
-
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
+
+/**
+ * <h1>Activity 1</h1>
+ * This activity takes in values from user for LATITUDE and LONGITUDE
+ * and passes it to Activity 2 to show search results
+ *
+ * Feature added to generate random coordinates using AsyncTask
+ *
+ * @author  Denesh Canjimavadivel
+ * @version 1.0
+ */
 
 public class Activity1 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -59,8 +66,11 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
     TextView longInput;
     List<Search_History> historyList = new ArrayList<>();
 
-    Button SearchBtn;
-    Button RandomLoc;
+    Button searchBtn;
+    Button randomLoc;
+    Button currLoc;
+
+    LocationManager locationManager;
 
 
     @Override
@@ -79,35 +89,37 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         progressBar1 = findViewById(R.id.progressbar1);
         progressBar1.setVisibility(View.VISIBLE);
 
-        SharedPreferences shprefs = getSharedPreferences("Activity 1", Context.MODE_PRIVATE);
-        latitude = shprefs.getString("Latitude","");
-        longitude = shprefs.getString("Longitude","");
+        SharedPreferences shprefs = getSharedPreferences(getString(R.string.activity1), Context.MODE_PRIVATE);
+        latitude = shprefs.getString(getString(R.string.latitude),"");
+        longitude = shprefs.getString(getString(R.string.longitude),"");
 
         LatEditText = findViewById(R.id.LatEditText);
         LatEditText.setText(latitude);
         LongEditText = findViewById(R.id.LongEditText);
         LongEditText.setText(longitude);
 
-        SearchBtn = findViewById(R.id.SearchBtn);
-        RandomLoc = findViewById(R.id.RandomLoc);
+        searchBtn = findViewById(R.id.SearchBtn);
+        randomLoc = findViewById(R.id.RandomLoc);
+        currLoc = findViewById(R.id.CurrLoc);
 
+        /**Loading toolbar */
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /**Loading navigation drawer*/
         DrawerLayout navdrawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
                 navdrawer, toolbar, R.string.open, R.string.close);
         navdrawer.addDrawerListener(toggle);
         toggle.syncState();
-
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        SearchBtn.setOnClickListener(click -> {
+        /**Search button passes inputs to Activity 2*/
+        searchBtn.setOnClickListener(click -> {
                 Intent activity2 = new Intent(getApplicationContext(), Activity2.class);
-                activity2.putExtra("LATITUDE", LatEditText.getText().toString());
-                activity2.putExtra("LONGITUDE", LongEditText.getText().toString());
+                activity2.putExtra(getString(R.string.latitude), LatEditText.getText().toString());
+                activity2.putExtra(getString(R.string.longitude), LongEditText.getText().toString());
                 startActivity(activity2);
                 latitude = LatEditText.getText().toString();
                 longitude = LongEditText.getText().toString();
@@ -115,15 +127,25 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
                 historyList.add(list);
                 Activity1_listview adapter = new Activity1_listview(historyList, getApplicationContext());
                 listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Snackbar.make(view, "", Snackbar.LENGTH_LONG)
+                                .setText(getString(R.string.snackText) +latitude+ "," +longitude)
+                                .setAction(getString(R.string.ok), click ->{})
+                                .show();
+                    }
+                });
+
         });
 
-
-        RandomLoc.setOnClickListener(click -> {
+        /**Generate random coordinates using AsyncTask */
+        randomLoc.setOnClickListener(click -> {
 
             randomCoordinates random = new randomCoordinates();
                 random.execute("https://api.3geonames.org/?randomland=yes");
         });
-
     }
 
     @Override
@@ -131,18 +153,19 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         super.onStart();
     }
 
+    /** Values entered in editText fields saved using SharedPreferences */
     @Override
     protected void onPause() {
         super.onPause();
 
-        SharedPreferences shprefs = getSharedPreferences("Activity 1", Context.MODE_PRIVATE);
+        SharedPreferences shprefs = getSharedPreferences(getString(R.string.activity1), Context.MODE_PRIVATE);
 
         LatEditText = findViewById(R.id.LatEditText);
         LongEditText = findViewById(R.id.LongEditText);
 
         SharedPreferences.Editor editor = shprefs.edit();
-        editor.putString("Latitude", LatEditText.getText().toString());
-        editor.putString("Longitude", LongEditText.getText().toString());
+        editor.putString(getString(R.string.latitude), LatEditText.getText().toString());
+        editor.putString(getString(R.string.longitude), LongEditText.getText().toString());
         editor.commit();
     }
 
@@ -158,11 +181,12 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         return true;
     }
 
+    /** Actions for toolbar icons with a form of message shown to user */
     @Override
     public boolean onOptionsItemSelected( MenuItem item) {
         switch(item.getItemId()) {
             case R.id.search:
-                Toast toast1 = Toast.makeText(this, "You are now going to Activity 2", Toast.LENGTH_LONG);
+                Toast toast1 = Toast.makeText(this, R.string.toast1, Toast.LENGTH_LONG);
                 toast1.setGravity(Gravity.CENTER|Gravity.CENTER_HORIZONTAL, 0, 0);
                 toast1.show();
                 Intent activity2 = new Intent(getApplicationContext(), Activity2.class);
@@ -170,7 +194,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
                 break;
 
             case R.id.favourite:
-                Toast toast2 = Toast.makeText(this, "You are now going to Activity 3", Toast.LENGTH_LONG);
+                Toast toast2 = Toast.makeText(this, R.string.toast2, Toast.LENGTH_LONG);
                 toast2.setGravity(Gravity.CENTER|Gravity.CENTER_HORIZONTAL, 0, 0);
                 toast2.show();
                 Intent activity3 = new Intent(getApplicationContext(), Activity3.class);
@@ -179,9 +203,9 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
             case R.id.help:
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("Help");
-                alertDialog.setMessage("Please enter a latitude and longitude value and click the search button");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                alertDialog.setTitle(getString(R.string.alertTitle));
+                alertDialog.setMessage(getString(R.string.alertMsg));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -195,9 +219,9 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         return true;
     }
 
+    /**Actions when items clicked in NavigationDrawer */
     @Override
     public boolean onNavigationItemSelected( MenuItem item) {
-
 
         switch(item.getItemId())
         {
@@ -213,9 +237,9 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
             case R.id.help:
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("Help");
-                alertDialog.setMessage("Please enter a latitude and longitude value and click the search button");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                alertDialog.setTitle(getString(R.string.alertTitle));
+                alertDialog.setMessage(getString(R.string.alertMsg));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -230,6 +254,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         return false;
     }
 
+    /**AsyncTask to generate random coordinates */
     private class randomCoordinates extends AsyncTask<String, Integer, String> {
 
         @Override
