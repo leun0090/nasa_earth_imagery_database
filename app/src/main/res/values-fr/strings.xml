@@ -66,10 +66,10 @@
     <string name="nnoo">Non</string>
 
     <string name="map_key" translatable="false">AIzaSyB8hWWmMuBRrR0gUlkBjRQI3p15s7gAMxo</string>
-    <string name="deleteDB">All database deleted</string>
-    <string name="reload">Database deleted and demo locations loaded</string>
-    <string name="addDemo">Added demo locations to the database</string>
-    <string name="total_locations">Total Locations:</string>
-    <string name="advertisement">Your advertisement could be here.</string>
+    <string name="deleteDB">Toute base de données supprimée</string>
+    <string name="reload">Base de données supprimée et emplacements de démonstration chargés</string>
+    <string name="addDemo">Ajout d\'emplacements de démonstration à la base de données</string>
+    <string name="total_locations">Emplacements totaux:</string>
+    <string name="advertisement">Votre annonce pourrait être ici.</string>
 
 </resources>
