@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Cartes Bing</string>
-    <string name="activity2_favoriteButton">Ajouter aux Favoris</string>
+    <string name="activity2_favoriteButton">Ajouter des emplacements de démonstration</string>
     <string name="open">Ouvrir</string>
     <string name="close">Fermer</string>
     <string name="activity2_favoriteSnack">Votre emplacement sur la carte a été privilégié</string>
@@ -22,4 +22,9 @@
     <string name="activity2Description">La description</string>
 
     <string name="activity2Hide">Cacher</string>
+    <string name="deleteDB">Toute base de données supprimée</string>
+    <string name="reload">Base de données supprimée et emplacements de démonstration chargés</string>
+    <string name="addDemo">Ajout d\'emplacements de démonstration à la base de données</string>
+    <string name="total_locations">Emplacements totaux:</string>
+    <string name="advertisement">Votre annonce pourrait être ici.</string>
 </resources>

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingVertical="10dp"
     android:paddingLeft="15dp"
-    android:paddingRight="60dp"
+    android:paddingRight="15dp"
     android:clipToPadding="false">
 
 
@@ -59,6 +59,33 @@
         android:layout_toRightOf="@+id/loc_star4"
         android:layout_alignTop="@+id/loc_star4"
         android:background="@drawable/star"
+        android:scaleType="centerInside" />
+
+    <ImageButton
+        android:id="@+id/redo_button"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/loc_star4"
+        android:background="@drawable/edit"
+        android:scaleType="centerInside" />
+
+    <ImageButton
+        android:id="@+id/view_button"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_toLeftOf="@+id/redo_button"
+        android:layout_alignTop="@+id/loc_star4"
+        android:background="@drawable/view"
+        android:scaleType="centerInside" />
+
+    <ImageButton
+        android:id="@+id/del_button"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_toLeftOf="@+id/view_button"
+        android:layout_alignTop="@+id/loc_star4"
+        android:background="@drawable/del"
         android:scaleType="centerInside" />
 
     <TextView

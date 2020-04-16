@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BING MAPS</string>
     <string name="activity2_favoriteSnack">Your map location has been favorited</string>
-    <string name="activity2_favoriteButton">Add To Favorites</string>
+    <string name="activity2_favoriteButton">Add Demo Locations</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="delete_this">Do you want to delete this location?</string>
@@ -26,4 +26,9 @@
 
 
     <string name="map_key" translatable="false">AIzaSyB8hWWmMuBRrR0gUlkBjRQI3p15s7gAMxo</string>
+    <string name="deleteDB">All database deleted</string>
+    <string name="reload">Database deleted and demo locations loaded</string>
+    <string name="addDemo">Added demo locations to the database</string>
+    <string name="total_locations">Total Locations:</string>
+    <string name="advertisement">Your advertisement could be here.</string>
 </resources>
