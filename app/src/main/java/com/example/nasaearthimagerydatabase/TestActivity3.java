@@ -51,6 +51,7 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
 
     String loginEmail;
 
+    ArrayList<Place> initialList = new ArrayList<>();
     ArrayList<Place> placesList = new ArrayList<>();
     int positionClicked = 0;
     MyOwnAdapter myAdapter;
@@ -152,13 +153,31 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                    ArrayList<Place> tempList = new ArrayList<>();
+                    for (int i = 0; i < placesList.size(); i++){
+                        Place aPlace = placesList.get(i);
+                        if (aPlace.getTitle().equals(query)) {
+                            tempList.add(aPlace);
+                        }
+                    }
+                    placesList = tempList;
+                    myAdapter.notifyDataSetChanged();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Toast.makeText(getApplicationContext(),  newText, Toast.LENGTH_LONG).show();
 
+                return false;
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                Toast.makeText(getApplicationContext(), "close ", Toast.LENGTH_LONG).show();
+                placesList = initialList;
+                myAdapter.notifyDataSetChanged();
                 return false;
             }
         });
@@ -354,6 +373,7 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
 
         }
 
+        initialList = placesList;
         printCursor(results, db.getVersion());
     }
 
