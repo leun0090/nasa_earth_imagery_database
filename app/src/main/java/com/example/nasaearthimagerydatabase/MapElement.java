@@ -29,6 +29,14 @@ public class MapElement {
     private int favorite = 0;
     private int zoom = 12;
 
+    /**
+     * <h1>Activity 3</h1>
+     * This class is a location object(Map Element).
+     * The database works with these instances of this object and saves them.
+     *
+     * @author  Nikolai Semko
+     * @version 1.2
+     */
 
     public MapElement(long id, String title, String latitude, String longitude, String description, int favorite, int zoom) {
         this.id=id;

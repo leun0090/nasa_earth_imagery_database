@@ -6,6 +6,7 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     android:background="#BAE0A7"
+    android:id="@+id/element"
     android:clipToPadding="false">
 
 

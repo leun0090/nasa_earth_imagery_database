@@ -4,13 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity3"
+    android:orientation="horizontal">
+
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
     android:background="#EBD4F1"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    >
+    tools:context=".Activity3">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -99,6 +104,14 @@
             app:menu="@menu/drawer_menu3"
             android:id="@+id/nav_view"/>
     </androidx.drawerlayout.widget.DrawerLayout>
+<FrameLayout
+    android:id="@+id/fragment_activity_3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#90BBFF" />
 
+        />
+
+</LinearLayout>
 
 </LinearLayout>

@@ -7,10 +7,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -31,13 +33,21 @@ import android.widget.Toast;
 
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.String;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+/**
+ * <h1>Activity 3</h1>
+ * This activity forms a list of saved locations and works with this list.
+ *
+ * @author  Nikolai Semko
+ * @version 1.5
+ */
 public class Activity3 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String ACTIVITY_NAME = "PROFILE_ACTIVITY";
+    public static final String ITEM_POSITION = "POSITION";
     private ArrayList<MapElement> list_map_elements = new ArrayList<>();
     DbNasaEarthImagery dbHelper;
     ListView theList;
@@ -46,7 +56,8 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
     private ProgressBar progressBar;
     private ObjectAnimator progressAnimator;
     private String total_loc="0";
-    private TextView total_elelenents;
+    private TextView total_elements;
+
 
 
     @Override
@@ -60,6 +71,7 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
         progressBar = findViewById(R.id.progress_bar);
         progressAnimator= ObjectAnimator.ofInt(progressBar,"progress",0,100);
         progressAnimator.setDuration(2000);
+        boolean isTablet = findViewById(R.id.fragmentLocation3) != null; //check if the FrameLayout is loaded
 
         progressAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -73,7 +85,7 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
         theList = findViewById(R.id.aListView);
         theList.setAdapter(adpt);
         dbHelper = new DbNasaEarthImagery(this);
-        total_elelenents = findViewById(R.id.longitudeLabel);
+        total_elements = findViewById(R.id.longitudeLabel);
         viewFavorites(false);
         Toolbar tBar = findViewById(R.id.toolbar);
         setSupportActionBar(tBar);
@@ -87,14 +99,34 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        theList.setOnItemClickListener((parent, view, position, id) -> {
+        theList.setOnItemClickListener((list, item, position, id) -> {
+            //Create a bundle to pass data to the new fragment
+            Bundle dataToPass = new Bundle();
+            dataToPass.putInt(ITEM_POSITION, position);
+
+            if (isTablet) {
+                Activity3_Fragment dFragment = new Activity3_Fragment(); //add a DetailFragment
+                dFragment.setArguments(dataToPass); //pass it a bundle for information
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
+                        .commit(); //actually load the fragment.
+            } else //isPhone
+            {
+                Intent nextActivity = new Intent(Activity3.this, EmptyActivity.class);
+                nextActivity.putExtras(dataToPass); //send data to next activity
+                startActivity(nextActivity); //make the transition
+            }
+        });
+
+        /*theList.setOnItemClickListener((parent, view, position, id) -> {
             MapElement e = list_map_elements.get(position);
 
             Intent intent = new Intent(getApplicationContext(), Activity2.class);
             intent.putExtra("LATITUDE", e.getLatitude());
             intent.putExtra("LONGITUDE", e.getLongitude());
             startActivity(intent);
-        });
+        });*/
 
         // Add item to db
 
@@ -191,10 +223,16 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
                 message = getString(R.string.reload);
                 break;
             case R.id.item3:
-                dbHelper.deleteTable();
-                list_map_elements = dbHelper.getListElements();
-                theList.setAdapter(new MyListAdapter());
+
+                final Snackbar snackBar = Snackbar.make(getCurrentFocus(), "Are you sure you want to delete the entire database?", Snackbar.LENGTH_LONG);
+                snackBar.setAction("Yes", v -> {
+                    dbHelper.deleteTable();
+                    list_map_elements = dbHelper.getListElements();
+                    theList.setAdapter(new MyListAdapter());
+                });
                 message = getString(R.string.deleteDB);
+                snackBar.show();
+
                 break;
         }
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
@@ -210,7 +248,7 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
         }
         list_map_elements = dbHelper.getListElements();
         total_loc=String.valueOf(list_map_elements.size());
-        total_elelenents.setText(total_loc,TextView.BufferType.EDITABLE);
+        total_elements.setText(total_loc,TextView.BufferType.EDITABLE);
         theList.setAdapter(new MyListAdapter());
         theList.setItemsCanFocus(true);
     }
@@ -254,6 +292,7 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
             return list_map_elements.get(position).getId();
         }
 
+        @SuppressLint("ResourceAsColor")
         @Override
         public View getView(int position, View old, ViewGroup parent) {
             ImageButton imageButtonRedo=null,imageButtonView=null, imageButtonDel=null;
@@ -274,7 +313,6 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
                 imageButtonRedo =old.findViewById(R.id.redo_button);
                 imageButtonView =old.findViewById(R.id.view_button);
                 imageButtonDel =old.findViewById(R.id.del_button);
-
             }
             discr.setText(getItem(position).getDescription());
             title.setText(getItem(position).getTitle() + "  " + getItem(position).getLatitude() + ", " + getItem(position).getLongitude());
@@ -293,6 +331,8 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
                 intent.putExtra("LONGITUDE", e.getLongitude());
                 intent.putExtra("TITLE", e.getLongitude());
                 intent.putExtra("DESCRIPTION", e.getLongitude());
+                intent.putExtra("STARS", String.valueOf(e.getFavorite()));
+                intent.putExtra("ZOOM", String.valueOf(e.getZoom()));
                 startActivity(intent);
             });
 
@@ -303,6 +343,8 @@ public class Activity3 extends AppCompatActivity implements NavigationView.OnNav
                 intent.putExtra("LONGITUDE", e.getLongitude());
                 intent.putExtra("TITLE", e.getLongitude());
                 intent.putExtra("DESCRIPTION", e.getLongitude());
+                intent.putExtra("STARS", String.valueOf(e.getFavorite()));
+                intent.putExtra("ZOOM", String.valueOf(e.getZoom()));
                 startActivity(intent);
             });
 

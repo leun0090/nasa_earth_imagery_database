@@ -11,7 +11,13 @@ import java.io.ByteArrayOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
+/**
+ * <h1>DataBase</h1>
+ * This activity was created as an assistant to work with the database.
+ *
+ * @author  Nikolai Semko
+ * @version 1.3
+ */
 public class DbNasaEarthImagery extends SQLiteOpenHelper {
     public static final String DB_NAME = "LocationsDB";
     public static final String TABLE_NAME = "EarthImgTable";
