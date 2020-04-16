@@ -157,6 +157,17 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                     favoriteDialog.cancel();
                 }
             });
+
+            // Go to test activity
+            okButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    startActivity(new Intent(Activity2.this, TestActivity3.class));
+                    return true;
+                }
+            });
+
+
             Button cancelButton = favoriteDialog.findViewById(R.id.cancelButton);
             cancelButton.setOnClickListener(new View.OnClickListener() {
                 @Override
