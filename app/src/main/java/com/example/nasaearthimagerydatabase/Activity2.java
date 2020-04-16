@@ -162,7 +162,13 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             okButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    startActivity(new Intent(Activity2.this, TestActivity3.class));
+                    Intent testIntent3 = new Intent(Activity2.this, TestActivity3.class);
+                    testIntent3.putExtra("LATITUDE", latitude);
+                    testIntent3.putExtra("LONGITUDE", longitude);
+                    testIntent3.putExtra("TITLE", titleEditText.getText().toString());
+                    testIntent3.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
+                    testIntent3.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
+                    startActivity(testIntent3);
                     return true;
                 }
             });

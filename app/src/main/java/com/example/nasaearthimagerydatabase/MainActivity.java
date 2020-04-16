@@ -127,6 +127,20 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, Activity3.class));
         });
 
+        // Go to test activity
+        activityButton3.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent testIntent3 = new Intent(MainActivity.this, TestActivity3.class);
+                testIntent3.putExtra("LATITUDE", "40.7128");
+                testIntent3.putExtra("LONGITUDE", "-74.0060");
+                testIntent3.putExtra("TITLE", "test");
+                testIntent3.putExtra("DESCRIPTION", "description");
+                testIntent3.putExtra("STARS", 4);
+                startActivity(testIntent3);
+                return true;
+            }
+        });
 
         // Activity 1
         Intent intent1 = new Intent(getApplicationContext(), Activity1.class);
