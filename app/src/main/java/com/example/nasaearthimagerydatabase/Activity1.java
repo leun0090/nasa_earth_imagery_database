@@ -87,7 +87,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
 
         progressBar1 = findViewById(R.id.progressbar1);
-        progressBar1.setVisibility(View.VISIBLE);
+        progressBar1.setVisibility(View.INVISIBLE);
 
         SharedPreferences shprefs = getSharedPreferences(getString(R.string.activity1), Context.MODE_PRIVATE);
         latitude = shprefs.getString(getString(R.string.latitude),"");
@@ -145,6 +145,22 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
             randomCoordinates random = new randomCoordinates();
                 random.execute("https://api.3geonames.org/?randomland=yes");
+        });
+
+        /**Get current location using GPS LocationManager.
+         * Function has not yet been implemented. */
+        currLoc.setOnClickListener(click ->{
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle(getString(R.string.alert1));
+            alertDialog.setMessage(getString(R.string.alertMsg1));
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
         });
     }
 
@@ -277,6 +293,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
                 factory.setNamespaceAware(false);
                 XmlPullParser xpp = factory.newPullParser();
                 xpp.setInput( response  , "UTF-8");
+                publishProgress(75);
 
                 // Start parsing
                 String parameter = null;
@@ -308,6 +325,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
         @Override
         protected void onPostExecute(String s) {
+            progressBar1.setVisibility(View.INVISIBLE);
             LatEditText.setText(latitude);
             LongEditText.setText(longitude);
             Toast.makeText(getApplicationContext(),"Coordinates Generated: "+latitude+", "+longitude,Toast.LENGTH_LONG);
