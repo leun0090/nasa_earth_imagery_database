@@ -1,10 +1,12 @@
 package com.example.nasaearthimagerydatabase;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -15,8 +17,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,9 +42,13 @@ import android.widget.Toast;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -88,6 +97,9 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     DetailsFragment2 dFragment;
 
     Double move_lat_long = 0.05;
+
+    static final int REQUEST_TAKE_PHOTO = 1;
+    String currentPhotoPath;
 
     // Shared preferences
     SharedPreferences sharedPreferences = null;
@@ -260,6 +272,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                         Intent intent = new Intent(getApplicationContext(), Activity3.class);
                         startActivity(intent);
                         break;
+
                     case R.id.itemCoffee:
                         Toast.makeText(getApplicationContext(), R.string.coffee_warning, Toast.LENGTH_LONG).show();
 

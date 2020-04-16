@@ -6,7 +6,7 @@
         android:icon="@drawable/heart"
         android:title="@string/activity2_favorites_list"
         app:showAsAction="always"
-        android:orderInCategory="200"
+        android:orderInCategory="300"
         android:textColor="@color/colorText" />
 
     <item android:id="@+id/itemCoffee"
@@ -16,5 +16,14 @@
         app:showAsAction="always"
         android:textColor="@color/colorText"
         />
+
+<!--    <item android:id="@+id/itemCamera"-->
+<!--        android:title="Photo"-->
+<!--        android:icon="@drawable/camera"-->
+<!--        android:orderInCategory="200"-->
+<!--        app:showAsAction="always"-->
+<!--        android:textColor="@color/colorText"-->
+<!--        />-->
+
 
 </menu>
