@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activity1"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorBackground">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -37,7 +38,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Enter Coordintes:"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textColor="@color/colorText"
+                android:backgroundTint="@color/colorPrimary"/>
 
             <EditText
                 android:id="@+id/LatEditText"
@@ -47,7 +50,10 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="20dp"
-                android:hint="Latitude" />
+                android:hint="Latitude"
+                android:textColorHint="@color/colorText"
+                android:textColor="@color/colorText"
+                android:backgroundTint="@color/colorPrimary"/>
 
             <EditText
                 android:id="@+id/LongEditText"
@@ -57,7 +63,10 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="20dp"
-                android:hint="Longtitude" />
+                android:hint="Longitude"
+                android:textColorHint="@color/colorText"
+                android:textColor="@color/colorText"
+                android:backgroundTint="@color/colorPrimary"/>
 
             <Button
                 android:id="@+id/SearchBtn"
@@ -82,9 +91,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Search History"
-                android:textSize="15dp" />
+                android:textSize="15dp"
+                android:textColor="@color/colorText"
+                android:backgroundTint="@color/colorPrimary"/>
 
             <ListView
+                android:id="@+id/searchListView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:transcriptMode="alwaysScroll"

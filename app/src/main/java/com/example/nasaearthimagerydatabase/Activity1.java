@@ -20,11 +20,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Activity1 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -33,14 +40,23 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
     EditText LongEditText;
     EditText LatEditText;
 
-    Button SearchBtn;
+    ListView listView;
+    TextView latInput;
+    TextView longInput;
+    List<Search_History> historyList = new ArrayList<>();
 
+    Button SearchBtn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_1);
+
+        listView = findViewById(R.id.searchListView);
+        latInput = findViewById(R.id.latInput);
+        longInput = findViewById(R.id.longInput);
+
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -70,8 +86,6 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        Menu navdrawer_menu = navigationView.getMenu();
-//        navdrawer_menu.findItem(R.id.help).setVisible(false);
         navigationView.setNavigationItemSelectedListener(this);
 
         SearchBtn.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +95,12 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
                 activity2.putExtra("LATITUDE", LatEditText.getText().toString());
                 activity2.putExtra("LONGITUDE", LongEditText.getText().toString());
                 startActivity(activity2);
+                String latitude = LatEditText.getText().toString();
+                String longitude = LongEditText.getText().toString();
+                Search_History list = new Search_History(latitude, longitude);
+                historyList.add(list);
+                Activity1_listview adapter = new Activity1_listview(historyList, getApplicationContext());
+                listView.setAdapter(adapter);
             }
         });
     }
