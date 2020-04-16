@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -113,6 +114,10 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         // Load data from previous activity
         latitude = getIntent().getStringExtra("LATITUDE");
         longitude = getIntent().getStringExtra("LONGITUDE");
+        String zoomData = getIntent().getStringExtra("ZOOM");
+        if (zoomData != null) {
+            zoom = Integer.parseInt(zoomData);
+        }
 
         // default
         if (latitude == null || longitude == null) {
@@ -143,17 +148,39 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             okButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent testIntent3 = new Intent(Activity2.this, TestActivity3.class);
-                    testIntent3.putExtra("LATITUDE", latitude);
-                    testIntent3.putExtra("LONGITUDE", longitude);
-                    testIntent3.putExtra("TITLE", titleEditText.getText().toString());
-                    testIntent3.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
-                    testIntent3.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
-                    testIntent3.putExtra("ZOOM",  String.valueOf(zoom));
-                    startActivity(testIntent3);
-
+                    Intent intent3 = new Intent(Activity2.this, Activity3.class);
+                    intent3.putExtra("LATITUDE", latitude);
+                    intent3.putExtra("LONGITUDE", longitude);
+                    intent3.putExtra("TITLE", titleEditText.getText().toString());
+                    intent3.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
+                    intent3.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
+                    intent3.putExtra("ZOOM",  String.valueOf(zoom));
+                    startActivity(intent3);
                     closeKeyboard();
                     favoriteDialog.cancel();
+                }
+            });
+
+            okButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (titleEditText.getText().toString().equals("")){
+                        Toast.makeText(getApplicationContext(), R.string.favorite_validation, Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Intent testIntent3 = new Intent(Activity2.this, TestActivity3.class);
+                        testIntent3.putExtra("LATITUDE", latitude);
+                        testIntent3.putExtra("LONGITUDE", longitude);
+                        testIntent3.putExtra("TITLE", titleEditText.getText().toString());
+                        testIntent3.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
+                        testIntent3.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
+                        testIntent3.putExtra("ZOOM",  String.valueOf(zoom));
+                        startActivity(testIntent3);
+                        closeKeyboard();
+                        favoriteDialog.cancel();
+                    }
+
+                    return true;
                 }
             });
 

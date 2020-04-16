@@ -27,6 +27,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -57,7 +58,6 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test3);
 
-
         // Load top toolbar
         Toolbar tBar = findViewById(R.id.toolbar);
         setSupportActionBar(tBar);
@@ -77,9 +77,11 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
         ListView theList = (ListView)findViewById(R.id.the_list);
         myAdapter = new MyOwnAdapter();
         theList.setAdapter(myAdapter);
+        theList.setOnItemClickListener((list, item, position, id) -> {
+            Toast.makeText(getApplicationContext(), "Data was saved successfully ", Toast.LENGTH_LONG).show();
+        });
 
         // ADD A PLACE
-
         String title = getIntent().getStringExtra("TITLE");
         String latitude = getIntent().getStringExtra("LATITUDE");
         String longitude = getIntent().getStringExtra("LONGITUDE");
@@ -90,7 +92,6 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
 
         String stars = getIntent().getStringExtra("STARS");
         String zoom = getIntent().getStringExtra("ZOOM");
-
 
             if (TextUtils.isEmpty(title)) {
                 return;
@@ -223,37 +224,61 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
             TextView rowTitle = (TextView)newView.findViewById(R.id.placeTitle);
             rowTitle.setText(thisRow.getTitle());
 
-            TextView rowDescription = (TextView)newView.findViewById(R.id.placeDescription);
-            rowDescription.setText(thisRow.getDescription());
-
             RatingBar mRatingBar = newView.findViewById(R.id.ratingBar);
             String s = thisRow.getStars();
             mRatingBar.setRating(Character.getNumericValue(s.charAt(0)));
 
             TextView data = (TextView)newView.findViewById(R.id.data);
-            data.setText("Latitude: " + thisRow.getLatitude() + "\nLongitude: " + thisRow.getLongitude() +  "\nZoom: " + thisRow.getZoom()) ;
+            data.setText(thisRow.getLatitude() + ", " + thisRow.getLongitude()) ;
 
-            // Delete
-            Button deleteBtn = (Button)newView.findViewById(R.id.delete_btn);
-            deleteBtn.setOnClickListener(new View.OnClickListener(){
+            // Go back to activity 2
+            ImageButton detailsButton =  newView.findViewById(R.id.detailsButton);
+            detailsButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    placesList.remove(position);
-                    deletePlace(thisRow);
-                    notifyDataSetChanged();
+                    Dialog helpDialog = new Dialog(TestActivity3.this);
+                    helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    helpDialog.setContentView(R.layout.activity_2_help_dialog);
+                    Button okButton = helpDialog.findViewById(R.id.okButton);
+                    TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
+                    helpDescription.setText(thisRow.getTitle());
+                    TextView helpDescription2 = (TextView) helpDialog.findViewById(R.id.helpDescription2);
+                    helpDescription2.setText(thisRow.getDescription());
+                    TextView helpDescription3 = (TextView) helpDialog.findViewById(R.id.helpDescription3);
+                    helpDescription3.setText("Latitude: " + thisRow.getLatitude()  + " Longitude: " + thisRow.getLongitude());
+                    TextView helpDescription4 = (TextView) helpDialog.findViewById(R.id.helpDescription4);
+                    helpDescription4.setText("Zoom Level: " + thisRow.getZoom());
+                    okButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            helpDialog.cancel();
+                        }
+                    });
+                    helpDialog.show();
                 }
             });
 
-            // View
-
-            Button viewBtn = (Button)newView.findViewById(R.id.view_btn);
-            viewBtn.setOnClickListener(new View.OnClickListener(){
+            // View details
+            ImageButton viewButton =  newView.findViewById(R.id.viewButton);
+            viewButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), Activity2.class);
                     intent.putExtra("LATITUDE", thisRow.getLatitude());
                     intent.putExtra("LONGITUDE", thisRow.getLongitude());
+                    intent.putExtra("ZOOM", thisRow.getZoom());
                     startActivity(intent);
+                }
+            });
+
+            // Delete
+            ImageButton deleteButton =  newView.findViewById(R.id.deleteButton);
+            deleteButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    placesList.remove(position);
+                    deletePlace(thisRow);
+                    notifyDataSetChanged();
                 }
             });
 

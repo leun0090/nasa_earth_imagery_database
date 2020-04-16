@@ -6,32 +6,24 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:background="@color/colorBackground"
-
-    >
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_weight="5">
+
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:id="@+id/placeTitle"
-            android:textSize="30sp"
+            android:textSize="24sp"
             android:textColor="@color/colorText"
-            android:textStyle="bold"
-            />
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/placeDescription"
-            android:textSize="18sp"
-            android:textColor="@color/colorText"
-            />
+            android:textStyle="bold" />
 
         <RatingBar
             android:id="@+id/ratingBar"
@@ -44,35 +36,56 @@
             android:isIndicator="true"
             style="?android:attr/ratingBarStyleSmall"/>
 
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/data"
-            android:textSize="20sp"
-            android:textColor="@color/colorText"
-            />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <Button
-                android:id="@+id/view_btn"
+            <ImageView
+                android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View" />
-
-            <Button
-                android:id="@+id/delete_btn"
-                android:layout_width="wrap_content"
+                app:srcCompat="@drawable/gps_green" />
+            <TextView
                 android:layout_height="wrap_content"
-                android:text="Delete" />
+                android:layout_width="wrap_content"
+                android:id="@+id/data"
+                android:textSize="16sp"
+                android:textColor="@color/colorText"
+                android:layout_marginLeft="5dp"/>
         </LinearLayout>
-
-
-
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageButton
+            android:id="@+id/viewButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/search_green"
+            android:background="@null"/>
+
+        <ImageButton
+            android:id="@+id/detailsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/details_green"
+            android:background="@null"/>
+
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/delete_green"
+            android:background="@null"/>
+
+    </LinearLayout>
 
 
 

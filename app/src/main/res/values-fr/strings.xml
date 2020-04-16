@@ -55,6 +55,7 @@
     <string name="header_version">Version: 1</string>
     <string name="favorite">Favoris</string>
     <string name="cancel">Annuler</string>
+    <string name="favorite_validation">Veuillez entrer un titre.</string>
 
     <!-- Activity 3 -->
     <string name="delete_this">Voulez-vous supprimer cette localisation?</string>

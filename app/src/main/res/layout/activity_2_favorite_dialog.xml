@@ -38,6 +38,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:hint="@string/activity2Title"
+            android:textColor="@color/colorText"
             android:textColorHint="@color/colorText" />
         <EditText
             android:id="@+id/descriptionEditText"
@@ -47,6 +48,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:hint="@string/activity2Description"
+            android:textColor="@color/colorText"
             android:textColorHint="@color/colorText" />
         <RatingBar
             android:id="@+id/simpleRatingBar"
