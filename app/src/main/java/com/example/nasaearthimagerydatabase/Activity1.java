@@ -147,6 +147,8 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
                 random.execute("https://api.3geonames.org/?randomland=yes");
         });
 
+        /**Get current location using GPS LocationManager.
+         * Function has not yet been implemented. */
         currLoc.setOnClickListener(click ->{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle(getString(R.string.alert1));
