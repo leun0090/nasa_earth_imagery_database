@@ -254,7 +254,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                     case R.id.itemHeart:
                         Intent intent = new Intent(getApplicationContext(), Activity3.class);
                         startActivity(intent);
-                    break;
+                        break;
                     case R.id.itemCoffee:
                         Toast.makeText(getApplicationContext(), R.string.coffee_warning, Toast.LENGTH_LONG).show();
 
@@ -274,7 +274,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                             activityTwoListviewIntent.putExtra("LONGITUDE", longitude);
                             startActivity(activityTwoListviewIntent);
                         }
-                    break;
+                        break;
                 }
                 return true;
             }
@@ -422,6 +422,11 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.mainActivity:
+                Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(mainIntent);
+                break;
+
             case R.id.activityOne:
                 Intent activityOneIntent = new Intent(getApplicationContext(), Activity1.class);
                 startActivity(activityOneIntent);

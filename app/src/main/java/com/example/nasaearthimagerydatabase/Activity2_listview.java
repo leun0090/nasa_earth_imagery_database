@@ -199,6 +199,11 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.mainActivity:
+                Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(mainIntent);
+                break;
+
             case R.id.activityOne:
                 Intent activityOneIntent = new Intent(getApplicationContext(), Activity1.class);
                 startActivity(activityOneIntent);

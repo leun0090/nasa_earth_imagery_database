@@ -209,6 +209,11 @@ public class TestActivity1 extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.mainActivity:
+                Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(mainIntent);
+                break;
+
             case R.id.activityOne:
                 Intent activityOneIntent = new Intent(getApplicationContext(), Activity1.class);
                 startActivity(activityOneIntent);

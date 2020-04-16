@@ -80,11 +80,33 @@ public class MainActivity extends AppCompatActivity {
         else {
             emailText.setText(savedEmail);
         }
-        
+
         // Got to Activity 1
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String email  = emailText.getText().toString();
+                if (email.equals("")) {
+                    Toast.makeText(getApplicationContext(), R.string.email_error1, Toast.LENGTH_LONG).show();
+                }
+                else if (!isEmailValid(email)) {
+                    Toast.makeText(getApplicationContext(), R.string.email_error2, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intentActivity1 = new Intent(getApplicationContext(), Activity1.class);
+                    startActivity(intentActivity1);
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("EMAIL", email);
+                    editor.commit();
+                }
+            }
+        });
+
+        // Go to test activity
+        loginButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
                 String email  = emailText.getText().toString();
                 if (email.equals("")) {
                     Toast.makeText(getApplicationContext(), R.string.email_error1, Toast.LENGTH_LONG).show();
@@ -100,12 +122,9 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString("EMAIL", email);
                     editor.commit();
                 }
-
-
+                return true;
             }
         });
-
-
 
         // TEST BUTTONS - TO BE DELETED
         activityButton1.setOnLongClickListener(new View.OnLongClickListener() {
@@ -132,11 +151,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View view) {
                 Intent testIntent3 = new Intent(MainActivity.this, TestActivity3.class);
-                testIntent3.putExtra("LATITUDE", "40.7128");
-                testIntent3.putExtra("LONGITUDE", "-74.0060");
-                testIntent3.putExtra("TITLE", "test");
-                testIntent3.putExtra("DESCRIPTION", "description");
-                testIntent3.putExtra("STARS", 4);
                 startActivity(testIntent3);
                 return true;
             }
