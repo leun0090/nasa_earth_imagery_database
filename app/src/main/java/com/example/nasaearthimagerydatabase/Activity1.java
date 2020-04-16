@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -79,9 +80,9 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         progressBar1 = findViewById(R.id.progressbar1);
         progressBar1.setVisibility(View.VISIBLE);
 
-        SharedPreferences shprefs = getSharedPreferences("Activity 1", Context.MODE_PRIVATE);
-        latitude = shprefs.getString("Latitude","");
-        longitude = shprefs.getString("Longitude","");
+        SharedPreferences shprefs = getSharedPreferences(getString(R.string.activity1), Context.MODE_PRIVATE);
+        latitude = shprefs.getString(getString(R.string.latitude),"");
+        longitude = shprefs.getString(getString(R.string.longitude),"");
 
         LatEditText = findViewById(R.id.LatEditText);
         LatEditText.setText(latitude);
@@ -106,8 +107,8 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
         SearchBtn.setOnClickListener(click -> {
                 Intent activity2 = new Intent(getApplicationContext(), Activity2.class);
-                activity2.putExtra("LATITUDE", LatEditText.getText().toString());
-                activity2.putExtra("LONGITUDE", LongEditText.getText().toString());
+                activity2.putExtra(getString(R.string.latitude), LatEditText.getText().toString());
+                activity2.putExtra(getString(R.string.longitude), LongEditText.getText().toString());
                 startActivity(activity2);
                 latitude = LatEditText.getText().toString();
                 longitude = LongEditText.getText().toString();
@@ -115,6 +116,17 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
                 historyList.add(list);
                 Activity1_listview adapter = new Activity1_listview(historyList, getApplicationContext());
                 listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Snackbar.make(view, "", Snackbar.LENGTH_LONG)
+                                .setText(getString(R.string.snackText) +latitude+ "," +longitude)
+                                .setAction(getString(R.string.ok), click ->{})
+                                .show();
+                    }
+                });
+
         });
 
 
@@ -135,14 +147,14 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
     protected void onPause() {
         super.onPause();
 
-        SharedPreferences shprefs = getSharedPreferences("Activity 1", Context.MODE_PRIVATE);
+        SharedPreferences shprefs = getSharedPreferences(getString(R.string.activity1), Context.MODE_PRIVATE);
 
         LatEditText = findViewById(R.id.LatEditText);
         LongEditText = findViewById(R.id.LongEditText);
 
         SharedPreferences.Editor editor = shprefs.edit();
-        editor.putString("Latitude", LatEditText.getText().toString());
-        editor.putString("Longitude", LongEditText.getText().toString());
+        editor.putString(getString(R.string.latitude), LatEditText.getText().toString());
+        editor.putString(getString(R.string.longitude), LongEditText.getText().toString());
         editor.commit();
     }
 
@@ -162,7 +174,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
     public boolean onOptionsItemSelected( MenuItem item) {
         switch(item.getItemId()) {
             case R.id.search:
-                Toast toast1 = Toast.makeText(this, "You are now going to Activity 2", Toast.LENGTH_LONG);
+                Toast toast1 = Toast.makeText(this, R.string.toast1, Toast.LENGTH_LONG);
                 toast1.setGravity(Gravity.CENTER|Gravity.CENTER_HORIZONTAL, 0, 0);
                 toast1.show();
                 Intent activity2 = new Intent(getApplicationContext(), Activity2.class);
@@ -170,7 +182,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
                 break;
 
             case R.id.favourite:
-                Toast toast2 = Toast.makeText(this, "You are now going to Activity 3", Toast.LENGTH_LONG);
+                Toast toast2 = Toast.makeText(this, R.string.toast2, Toast.LENGTH_LONG);
                 toast2.setGravity(Gravity.CENTER|Gravity.CENTER_HORIZONTAL, 0, 0);
                 toast2.show();
                 Intent activity3 = new Intent(getApplicationContext(), Activity3.class);
@@ -179,9 +191,9 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
             case R.id.help:
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("Help");
-                alertDialog.setMessage("Please enter a latitude and longitude value and click the search button");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                alertDialog.setTitle(getString(R.string.alertTitle));
+                alertDialog.setMessage(getString(R.string.alertMsg));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -198,7 +210,6 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public boolean onNavigationItemSelected( MenuItem item) {
 
-
         switch(item.getItemId())
         {
             case R.id.search:
@@ -213,9 +224,9 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
             case R.id.help:
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("Help");
-                alertDialog.setMessage("Please enter a latitude and longitude value and click the search button");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                alertDialog.setTitle(getString(R.string.alertTitle));
+                alertDialog.setMessage(getString(R.string.alertMsg));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
