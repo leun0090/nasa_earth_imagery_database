@@ -11,6 +11,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * <h1>Activity 1 - ListView Adapter</h1>
+ * This class is an adapter for ListView
+ *
+ * @author  Denesh Canjimavadivel
+ * @version 1.0
+ */
+
 public class Activity1_listview extends BaseAdapter {
 
     private List<Search_History> historyList;
