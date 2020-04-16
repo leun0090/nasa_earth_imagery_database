@@ -1,6 +1,12 @@
 package com.example.nasaearthimagerydatabase;
 
-import android.widget.ListAdapter;
+/**
+ * <h1>Activity 1 - Search_History Object</h1>
+ * This is an Object class for Search_History items stored in ListView
+ *
+ * @author  Denesh Canjimavadivel
+ * @version 1.0
+ */
 
 public class Search_History  {
 

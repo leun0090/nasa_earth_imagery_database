@@ -12,6 +12,20 @@
     <string name="email_error2">Please enter a correct email address</string>
 
     <!-- Activity 1 -->
+    <string name="toast1">You are now going to Activity 2</string>
+    <string name="toast2">You are now going to Activity 3</string>
+    <string name="latitude">LATITUDE</string>
+    <string name="longitude">LONGITUDE</string>
+    <string name="activity1">Activity 1</string>
+    <string name="alertTitle">Help</string>
+    <string name="alertMsg">Please enter a latitude and longitude value and click the search button</string>
+    <string name="ok">OK</string>
+    <string name="snackText">\"Last Searched Coordinates: \"</string>
+    <string name="coordinatesText">Enter Coordinates:</string>
+    <string name="search">Search</string>
+    <string name="randLocText">Generate Random Location</string>
+    <string name="currLocText">Current Location</string>
+    <string name="historyText">Search History</string>
 
     <!-- Activity 2 text -->
     <string name="helpDescription">You are currently viewing a map. Tap on the zoom in or out icons on the toolbar. Then enter a title to favorite this location.</string>
@@ -51,4 +65,7 @@
     <string name="nnoo">No</string>
 
     <string name="map_key" translatable="false">AIzaSyB8hWWmMuBRrR0gUlkBjRQI3p15s7gAMxo</string>
+
+
+
 </resources>

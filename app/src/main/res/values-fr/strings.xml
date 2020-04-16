@@ -12,6 +12,20 @@
     <string name="email_error2">Veuillez saisir une adresse e-mail correcte</string>
 
     <!-- Activity 1 -->
+    <string name="toast1">Vous allez maintenant à l\'activité 2</string>
+    <string name="toast2">Vous allez maintenant à l\'activité 2</string>
+    <string name="latitude">LATITUDE</string>
+    <string name="longitude">LONGITUDE</string>
+    <string name="activity1">Activité 1</string>
+    <string name="alertTitle">Aidez-moi</string>
+    <string name="alertMsg">Veuillez entrer une valeur de latitude et de longitude et cliquez sur le bouton de recherche</string>
+    <string name="ok">OK</string>
+    <string name="snackText">Dernières coordonnées recherchées:</string>
+    <string name="coordinatesText">Entrez les coordonnées:</string>
+    <string name="search">La recherche</string>
+    <string name="randLocText">Générer un emplacement aléatoire</string>
+    <string name="currLocText">Localisation actuelle</string>
+    <string name="historyText">Historique des recherches</string>
 
     <!-- Activity 2 text -->
     <string name="helpDescription">Vous consultez actuellement une carte. Appuyez sur les icônes de zoom avant ou arrière dans la barre d\'outils. Saisissez ensuite un titre pour mettre cet emplacement en favori.</string>
@@ -50,4 +64,6 @@
     <string name="nnoo">Non</string>
 
     <string name="map_key" translatable="false">AIzaSyB8hWWmMuBRrR0gUlkBjRQI3p15s7gAMxo</string>
+
+
 </resources>

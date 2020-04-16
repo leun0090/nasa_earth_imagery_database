@@ -5,12 +5,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,20 +28,26 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
-
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
-
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
+
+/**
+ * <h1>Activity 1</h1>
+ * This activity takes in values from user for LATITUDE and LONGITUDE
+ * and passes it to Activity 2 to show search results
+ *
+ * Feature added to generate random coordinates using AsyncTask
+ *
+ * @author  Denesh Canjimavadivel
+ * @version 1.0
+ */
 
 public class Activity1 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -60,8 +66,11 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
     TextView longInput;
     List<Search_History> historyList = new ArrayList<>();
 
-    Button SearchBtn;
-    Button RandomLoc;
+    Button searchBtn;
+    Button randomLoc;
+    Button currLoc;
+
+    LocationManager locationManager;
 
 
     @Override
@@ -89,23 +98,25 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         LongEditText = findViewById(R.id.LongEditText);
         LongEditText.setText(longitude);
 
-        SearchBtn = findViewById(R.id.SearchBtn);
-        RandomLoc = findViewById(R.id.RandomLoc);
+        searchBtn = findViewById(R.id.SearchBtn);
+        randomLoc = findViewById(R.id.RandomLoc);
+        currLoc = findViewById(R.id.CurrLoc);
 
+        /**Loading toolbar */
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /**Loading navigation drawer*/
         DrawerLayout navdrawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
                 navdrawer, toolbar, R.string.open, R.string.close);
         navdrawer.addDrawerListener(toggle);
         toggle.syncState();
-
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        SearchBtn.setOnClickListener(click -> {
+        /**Search button passes inputs to Activity 2*/
+        searchBtn.setOnClickListener(click -> {
                 Intent activity2 = new Intent(getApplicationContext(), Activity2.class);
                 activity2.putExtra(getString(R.string.latitude), LatEditText.getText().toString());
                 activity2.putExtra(getString(R.string.longitude), LongEditText.getText().toString());
@@ -129,13 +140,12 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
         });
 
-
-        RandomLoc.setOnClickListener(click -> {
+        /**Generate random coordinates using AsyncTask */
+        randomLoc.setOnClickListener(click -> {
 
             randomCoordinates random = new randomCoordinates();
                 random.execute("https://api.3geonames.org/?randomland=yes");
         });
-
     }
 
     @Override
@@ -143,6 +153,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         super.onStart();
     }
 
+    /** Values entered in editText fields saved using SharedPreferences */
     @Override
     protected void onPause() {
         super.onPause();
@@ -170,6 +181,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         return true;
     }
 
+    /** Actions for toolbar icons with a form of message shown to user */
     @Override
     public boolean onOptionsItemSelected( MenuItem item) {
         switch(item.getItemId()) {
@@ -207,6 +219,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         return true;
     }
 
+    /**Actions when items clicked in NavigationDrawer */
     @Override
     public boolean onNavigationItemSelected( MenuItem item) {
 
@@ -241,6 +254,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         return false;
     }
 
+    /**AsyncTask to generate random coordinates */
     private class randomCoordinates extends AsyncTask<String, Integer, String> {
 
         @Override
