@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -27,7 +28,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -41,26 +44,18 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
     private MenuItem itemZoomIn;
     private MenuItem itemZoomOut;
 
-    Button receiveButton;
-    EditText chatEdit;
-
-    ArrayList<Place> placesList = new ArrayList<Place>();
+    ArrayList<Place> placesList = new ArrayList<>();
     int positionClicked = 0;
     MyOwnAdapter myAdapter;
     SQLiteDatabase db;
+
+    SharedPreferences sharedPreferences = null;
+    public static final String DEFAULT="N/A";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test3);
-
-        receiveButton = findViewById(R.id.receiveButton);
-        chatEdit = findViewById(R.id.chatEdit);
-
-        String title = getIntent().getStringExtra("TITLE");
-        String latitude = getIntent().getStringExtra("LATITUDE");
-        String longitude = getIntent().getStringExtra("LONGITUDE");
-        String description = getIntent().getStringExtra("DESCRIPTION");
 
 
         // Load top toolbar
@@ -84,39 +79,51 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
         theList.setAdapter(myAdapter);
 
         // ADD A PLACE
-        receiveButton.setOnClickListener( click -> {
-            String name = chatEdit.getText().toString();
-            if (TextUtils.isEmpty(name)) {
+
+        String title = getIntent().getStringExtra("TITLE");
+        String latitude = getIntent().getStringExtra("LATITUDE");
+        String longitude = getIntent().getStringExtra("LONGITUDE");
+        String description = getIntent().getStringExtra("DESCRIPTION");
+
+        sharedPreferences = getSharedPreferences("Bing", Context.MODE_PRIVATE);
+        String email = sharedPreferences.getString("EMAIL",DEFAULT);
+
+        String stars = getIntent().getStringExtra("STARS");
+        String zoom = getIntent().getStringExtra("ZOOM");
+
+
+            if (TextUtils.isEmpty(title)) {
                 return;
             }
+            if (TextUtils.isEmpty(latitude)) {
+                return;
+            }
+            if (TextUtils.isEmpty(longitude)) {
+                return;
+            }
+            if (TextUtils.isEmpty(description)) {
+                return;
+            }
+            if (TextUtils.isEmpty(stars)) {
+                return;
+            }
+            if (TextUtils.isEmpty(zoom)) {
+                return;
+            }
+
             ContentValues newRowValues = new ContentValues();
-            newRowValues.put(DbOpener.COL_MESSAGE, name);
+            newRowValues.put(DbOpener.COL_TITLE, title);
+            newRowValues.put(DbOpener.COL_LATITUDE, latitude);
+            newRowValues.put(DbOpener.COL_LONGITUDE, longitude);
+            newRowValues.put( DbOpener.COL_DESCRIPTION, description);
+            newRowValues.put(DbOpener.COL_EMAIL, email);
+            newRowValues.put(DbOpener.COL_STARS, stars);
+            newRowValues.put(DbOpener.COL_ZOOM, zoom);
+
             long newId = db.insert(DbOpener.TABLE_NAME, null, newRowValues);
-            Place newPlace = new Place(name, newId);
+            Place newPlace = new Place(title, latitude, longitude,description,email,stars,zoom, newId);
             placesList.add(newPlace);
             myAdapter.notifyDataSetChanged();
-            chatEdit.setText("");
-            closeKeyboard();
-        });
-
-
-
-        // DELETE PLACE
-        theList.setOnItemLongClickListener(( parent,  view,  position,  id) -> {
-            Place selectedPlace = placesList.get(position);
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle( "Delete")
-                    .setMessage("Delete: " + position)
-                    .setPositiveButton("Yes", (click, arg) -> {
-                        deletePlace(selectedPlace); //remove the contact from database
-                        placesList.remove(position); //remove the contact from contact list
-                        myAdapter.notifyDataSetChanged();
-                    })
-                    .setNegativeButton("No", (click, arg) -> { })
-                    .setView(getLayoutInflater().inflate(R.layout.activity_test3_row_layout, null))
-                    .create().show();
-            return true;
-        });
 
 
 
@@ -213,8 +220,43 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
 
             View newView = getLayoutInflater().inflate(R.layout.activity_test3_row_layout, parent, false );
 
-            TextView rowTitle = (TextView)newView.findViewById(R.id.chatTitle);
-            rowTitle.setText(thisRow.getMessage());
+            TextView rowTitle = (TextView)newView.findViewById(R.id.placeTitle);
+            rowTitle.setText(thisRow.getTitle());
+
+            TextView rowDescription = (TextView)newView.findViewById(R.id.placeDescription);
+            rowDescription.setText(thisRow.getDescription());
+
+            RatingBar mRatingBar = newView.findViewById(R.id.ratingBar);
+            String s = thisRow.getStars();
+            mRatingBar.setRating(Character.getNumericValue(s.charAt(0)));
+
+            TextView data = (TextView)newView.findViewById(R.id.data);
+            data.setText("Latitude: " + thisRow.getLatitude() + "\nLongitude: " + thisRow.getLongitude() +  "\nZoom: " + thisRow.getZoom()) ;
+
+            // Delete
+            Button deleteBtn = (Button)newView.findViewById(R.id.delete_btn);
+            deleteBtn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    placesList.remove(position);
+                    deletePlace(thisRow);
+                    notifyDataSetChanged();
+                }
+            });
+
+            // View
+
+            Button viewBtn = (Button)newView.findViewById(R.id.view_btn);
+            viewBtn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), Activity2.class);
+                    intent.putExtra("LATITUDE", thisRow.getLatitude());
+                    intent.putExtra("LONGITUDE", thisRow.getLongitude());
+                    startActivity(intent);
+                }
+            });
+
             return newView;
         }
         public long getItemId(int position)
@@ -231,17 +273,30 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
         DbOpener dbOpener = new DbOpener(this);
         db = dbOpener.getWritableDatabase();
 
-        String [] columns = {DbOpener.COL_ID, DbOpener.COL_MESSAGE};
+        String [] columns = {DbOpener.COL_ID, DbOpener.COL_TITLE, DbOpener.COL_LATITUDE, DbOpener.COL_LONGITUDE, DbOpener.COL_DESCRIPTION, DbOpener.COL_EMAIL, DbOpener.COL_STARS, DbOpener.COL_ZOOM};
         Cursor results = db.query(false, DbOpener.TABLE_NAME, columns, null, null, null, null, null, null);
 
-        int titleColumnIndex = results.getColumnIndex(DbOpener.COL_MESSAGE);
-
+        int titleColumnIndex = results.getColumnIndex(DbOpener.COL_TITLE);
+        int latitudeColumnIndex = results.getColumnIndex(DbOpener.COL_LATITUDE);
+        int longitudeColumnIndex = results.getColumnIndex(DbOpener.COL_LONGITUDE);
+        int descriptionColumnIndex = results.getColumnIndex(DbOpener.COL_DESCRIPTION);
+        int emailColumnIndex = results.getColumnIndex(DbOpener.COL_EMAIL);
+        int starsColumnIndex = results.getColumnIndex(DbOpener.COL_STARS);
+        int zoomColumnIndex = results.getColumnIndex(DbOpener.COL_ZOOM);
         int idColIndex = results.getColumnIndex(DbOpener.COL_ID);
 
         while(results.moveToNext()) {
+
             String title = results.getString(titleColumnIndex);
+            String latitude = results.getString(latitudeColumnIndex);
+            String longitude = results.getString(longitudeColumnIndex);
+            String description = results.getString(descriptionColumnIndex);
+            String email = results.getString(emailColumnIndex);
+            String stars = results.getString(starsColumnIndex);
+            String zoom = results.getString(zoomColumnIndex);
+
             long id = results.getLong(idColIndex);
-            placesList.add(new Place(title, id));
+            placesList.add(new Place(title, latitude, longitude, description, email, stars, zoom, id));
         }
 
         printCursor(results, db.getVersion());
@@ -255,11 +310,21 @@ public class TestActivity3 extends AppCompatActivity  implements NavigationView.
         Log.v(TAG, "The names of columns in the cursor = " + Arrays.toString(columnNames));
 
         Cursor  cursor = db.rawQuery("select * from " +  DbOpener.TABLE_NAME,null);
-        int titleColumnIndex = cursor.getColumnIndex(DbOpener.COL_MESSAGE);
+        int titleColumnIndex = cursor.getColumnIndex(DbOpener.COL_TITLE);
+        int latitudeColumnIndex = cursor.getColumnIndex(DbOpener.COL_LATITUDE);
+        int longitudeColumnIndex = cursor.getColumnIndex(DbOpener.COL_LONGITUDE);
+        int descriptionColumnIndex = cursor.getColumnIndex(DbOpener.COL_DESCRIPTION);
+        int starsColumnIndex = cursor.getColumnIndex(DbOpener.COL_STARS);
+        int zoomColumnIndex = cursor.getColumnIndex(DbOpener.COL_ZOOM);
         int idColIndex = cursor.getColumnIndex(DbOpener.COL_ID);
 
         while(cursor.moveToNext()) {
             String title = cursor.getString(titleColumnIndex);
+            String latitude = cursor.getString(latitudeColumnIndex);
+            String longitude = cursor.getString(longitudeColumnIndex);
+            String description = cursor.getString(descriptionColumnIndex);
+            String stars = cursor.getString(starsColumnIndex);
+            String zoom = cursor.getString(zoomColumnIndex);
             long id = cursor.getLong(idColIndex);
             Log.v(TAG, "_id:" + id + " - title:" + title);
         }

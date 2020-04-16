@@ -10,7 +10,13 @@ public class DbOpener extends SQLiteOpenHelper {
     protected final static String DATABASE_NAME = "TestDB";
     protected final static int VERSION_NUM = 1;
     public final static String TABLE_NAME = "LOCATIONS";
-    public final static String COL_MESSAGE = "MESSAGE";
+    public final static String COL_TITLE = "TITLE";
+    public final static String COL_LATITUDE = "LATITUDE";
+    public final static String COL_LONGITUDE = "LONGITUDE";
+    public final static String COL_DESCRIPTION = "DESCRIPTION";
+    public final static String COL_EMAIL = "EMAIL";
+    public final static String COL_STARS = "STARS";
+    public final static String COL_ZOOM = "ZOOM";
     public final static String COL_ID = "_id";
 
     public DbOpener(Context ctx)
@@ -21,8 +27,16 @@ public class DbOpener extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_MESSAGE + " text,"  + " text);");  // add or remove columns
+        db.execSQL("CREATE TABLE " + TABLE_NAME +
+                " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COL_TITLE + " text,"
+                + COL_LATITUDE + " text,"
+                + COL_LONGITUDE + " text,"
+                + COL_DESCRIPTION + " text,"
+                + COL_EMAIL + " text,"
+                + COL_STARS + " text,"
+                + COL_ZOOM + " text,"
+                + " text);");  // add or remove columns
     }
 
     //this function gets called if the database version on your device is lower than VERSION_NUM

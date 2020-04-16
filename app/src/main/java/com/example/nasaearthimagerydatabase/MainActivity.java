@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), R.string.email_error2, Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Intent intentActivity1 = new Intent(getApplicationContext(), Activity1.class);
+                    Intent intentActivity1 = new Intent(getApplicationContext(), TestActivity1.class);
                     startActivity(intentActivity1);
 
                     SharedPreferences.Editor editor = sharedPreferences.edit();

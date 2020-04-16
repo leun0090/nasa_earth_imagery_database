@@ -92,19 +92,19 @@
                 android:id="@+id/activityButton1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Activity 1"
+                android:text="Denesh"
                 android:layout_weight="1" />
             <Button
                 android:id="@+id/activityButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Activity 2"
+                android:text="Pak"
                 android:layout_weight="1" />
             <Button
                 android:id="@+id/activityButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Activity 3"
+                android:text="Nikolai"
                 android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>

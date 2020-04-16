@@ -143,33 +143,17 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             okButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), Activity3.class);
-                    intent.putExtra("LATITUDE", latitude);
-                    intent.putExtra("LONGITUDE", longitude);
-                    intent.putExtra("TITLE", titleEditText.getText().toString());
-                    intent.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
-                    intent.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
-
-                    //Toast.makeText(getApplicationContext(), "stars " + String.valueOf(simpleRatingBar.getRating()), Toast.LENGTH_LONG).show();
-                    startActivity(intent);
-
-                    closeKeyboard();
-                    favoriteDialog.cancel();
-                }
-            });
-
-            // Go to test activity
-            okButton.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
                     Intent testIntent3 = new Intent(Activity2.this, TestActivity3.class);
                     testIntent3.putExtra("LATITUDE", latitude);
                     testIntent3.putExtra("LONGITUDE", longitude);
                     testIntent3.putExtra("TITLE", titleEditText.getText().toString());
                     testIntent3.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
                     testIntent3.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
+                    testIntent3.putExtra("ZOOM",  String.valueOf(zoom));
                     startActivity(testIntent3);
-                    return true;
+
+                    closeKeyboard();
+                    favoriteDialog.cancel();
                 }
             });
 
@@ -377,7 +361,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 if (zoom > 10){
                     move_lat_long = 0.05;
                 }
-                Toast.makeText(getApplicationContext(), R.string.zoom_in + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Zoom: " + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
                 break;
             case R.id.itemZoomOut:
                 zoom -= 1;
@@ -385,7 +369,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 if (zoom <= 10){
                     move_lat_long = 0.5;
                 }
-                Toast.makeText(getApplicationContext(), R.string.zoom_out + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Zoom: " + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
                 break;
             case R.id.helpItem:
                 Dialog helpDialog = new Dialog(Activity2.this);
