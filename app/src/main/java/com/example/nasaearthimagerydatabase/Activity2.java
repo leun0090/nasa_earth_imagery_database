@@ -148,16 +148,21 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             okButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent3 = new Intent(Activity2.this, Activity3.class);
-                    intent3.putExtra("LATITUDE", latitude);
-                    intent3.putExtra("LONGITUDE", longitude);
-                    intent3.putExtra("TITLE", titleEditText.getText().toString());
-                    intent3.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
-                    intent3.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
-                    intent3.putExtra("ZOOM",  String.valueOf(zoom));
-                    startActivity(intent3);
-                    closeKeyboard();
-                    favoriteDialog.cancel();
+                    if (titleEditText.getText().toString().equals("")){
+                        Toast.makeText(getApplicationContext(), R.string.favorite_validation, Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Intent intent3 = new Intent(Activity2.this, Activity3.class);
+                        intent3.putExtra("LATITUDE", latitude);
+                        intent3.putExtra("LONGITUDE", longitude);
+                        intent3.putExtra("TITLE", titleEditText.getText().toString());
+                        intent3.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
+                        intent3.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
+                        intent3.putExtra("ZOOM", String.valueOf(zoom));
+                        startActivity(intent3);
+                        closeKeyboard();
+                        favoriteDialog.cancel();
+                    }
                 }
             });
 
