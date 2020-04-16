@@ -5,6 +5,9 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.ImageView;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,31 +26,45 @@ public class MapElement {
     private String description = "";
     private Bitmap image = null;
     private String image_path = "";
-    private boolean favorite = false;
+    private int favorite = 0;
+    private int zoom = 12;
 
 
-    public MapElement(long id, String title, String latitude, String longitude, String description, boolean favorite) {
+    public MapElement(long id, String title, String latitude, String longitude, String description, int favorite, int zoom) {
         this.id=id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
         this.description = description;
-        this.favorite = favorite;
+        if (favorite>5) this.favorite = 5;
+        else if (favorite<1) this.favorite=0;
+        else this.favorite=favorite;
         this.id=id;
-        this.image_path="http://dev.virtualearth.net/REST/V1/Imagery/Map/Birdseye/"+latitude+","+longitude+
-                "/19?dir=180&ms=500,500&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
-        this.image = getBitmapFromURL(image_path);
+        if (zoom>22) this.zoom=22;
+        else if (zoom<5) this.zoom=5;
+        else this.zoom=zoom;
+        String path= "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+latitude + "," + longitude + "?zl=" + this.zoom + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
+        //this.image_path="http://dev.virtualearth.net/REST/V1/Imagery/Map/Birdseye/"+latitude+","+longitude+
+        //        "/19?dir=180&ms=500,500&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
+        this.image_path = getSubPath(path);
+        if (this.image_path!=null)
+            this.image = getBitmapFromURL(this.image_path);
     }
 
-    public MapElement(long id, String title, String latitude, String longitude, String description, Bitmap image, boolean favorite) {
+    public MapElement(long id, String title, String latitude, String longitude, String description, Bitmap image, int favorite, int zoom) {
         this.id=id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
         this.description = description;
-        this.favorite = favorite;
+        if (favorite>5) this.favorite = 5;
+        else if (favorite<1) this.favorite=0;
+        else this.favorite=favorite;
         this.id=id;
         this.image = image;
+        if (zoom>22) this.zoom=22;
+        else if (zoom<5) this.zoom=5;
+        else this.zoom=zoom;
     }
 
     public Bitmap getBitmapFromURL(String url) {
@@ -76,52 +93,45 @@ public class MapElement {
         return bmp;
     }
 
+    protected String getSubPath(String path) {
+
+        try {
+            URL url = new URL(path);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.connect();
+            InputStream response = urlConnection.getInputStream();
+
+            // Parse xml
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(false);
+            XmlPullParser xpp = factory.newPullParser();
+            xpp.setInput(response, "UTF-8");
+
+            // Start parsing
+            String p = null;
+            int eventType = xpp.getEventType(); //The parser is currently at START_DOCUMENT
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if (eventType == XmlPullParser.START_TAG) {
+                    if (xpp.getName().equals("TraceId")) {
+                        p = xpp.nextText().substring(0, 32);
+                    } else if (xpp.getName().equals("ImageUrl")) {
+                        return xpp.nextText();
+                    }
+                }
+                eventType = xpp.next(); //move to the next xml event and store it in a variable
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void bitMapToImageView(ImageView view, Bitmap bmp) {
         view.setImageBitmap(bmp);
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public static String getMapPath(String latitude, String longitude) {
-        String url = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/" + latitude + "," + longitude + "?zl=15&o=xml&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
-        String contents = "";
-
-        try {
-            URLConnection conn = new URL(url).openConnection();
-            //String str = conn.getContentEncoding();
-            InputStream in = conn.getInputStream();
-            contents = convertStreamToString(in);
-        } catch (MalformedURLException e) {
-            Log.v("TAG", "MALFORMED URL EXCEPTION");
-        } catch (IOException e) {
-            Log.e(e.getMessage(), e.toString());
-        }
-
-        return contents;
-    }
-
-    private static String convertStreamToString(InputStream is) throws UnsupportedEncodingException {
-
-        BufferedReader reader = new BufferedReader(new
-                InputStreamReader(is, "UTF-8"));
-        StringBuilder sb = new StringBuilder();
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
     }
 
     public String getDescription() {
@@ -134,6 +144,16 @@ public class MapElement {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public int getZoom() {
+        return zoom;
+    }
+
+    public void setZoom(int zoom) {
+        if (zoom>22) this.zoom=22;
+        else if (zoom<5) this.zoom=5;
+        else this.zoom=zoom;
     }
 
     public String getLongitude() {
@@ -161,11 +181,18 @@ public class MapElement {
     }
 
     public boolean isFavorite() {
+        if (favorite==0) return false;
+        else return true;
+    }
+
+    public int getFavorite() {
         return favorite;
     }
 
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
+    public void setFavorite(int favorite) {
+        if (favorite>5) this.favorite = 5;
+        else if (favorite<1) this.favorite=0;
+        else this.favorite=favorite;
     }
 
     public String getTitle() {

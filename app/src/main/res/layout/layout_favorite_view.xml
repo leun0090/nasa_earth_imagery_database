@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:paddingVertical="10dp"
     android:paddingLeft="15dp"
-    android:paddingRight="60dp"
+    android:paddingRight="15dp"
+    android:background="#BAE0A7"
     android:clipToPadding="false">
 
 
@@ -19,10 +20,73 @@
 
     <ImageView
         android:id="@+id/loc_star"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
         android:layout_alignParentLeft="true"
         android:background="@drawable/star"
+        android:scaleType="centerInside" />
+
+    <ImageView
+        android:id="@+id/loc_star2"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_toRightOf="@+id/loc_star"
+        android:layout_alignTop="@+id/loc_star"
+        android:background="@drawable/star"
+        android:scaleType="centerInside" />
+
+    <ImageView
+        android:id="@+id/loc_star3"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_toRightOf="@+id/loc_star2"
+        android:layout_alignTop="@+id/loc_star2"
+        android:background="@drawable/star"
+        android:scaleType="centerInside" />
+
+    <ImageView
+        android:id="@+id/loc_star4"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_toRightOf="@+id/loc_star3"
+        android:layout_alignTop="@+id/loc_star3"
+        android:background="@drawable/star"
+        android:scaleType="centerInside" />
+
+    <ImageView
+        android:id="@+id/loc_star5"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_toRightOf="@+id/loc_star4"
+        android:layout_alignTop="@+id/loc_star4"
+        android:background="@drawable/star"
+        android:scaleType="centerInside" />
+
+    <ImageButton
+        android:id="@+id/redo_button"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/loc_star4"
+        android:background="@drawable/edit"
+        android:scaleType="centerInside" />
+
+    <ImageButton
+        android:id="@+id/view_button"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_toLeftOf="@+id/redo_button"
+        android:layout_alignTop="@+id/loc_star4"
+        android:background="@drawable/view"
+        android:scaleType="centerInside" />
+
+    <ImageButton
+        android:id="@+id/del_button"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_toLeftOf="@+id/view_button"
+        android:layout_alignTop="@+id/loc_star4"
+        android:background="@drawable/del"
         android:scaleType="centerInside" />
 
     <TextView
@@ -34,7 +98,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="1dp"
         android:text="This is Title"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="#0000A0"/>
 
     <TextView
         android:id="@+id/mapDescription"
@@ -45,10 +109,10 @@
         android:layout_marginLeft="0dp"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="-1dp"
-        android:background="@drawable/map_description"
         android:elevation="2dp"
         android:paddingHorizontal="16dp"
         android:paddingVertical="12dp"
+        android:background="@drawable/map_description"
         android:text="This is description of map"
         android:textSize="18dp" />
 </RelativeLayout>

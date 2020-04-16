@@ -23,8 +23,9 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
     public static final String IMAGE = "Image";
     public static final String LOCATION_ID = "_id";
     public static final String IMAGE_PATH = "ImagePath";
+    public static final String ZOOM = "Zoom";
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" + LOCATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            TITLE + " TEXT, " + LATITUDE + " TEXT," + LONGITUDE + " TEXT," + DESCRIPTION + " TEXT," + IMAGE + " BLOB," + IMAGE_PATH + " TEXT," + FAVORITE + " INTEGER);";
+            TITLE + " TEXT, " + LATITUDE + " TEXT," + LONGITUDE + " TEXT," + DESCRIPTION + " TEXT," + IMAGE + " BLOB," + IMAGE_PATH + " TEXT," + FAVORITE + " INTEGER," + ZOOM + " INTERER);";
 
     public DbNasaEarthImagery(Context context) {
         super(context, DB_NAME, null, 1);
@@ -60,8 +61,8 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
         byte[] bArray = bos.toByteArray();
         cv.put(IMAGE, bArray);
         cv.put(IMAGE_PATH, me.getImage_path());
-        if (me.isFavorite()) cv.put(FAVORITE, 1);
-        else cv.put(FAVORITE, 0);
+        cv.put(FAVORITE, me.getFavorite());
+        cv.put(ZOOM, me.getZoom());
         return db.insert(TABLE_NAME, null, cv);
     }
 
@@ -81,16 +82,9 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 Bitmap bmp=null;
                 if (cursor.getBlob(5)!=null) {
-                byte[] byteArray = cursor.getBlob(5);
-                bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);}
-                long l=cursor.getLong(0);
-                String s1=cursor.getString(1);
-                String s2=cursor.getString(2);
-                String s3=cursor.getString(3);
-                String s4=cursor.getString(4);
-                String s5=cursor.getString(6);
-                int h=cursor.getInt(6);
-                loc[--i] = new MapElement(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), bmp, (cursor.getInt(7) == 1) ? true : false);
+                    byte[] byteArray = cursor.getBlob(5);
+                    bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);}
+                loc[--i] = new MapElement(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), bmp, cursor.getInt(7),cursor.getInt(8));
                 list_map_elements.add(loc[i]);
             }
         }
@@ -115,6 +109,4 @@ public class DbNasaEarthImagery extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE);;
         db.close();
     }
-
-
 }

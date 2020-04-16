@@ -65,7 +65,11 @@
     <string name="nnoo">No</string>
 
     <string name="map_key" translatable="false">AIzaSyB8hWWmMuBRrR0gUlkBjRQI3p15s7gAMxo</string>
-
+    <string name="deleteDB">All database deleted</string>
+    <string name="reload">Database deleted and demo locations loaded</string>
+    <string name="addDemo">Added demo locations to the database</string>
+    <string name="total_locations">Total Locations:</string>
+    <string name="advertisement">Your advertisement could be here.</string>
 
 
 </resources>

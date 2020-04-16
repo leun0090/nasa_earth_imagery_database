@@ -7,6 +7,7 @@
     tools:context=".Activity3"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="#EBD4F1"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     >
@@ -27,30 +28,18 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/progressLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Please wait... Parsing should take TWO MINUTES..." />
-
             <ProgressBar
-                android:id="@+id/progressBar"
+                android:id="@+id/progress_bar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <ListView
+                android:id="@+id/aListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/aListView" />
-
-            <ImageView
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="10"/>
+                android:layout_height="403dp"
+                android:layout_weight="1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,14 +51,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Latitude" />
+                    android:textSize="20dp"
+                    android:text="@string/total_locations" />
 
                 <TextView
                     android:id="@+id/longitudeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="#802000"
                     android:layout_weight="1"
-                    android:text="Longitude" />
+                    android:text="94552" />
 
             </LinearLayout>
 
@@ -86,13 +78,14 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="Title" />
+                    android:text="@string/advertisement" />
 
                 <Button
                     android:id="@+id/favoriteButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="#8FA6D0"
                     android:text="@string/activity2_favoriteButton" />
 
             </LinearLayout>
