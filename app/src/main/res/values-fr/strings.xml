@@ -26,6 +26,8 @@
     <string name="randLocText">Générer un emplacement aléatoire</string>
     <string name="currLocText">Localisation actuelle</string>
     <string name="historyText">Historique des recherches</string>
+    <string name="alert1">Alerte</string>
+    <string name="alertMsg1">Cette fonctionnalité n\'est pas encore implémentée. Veuillez réessayer plus tard.</string>
 
     <!-- Activity 2 text -->
     <string name="helpDescription">Vous consultez actuellement une carte. Appuyez sur les icônes de zoom avant ou arrière dans la barre d\'outils. Saisissez ensuite un titre pour mettre cet emplacement en favori.</string>
@@ -71,5 +73,6 @@
     <string name="addDemo">Added demo locations to the database</string>
     <string name="total_locations">Total Locations:</string>
     <string name="advertisement">Your advertisement could be here.</string>
+
 
 </resources>

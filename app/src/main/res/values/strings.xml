@@ -26,6 +26,8 @@
     <string name="randLocText">Generate Random Location</string>
     <string name="currLocText">Current Location</string>
     <string name="historyText">Search History</string>
+    <string name="alert1">Alert</string>
+    <string name="alertMsg1">This feature has not yet been implemented. Please try again later.</string>
 
     <!-- Activity 2 text -->
     <string name="helpDescription">You are currently viewing a map. Tap on the zoom in or out icons on the toolbar. Then enter a title to favorite this location.</string>
