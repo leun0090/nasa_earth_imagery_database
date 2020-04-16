@@ -11,7 +11,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,27 +22,56 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.Inflater;
 
 public class Activity1 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+    private static final String TAG = "Activity 1";
 
     ProgressBar progressBar1;
     Toolbar toolbar;
     EditText LongEditText;
     EditText LatEditText;
 
-    Button SearchBtn;
+    String latitude;
+    String longitude;
 
+    ListView listView;
+    TextView latInput;
+    TextView longInput;
+    List<Search_History> historyList = new ArrayList<>();
+
+    Button SearchBtn;
+    Button RandomLoc;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_1);
+
+        listView = findViewById(R.id.searchListView);
+        latInput = findViewById(R.id.latInput);
+        longInput = findViewById(R.id.longInput);
+
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -49,8 +80,8 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         progressBar1.setVisibility(View.VISIBLE);
 
         SharedPreferences shprefs = getSharedPreferences("Activity 1", Context.MODE_PRIVATE);
-        String latitude = shprefs.getString("Latitude","");
-        String longitude = shprefs.getString("Longitude","");
+        latitude = shprefs.getString("Latitude","");
+        longitude = shprefs.getString("Longitude","");
 
         LatEditText = findViewById(R.id.LatEditText);
         LatEditText.setText(latitude);
@@ -58,6 +89,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         LongEditText.setText(longitude);
 
         SearchBtn = findViewById(R.id.SearchBtn);
+        RandomLoc = findViewById(R.id.RandomLoc);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,19 +102,28 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        Menu navdrawer_menu = navigationView.getMenu();
-//        navdrawer_menu.findItem(R.id.help).setVisible(false);
         navigationView.setNavigationItemSelectedListener(this);
 
-        SearchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        SearchBtn.setOnClickListener(click -> {
                 Intent activity2 = new Intent(getApplicationContext(), Activity2.class);
                 activity2.putExtra("LATITUDE", LatEditText.getText().toString());
                 activity2.putExtra("LONGITUDE", LongEditText.getText().toString());
                 startActivity(activity2);
-            }
+                latitude = LatEditText.getText().toString();
+                longitude = LongEditText.getText().toString();
+                Search_History list = new Search_History(latitude, longitude);
+                historyList.add(list);
+                Activity1_listview adapter = new Activity1_listview(historyList, getApplicationContext());
+                listView.setAdapter(adapter);
         });
+
+
+        RandomLoc.setOnClickListener(click -> {
+
+            randomCoordinates random = new randomCoordinates();
+                random.execute("https://api.3geonames.org/?randomland=yes");
+        });
+
     }
 
     @Override
@@ -187,6 +228,66 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         DrawerLayout navdrawer = findViewById(R.id.drawer_layout);
         navdrawer.closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    private class randomCoordinates extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            try {
+
+                // Load url
+                URL url = new URL(args[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.connect();
+                InputStream response = urlConnection.getInputStream();
+
+                // Parse xml
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware(false);
+                XmlPullParser xpp = factory.newPullParser();
+                xpp.setInput( response  , "UTF-8");
+
+                // Start parsing
+                String parameter = null;
+                int eventType = xpp.getEventType(); //The parser is currently at START_DOCUMENT
+                while(eventType != XmlPullParser.END_DOCUMENT) {
+                    if(eventType == XmlPullParser.START_TAG) {
+                        if (xpp.getName().equals("latt")) {
+                            latitude = xpp.nextText();
+                        }
+                        else if (xpp.getName().equals("longt")) {
+                            longitude = xpp.nextText();
+                        }
+                    }
+                    eventType = xpp.next(); //move to the next xml event and store it in a variable
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                Log.i(TAG, "Error");
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... args) {
+            progressBar1.setVisibility(View.VISIBLE);
+            progressBar1.setProgress(args[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            LatEditText.setText(latitude);
+            LongEditText.setText(longitude);
+            Toast.makeText(getApplicationContext(),"Coordinates Generated: "+latitude+", "+longitude,Toast.LENGTH_LONG);
+        }
+
     }
 
 }
