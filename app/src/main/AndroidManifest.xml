@@ -27,18 +27,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TestActivity3"></activity>
+        <activity android:name=".Activity3"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
 
         <activity android:name=".Activity2_listview" />
-        <activity android:name=".TestActivity1" />
         <activity android:name=".Activity1" />
         <activity android:name=".Activity2" />
-        <activity android:name=".Activity3" />
-        <activity android:name=".DbNasaEarthImagery" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

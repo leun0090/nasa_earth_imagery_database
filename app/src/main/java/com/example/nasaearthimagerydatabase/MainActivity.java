@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -16,8 +18,6 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import static com.example.nasaearthimagerydatabase.Activity2.DEFAULT;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,9 +30,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button activityButton1 = findViewById(R.id.activityButton1);
-        Button activityButton2 = findViewById(R.id.activityButton2);
-        Button activityButton3 = findViewById(R.id.activityButton3);
         Button loginButton = findViewById(R.id.loginButton);
         Switch switch_button  = (Switch) findViewById(R.id.simpleSwitch);
         TextView darkModeTextView = findViewById(R.id.darkModeTextView);
@@ -86,11 +83,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String email  = emailText.getText().toString();
-                if (email.equals("")) {
-                    Toast.makeText(getApplicationContext(), R.string.email_error1, Toast.LENGTH_LONG).show();
-                }
-                else if (!isEmailValid(email)) {
-                    Toast.makeText(getApplicationContext(), R.string.email_error2, Toast.LENGTH_LONG).show();
+                if ((email.equals("")) || (!isEmailValid(email))) {
+                    //Toast.makeText(getApplicationContext(), R.string.email_error2, Toast.LENGTH_LONG).show();
+
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.custom_toast_layout, (ViewGroup) findViewById(R.id.custom_toast_container));
+                    TextView tv = (TextView) layout.findViewById(R.id.txtvw);
+                    tv.setText("Wrong Email");
+                    Toast toast = new Toast(getApplicationContext());
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
+
                 }
                 else {
                     Intent intentActivity1 = new Intent(getApplicationContext(), Activity1.class);
@@ -102,63 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        // Go to test activity
-        loginButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                String email  = emailText.getText().toString();
-                if (email.equals("")) {
-                    Toast.makeText(getApplicationContext(), R.string.email_error1, Toast.LENGTH_LONG).show();
-                }
-                else if (!isEmailValid(email)) {
-                    Toast.makeText(getApplicationContext(), R.string.email_error2, Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Intent intentActivity1 = new Intent(getApplicationContext(), TestActivity1.class);
-                    startActivity(intentActivity1);
-
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("EMAIL", email);
-                    editor.commit();
-                }
-                return true;
-            }
-        });
-
-        // TEST BUTTONS - TO BE DELETED
-        activityButton1.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                startActivity(new Intent(MainActivity.this, TestActivity1.class));
-                return true;
-            }
-        });
-
-        activityButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Activity2.class));
-            }
-        });
-
-        activityButton3.setOnClickListener(c -> {
-            startActivity(new Intent(MainActivity.this, Activity3.class));
-        });
-
-        // Go to test activity
-        activityButton3.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Intent testIntent3 = new Intent(MainActivity.this, TestActivity3.class);
-                startActivity(testIntent3);
-                return true;
-            }
-        });
-
-        // Activity 1
-        Intent intent1 = new Intent(getApplicationContext(), Activity1.class);
-        activityButton1.setOnClickListener(click -> startActivity(intent1));
 
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

@@ -16,88 +16,66 @@
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"/>
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimaryDark"
+        app:titleTextColor="#FFF"
+        app:subtitleTextColor="#FFF"/>
+
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="start">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
+
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/favorite"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_weight="1"
+                />
+            <TextView
+                android:id="@+id/emailTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible" />
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="@color/colorText"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                android:textSize="20dp"/>
 
             <ListView
-                android:id="@+id/aListView"
-                android:layout_width="match_parent"
-                android:layout_height="403dp"
-                android:layout_weight="1" />
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:id="@+id/the_list"
+                android:layout_weight="10"
+                />
 
-                <TextView
-                    android:id="@+id/latitudeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="20dp"
-                    android:text="@string/total_locations" />
-
-                <TextView
-                    android:id="@+id/longitudeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:textColor="#802000"
-                    android:layout_weight="1"
-                    android:text="94552" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-                <TextView
-                    android:id="@+id/editText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="@string/advertisement" />
-
-                <Button
-                    android:id="@+id/favoriteButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#8FA6D0"
-                    android:text="@string/activity2_favoriteButton" />
-
-            </LinearLayout>
 
         </LinearLayout>
+
         <com.google.android.material.navigation.NavigationView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:menu="@menu/drawer_menu3"
-            android:id="@+id/nav_view"/>
+            app:headerLayout="@layout/activity_2_header_layout"
+            app:menu="@menu/drawer_menu2"
+            android:id="@+id/nav_view"
+            android:background="@color/colorBackground"
+            app:itemIconTint="@color/colorText"
+            app:itemTextColor="@color/colorText"/>
     </androidx.drawerlayout.widget.DrawerLayout>
 
 

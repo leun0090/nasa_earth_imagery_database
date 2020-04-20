@@ -84,29 +84,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/activityButton1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Denesh"
-                android:layout_weight="1" />
-            <Button
-                android:id="@+id/activityButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pak"
-                android:layout_weight="1" />
-            <Button
-                android:id="@+id/activityButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nikolai"
-                android:layout_weight="1" />
-        </LinearLayout>
     </LinearLayout>
 
 

@@ -8,19 +8,15 @@
     android:orientation="vertical"
     android:background="@color/colorBackground" >
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:background="@color/colorPrimaryDark" />
 
-    <ProgressBar
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/progressbar1"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:visibility="invisible" />
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimaryDark"
+        app:titleTextColor="#FFF"
+        app:subtitleTextColor="#FFF"/>
+
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -31,95 +27,95 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/search_activity"
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                />
+
+            <EditText
+                android:id="@+id/latitudeEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="latitude"
+                android:text=""
+                tools:layout_editor_absoluteX="123dp"
+                tools:layout_editor_absoluteY="150dp"
+                android:textColorHint="@color/colorText"
+                android:textColor="@color/colorText"
+                android:backgroundTint="@color/colorPrimary"
+                android:inputType="numberDecimal|numberSigned"
+                />
+
+            <EditText
+                android:id="@+id/longitudeEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="longitude"
+                android:text=""
+                tools:layout_editor_absoluteX="127dp"
+                tools:layout_editor_absoluteY="336dp"
+                android:textColorHint="@color/colorText"
+                android:textColor="@color/colorText"
+                android:backgroundTint="@color/colorPrimary"
+                android:inputType="numberDecimal|numberSigned"
+                />
+
+
+            <Button
+                android:id="@+id/searchButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:drawableLeft="@drawable/search"
+                android:text="Search Location"
+                android:textSize="14sp"
+                android:textColor="#FFF"
+                android:background="@color/colorPrimary"
+                android:layout_marginBottom="50dp"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/search_location">
-
-
-                <TextView
-                    android:id="@+id/Enter1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/coordinatesText"
-                    android:textSize="20dp"
-                    android:textColor="@color/colorText"
-                    android:backgroundTint="@color/colorPrimary"/>
-
-                <EditText
-                    android:id="@+id/LatEditText"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/randomButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="20dp"
-                    android:hint="@string/latitude"
-                    android:textColorHint="@color/colorText"
-                    android:textColor="@color/colorText"
-                    android:backgroundTint="@color/colorPrimary"/>
-
-                <EditText
-                    android:id="@+id/LongEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="20dp"
-                    android:hint="@string/longitude"
-                    android:textColorHint="@color/colorText"
-                    android:textColor="@color/colorText"
-                    android:backgroundTint="@color/colorPrimary"/>
+                    android:padding="5dp"
+                    android:drawableLeft="@drawable/gps_search"
+                    android:text="Generate Random Location"
+                    android:textSize="14sp"
+                    android:textColor="#FFF"
+                    android:background="@color/colorPrimary"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    />
 
                 <Button
-                    android:id="@+id/SearchBtn"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/btnGetLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="75dp"
-                    android:layout_marginLeft="75dp"
-                    android:text="@string/search" />
-
-                <Button
-                    android:id="@+id/RandomLoc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="75dp"
-                    android:layout_marginLeft="75dp"
-                    android:text="@string/randLocText" />
-
-                <Button
-                    android:id="@+id/CurrLoc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="75dp"
-                    android:layout_marginLeft="75dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="@string/currLocText" />
+                    android:padding="5dp"
+                    android:drawableLeft="@drawable/gps"
+                    android:text="Get Current Location"
+                    android:textSize="14sp"
+                    android:textColor="#FFF"
+                    android:background="@color/colorPrimary"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    />
             </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/historyText"
-                android:textSize="15dp"
-                android:textColor="@color/colorText"
-                android:backgroundTint="@color/colorPrimary"/>
-
-            <ListView
-                android:id="@+id/searchListView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:transcriptMode="alwaysScroll"
-                android:stackFromBottom="true"
-                android:backgroundTint="@color/colorPrimary"/>
-
         </LinearLayout>
 
         <com.google.android.material.navigation.NavigationView
@@ -127,9 +123,12 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:headerLayout="@layout/header1"
-            app:menu="@menu/top_menu1"
-            android:id="@+id/nav_view"/>
+            app:headerLayout="@layout/activity_2_header_layout"
+            app:menu="@menu/drawer_menu2"
+            android:id="@+id/nav_view"
+            android:background="@color/colorBackground"
+            app:itemIconTint="@color/colorText"
+            app:itemTextColor="@color/colorText"/>
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </LinearLayout>

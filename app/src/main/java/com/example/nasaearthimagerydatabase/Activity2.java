@@ -1,27 +1,20 @@
 package com.example.nasaearthimagerydatabase;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,13 +35,9 @@ import android.widget.Toast;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -98,8 +87,8 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
     Double move_lat_long = 0.05;
 
-    static final int REQUEST_TAKE_PHOTO = 1;
-    String currentPhotoPath;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    String pathToFile;
 
     // Shared preferences
     SharedPreferences sharedPreferences = null;
@@ -157,26 +146,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             favoriteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
             Button okButton = favoriteDialog.findViewById(R.id.okButton);
-            okButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (titleEditText.getText().toString().equals("")){
-                        Toast.makeText(getApplicationContext(), R.string.favorite_validation, Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        Intent intent3 = new Intent(Activity2.this, Activity3.class);
-                        intent3.putExtra("LATITUDE", latitude);
-                        intent3.putExtra("LONGITUDE", longitude);
-                        intent3.putExtra("TITLE", titleEditText.getText().toString());
-                        intent3.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
-                        intent3.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
-                        intent3.putExtra("ZOOM", String.valueOf(zoom));
-                        startActivity(intent3);
-                        closeKeyboard();
-                        favoriteDialog.cancel();
-                    }
-                }
-            });
 
             okButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -185,7 +154,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                         Toast.makeText(getApplicationContext(), R.string.favorite_validation, Toast.LENGTH_LONG).show();
                     }
                     else {
-                        Intent testIntent3 = new Intent(Activity2.this, TestActivity3.class);
+                        Intent testIntent3 = new Intent(Activity2.this, Activity3.class);
                         testIntent3.putExtra("LATITUDE", latitude);
                         testIntent3.putExtra("LONGITUDE", longitude);
                         testIntent3.putExtra("TITLE", titleEditText.getText().toString());
@@ -272,6 +241,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                         Intent intent = new Intent(getApplicationContext(), Activity3.class);
                         startActivity(intent);
                         break;
+
 
                     case R.id.itemCoffee:
                         Toast.makeText(getApplicationContext(), R.string.coffee_warning, Toast.LENGTH_LONG).show();
