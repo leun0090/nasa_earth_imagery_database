@@ -34,11 +34,11 @@
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:srcCompat="@drawable/search_activity"
                 android:layout_marginTop="20dp"
                 android:layout_weight="2"
-                />
+                android:contentDescription="imageview" />
 
             <EditText
                 android:id="@+id/latitudeEditText"
@@ -99,7 +99,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:layout_marginRight="5dp"
-                    />
+                    tools:ignore="ButtonStyle" />
 
                 <Button
                     android:layout_marginLeft="5dp"
@@ -107,14 +107,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:drawableLeft="@drawable/gps"
+                    android:drawableStart="@drawable/gps"
                     android:text="Get Current Location"
                     android:textSize="14sp"
                     android:textColor="#FFF"
                     android:background="@color/colorPrimary"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    />
+                    tools:ignore="ButtonStyle,HardcodedText" />
             </LinearLayout>
         </LinearLayout>
 

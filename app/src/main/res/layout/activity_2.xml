@@ -38,7 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="15"
-                android:paddingBottom="10dp"/>
+                android:paddingBottom="10dp"
+                tools:ignore="ContentDescription" />
 
 
             <ImageView
@@ -46,7 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="15"
-                android:paddingBottom="10dp"/>
+                android:paddingBottom="10dp"
+                tools:ignore="ContentDescription" />
 
             <!-- Latitude, longitude and arrows -->
             <LinearLayout
@@ -54,27 +56,30 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                tools:ignore="DisableBaselineAlignment">
                 <!-- LATITUDE -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
                     <TextView
                         android:id="@+id/latitudeLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Latitude"
-                        android:textColor="@color/colorText"/>
+                        android:textColor="@color/colorText"
+                        tools:ignore="HardcodedText" />
                     <TextView
                         android:id="@+id/latitudeTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="45.23424 N"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:maxLength="10"
-                        android:textColor="@color/colorText"/>
+                        android:textColor="@color/colorText"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
                 <!-- LONGITUDE -->
                 <LinearLayout
@@ -87,15 +92,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Longitude"
-                        android:textColor="@color/colorText"/>
+                        android:textColor="@color/colorText"
+                        tools:ignore="HardcodedText" />
                     <TextView
                         android:id="@+id/longitudeTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="75.23423 W"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:maxLength="10"
-                        android:textColor="@color/colorText" />
+                        android:textColor="@color/colorText"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
                 <!-- ARROWS -->
                 <LinearLayout
@@ -109,13 +116,15 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_weight="1"
-                        android:gravity="center">
+                        android:gravity="center"
+                        tools:ignore="NestedWeights">
                         <ImageButton
                             android:id="@+id/leftButton"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             app:srcCompat="@drawable/left"
-                            android:background="@color/colorPrimary"/>
+                            android:background="@color/colorPrimary"
+                            tools:ignore="ContentDescription" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -132,7 +141,8 @@
                             android:layout_height="10dp"
                             app:srcCompat="@drawable/up"
                             android:background="@color/colorPrimary"
-                            android:layout_weight="1"/>
+                            android:layout_weight="1"
+                            tools:ignore="ContentDescription" />
                         <ImageButton
                             android:layout_marginTop="5dp"
                             android:id="@+id/downButton"
@@ -140,7 +150,8 @@
                             android:layout_height="10dp"
                             app:srcCompat="@drawable/down"
                             android:background="@color/colorPrimary"
-                            android:layout_weight="1"/>
+                            android:layout_weight="1"
+                            tools:ignore="ContentDescription" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -153,7 +164,8 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             app:srcCompat="@drawable/right"
-                            android:background="@color/colorPrimary"/>
+                            android:background="@color/colorPrimary"
+                            tools:ignore="ContentDescription" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -175,7 +187,8 @@
                     android:text="@string/activity2_favoriteButton"
                     android:textSize="14sp"
                     android:textColor="#FFF"
-                    android:background="@color/colorPrimary" />
+                    android:background="@color/colorPrimary"
+                    tools:ignore="RtlHardcoded" />
             </LinearLayout>
 
             <!--   Bottom navigation  https://www.youtube.com/watch?v=tPV8xA7m-iw-->
@@ -183,10 +196,9 @@
                 android:id="@+id/bottom_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:menu="@menu/bottom_menu"
-                app:itemTextColor="@color/bottom_nav_color"
                 app:itemIconTint="@color/bottom_nav_color"
-                />
+                app:itemTextColor="@color/bottom_nav_color"
+                app:menu="@menu/bottom_menu" />
 
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView

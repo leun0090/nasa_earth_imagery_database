@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,31 +28,33 @@
 
         <RatingBar
             android:id="@+id/ratingBar"
+            style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
+            android:isIndicator="true"
             android:max="5"
             android:numStars="5"
-            android:stepSize="1"
-            android:isIndicator="true"
-            style="?android:attr/ratingBarStyleSmall"/>
+            android:stepSize="1" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/gps_green" />
+                app:srcCompat="@drawable/gps_green"
+                tools:ignore="ContentDescription" />
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/data"
                 android:textSize="16sp"
                 android:textColor="@color/colorText"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginStart="5dp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -67,7 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/search_green"
-            android:background="@null"/>
+            android:background="@null"
+            tools:ignore="ContentDescription,NestedWeights" />
 
         <ImageButton
             android:id="@+id/detailsButton"
@@ -83,7 +87,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/delete_green"
-            android:background="@null"/>
+            android:background="@null"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 

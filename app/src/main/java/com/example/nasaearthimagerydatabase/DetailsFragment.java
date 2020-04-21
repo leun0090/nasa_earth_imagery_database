@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * @author  Pak Leung
  * @version 1.0
  */
-public class DetailsFragment2 extends Fragment {
+public class DetailsFragment extends Fragment {
 
     private AppCompatActivity parentActivity;
     private ArrayList < CoffeePlace > coffeePlaces;
@@ -48,7 +48,7 @@ public class DetailsFragment2 extends Fragment {
     private String latitude;
     private String longitude;
 
-    public DetailsFragment2() {
+    public DetailsFragment() {
         coffeePlaces = new ArrayList <> ();
     }
 
@@ -71,7 +71,7 @@ public class DetailsFragment2 extends Fragment {
         CoffeeQuery req = new CoffeeQuery();
         req.execute(coffeeUrl);
 
-        result = inflater.inflate(R.layout.fragment_details2, container, false);
+        result = inflater.inflate(R.layout.fragment_details, container, false);
 
         resultTextView = result.findViewById(R.id.resultTextView);
 

@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
     android:layout_height="400dp"
     android:orientation="vertical"
@@ -15,10 +16,12 @@
         android:gravity="center_vertical">
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/heart" />
+            app:srcCompat="@drawable/heart"
+            android:contentDescription=""
+            tools:ignore="ContentDescription,NestedWeights" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,7 +42,9 @@
             android:inputType="textPersonName"
             android:hint="@string/activity2Title"
             android:textColor="@color/colorText"
-            android:textColorHint="@color/colorText" />
+            android:textColorHint="@color/colorText"
+            android:autofillHints=""
+            tools:ignore="NestedWeights" />
         <EditText
             android:id="@+id/descriptionEditText"
             android:layout_width="match_parent"
@@ -49,7 +54,8 @@
             android:inputType="textPersonName"
             android:hint="@string/activity2Description"
             android:textColor="@color/colorText"
-            android:textColorHint="@color/colorText" />
+            android:textColorHint="@color/colorText"
+            android:autofillHints="" />
         <RatingBar
             android:id="@+id/simpleRatingBar"
             android:layout_width="wrap_content"

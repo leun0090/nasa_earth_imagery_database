@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="10dp"
@@ -8,32 +9,24 @@
     android:background="#BAE0A7"
     android:clipToPadding="false">
 
-
-    <ImageView
-        android:id="@+id/mapImage"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/map"
-        android:scaleType="centerInside" />
-
-
-    <ImageView
+<ImageView
         android:id="@+id/loc_star"
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:layout_alignParentLeft="true"
         android:background="@drawable/star"
-        android:scaleType="centerInside" />
+        android:scaleType="centerInside"
+    tools:ignore="ContentDescription,RtlHardcoded" />
 
     <ImageView
         android:id="@+id/loc_star2"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:layout_toRightOf="@+id/loc_star"
         android:layout_alignTop="@+id/loc_star"
+        android:layout_toRightOf="@+id/loc_star"
         android:background="@drawable/star"
-        android:scaleType="centerInside" />
+        android:scaleType="centerInside"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/loc_star3"
@@ -48,8 +41,8 @@
         android:id="@+id/loc_star4"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:layout_toRightOf="@+id/loc_star3"
         android:layout_alignTop="@+id/loc_star3"
+        android:layout_toRightOf="@+id/loc_star3"
         android:background="@drawable/star"
         android:scaleType="centerInside" />
 
@@ -66,8 +59,8 @@
         android:id="@+id/redo_button"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/loc_star4"
+        android:layout_alignParentRight="true"
         android:background="@drawable/edit"
         android:scaleType="centerInside" />
 
@@ -75,8 +68,8 @@
         android:id="@+id/view_button"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_toLeftOf="@+id/redo_button"
         android:layout_alignTop="@+id/loc_star4"
+        android:layout_toLeftOf="@+id/redo_button"
         android:background="@drawable/view"
         android:scaleType="centerInside" />
 
@@ -87,13 +80,12 @@
         android:layout_toLeftOf="@+id/view_button"
         android:layout_alignTop="@+id/loc_star4"
         android:background="@drawable/del"
-        android:scaleType="centerInside" />
+        android:scaleType="centerInside"
+        tools:ignore="RtlHardcoded" />
 
     <TextView
         android:id="@+id/mapTitle"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/mapImage"
-        android:layout_alignTop="@+id/mapImage"
+        android:layout_marginStart="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="1dp"
@@ -114,5 +106,6 @@
         android:paddingVertical="12dp"
         android:background="@drawable/map_description"
         android:text="This is description of map"
-        android:textSize="18dp" />
+        android:textSize="18sp"
+        tools:ignore="HardcodedText" />
 </RelativeLayout>

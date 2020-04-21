@@ -31,7 +31,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="DisableBaselineAlignment">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,7 +46,8 @@
                     android:id="@+id/mapView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="10" />
+                    android:layout_weight="10"
+                    tools:ignore="ContentDescription,InefficientWeight,NestedWeights" />
                 <ProgressBar
                     android:id="@+id/progressBar"
                     style="?android:attr/progressBarStyleHorizontal"
@@ -72,15 +74,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Latitude"
-                            android:textColor="@color/colorText"/>
+                            android:textColor="@color/colorText"
+                            tools:ignore="HardcodedText" />
                         <TextView
                             android:id="@+id/latitudeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="45.23424 N"
-                            android:textSize="20dp"
+                            android:textSize="20sp"
                             android:maxLength="10"
-                            android:textColor="@color/colorText"/>
+                            android:textColor="@color/colorText"
+                            tools:ignore="HardcodedText" />
                     </LinearLayout>
 
                     <!--LONGITUDE-->
@@ -94,15 +98,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Longitude"
-                            android:textColor="@color/colorText"/>
+                            android:textColor="@color/colorText"
+                            tools:ignore="HardcodedText" />
                         <TextView
                             android:id="@+id/longitudeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="75.23423 W"
-                            android:textSize="20dp"
+                            android:textSize="20sp"
                             android:maxLength="10"
-                            android:textColor="@color/colorText"/>
+                            android:textColor="@color/colorText"
+                            tools:ignore="HardcodedText" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -116,13 +122,15 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:layout_weight="1"
-                            android:gravity="center">
+                            android:gravity="center"
+                            tools:ignore="NestedWeights">
                             <ImageButton
                                 android:id="@+id/leftButton"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 app:srcCompat="@drawable/left"
-                                android:background="@color/colorPrimary"/>
+                                android:background="@color/colorPrimary"
+                                tools:ignore="ContentDescription" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -137,9 +145,10 @@
                                 android:id="@+id/upButton"
                                 android:layout_width="match_parent"
                                 android:layout_height="10dp"
-                                app:srcCompat="@drawable/up"
+                                android:layout_weight="1"
                                 android:background="@color/colorPrimary"
-                                android:layout_weight="1"/>
+                                app:srcCompat="@drawable/up"
+                                tools:ignore="ContentDescription" />
                             <ImageButton
                                 android:layout_marginTop="5dp"
                                 android:id="@+id/downButton"
@@ -147,7 +156,8 @@
                                 android:layout_height="10dp"
                                 app:srcCompat="@drawable/down"
                                 android:background="@color/colorPrimary"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="ContentDescription" />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -160,7 +170,8 @@
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 app:srcCompat="@drawable/right"
-                                android:background="@color/colorPrimary"/>
+                                android:background="@color/colorPrimary"
+                                tools:ignore="ContentDescription" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -173,8 +184,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="10dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="20dp">
+                    android:layout_marginStart="15dp"
+                    android:layout_marginRight="20dp"
+                    tools:ignore="RtlHardcoded">
                     <Button
                         android:id="@+id/favoriteButton"
                         android:layout_width="match_parent"
@@ -184,7 +196,8 @@
                         android:text="@string/activity2_favoriteButton"
                         android:textSize="18sp"
                         android:textColor="#FFF"
-                        android:background="@color/colorPrimary"/>
+                        android:background="@color/colorPrimary"
+                        tools:ignore="RtlHardcoded" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -195,10 +208,10 @@
                 android:orientation="vertical"
                 android:layout_weight="1">
                 <FrameLayout
+                    android:id="@+id/fragmentLocation"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/the_list"
-                    android:id="@+id/fragmentLocation" />
+                    android:layout_toEndOf="@+id/the_list" />
             </LinearLayout>
 
         </LinearLayout>

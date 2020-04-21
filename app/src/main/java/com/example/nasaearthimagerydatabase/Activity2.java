@@ -81,7 +81,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     Button favoriteButton;
     ApiUrl currentUrl;
     Boolean isTablet;
-    DetailsFragment2 dFragment;
+    DetailsFragment dFragment;
     Double move_lat_long = 0.05;
     String currentPhotoPath;
 
@@ -200,7 +200,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         navigationView.setNavigationItemSelectedListener(this);
 
         // Bottom menu
-        dFragment = new DetailsFragment2();
+        dFragment = new DetailsFragment();
         isTablet = findViewById(R.id.fragmentLocation) != null;
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
