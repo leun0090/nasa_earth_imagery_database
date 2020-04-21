@@ -6,14 +6,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -107,11 +102,6 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        // Get current location
-        btnGetLocation.setOnClickListener(// Get current location
-                this::onClick);
-
     }
 
     /**
@@ -184,50 +174,6 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
-    }
-
-    private void onClick(View click) {
-        LocationManager locationManager;
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        String locationManagerString = "";
-
-        try {
-            if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)) {
-                locationManagerString = locationManager.NETWORK_PROVIDER;
-            } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                locationManagerString = locationManager.GPS_PROVIDER;
-            }
-        } catch (Exception E) {
-            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
-        }
-
-
-        locationManager.requestLocationUpdates(locationManagerString, 0, 0, new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-
-                latitude = Double.toString(location.getLatitude());
-                longitude = Double.toString(location.getLongitude());
-                latitudeEditText.setText(latitude);
-                longitudeEditText.setText(longitude);
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-            }
-        });
     }
 
 

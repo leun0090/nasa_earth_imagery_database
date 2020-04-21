@@ -163,15 +163,17 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
             }
         });
 
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                Toast.makeText(getApplicationContext(), "close ", Toast.LENGTH_LONG).show();
-                placesList = initialList;
-                myAdapter.notifyDataSetChanged();
-                return false;
-            }
-        });
+//        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+//            @Override
+//            public boolean onClose() {
+//                Toast.makeText(getApplicationContext(), "close ", Toast.LENGTH_LONG).show();
+//                placesList = initialList;
+//                myAdapter.notifyDataSetChanged();
+//                return false;
+//            }
+//        });
+
+
 
         return true;
     }
@@ -248,22 +250,22 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
 
         public View getView(int position, View old, ViewGroup parent) {
             Place thisRow = getItem(position);
-
-            View newView = getLayoutInflater().inflate(R.layout.activity_test3_row_layout, parent, false );
-
-            TextView rowTitle = newView.findViewById(R.id.placeTitle);
+            if (old == null){
+                old = getLayoutInflater().inflate(R.layout.activity_test3_row_layout, parent, false );
+            }
+            TextView rowTitle = old.findViewById(R.id.placeTitle);
             rowTitle.setText(thisRow.getTitle());
 
-            RatingBar mRatingBar = newView.findViewById(R.id.ratingBar);
+            RatingBar mRatingBar = old.findViewById(R.id.ratingBar);
             String s = thisRow.getStars();
             mRatingBar.setRating(Character.getNumericValue(s.charAt(0)));
 
-            TextView data = newView.findViewById(R.id.data);
+            TextView data = old.findViewById(R.id.data);
             String dataString = thisRow.getLatitude() + ", " + thisRow.getLongitude();
             data.setText(dataString) ;
 
             // Go back to activity 2
-            ImageButton detailsButton =  newView.findViewById(R.id.detailsButton);
+            ImageButton detailsButton =  old.findViewById(R.id.detailsButton);
             detailsButton.setOnClickListener(click -> {
                 Dialog helpDialog = new Dialog(Activity3.this);
                 helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -288,7 +290,7 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
 
 
             // View details
-            ImageButton viewButton =  newView.findViewById(R.id.viewButton);
+            ImageButton viewButton =  old.findViewById(R.id.viewButton);
             viewButton.setOnClickListener(click -> {
                 Intent intent = new Intent(getApplicationContext(), Activity2.class);
                 intent.putExtra("LATITUDE", thisRow.getLatitude());
@@ -298,14 +300,14 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
             });
 
             // Delete
-            ImageButton deleteButton =  newView.findViewById(R.id.deleteButton);
+            ImageButton deleteButton =  old.findViewById(R.id.deleteButton);
             deleteButton.setOnClickListener(click -> {
                 placesList.remove(position);
                 deletePlace(thisRow);
                 notifyDataSetChanged();
             });
 
-            return newView;
+            return old;
         }
         public long getItemId(int position)
         {

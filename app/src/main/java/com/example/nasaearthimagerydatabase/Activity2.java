@@ -1,9 +1,11 @@
 package com.example.nasaearthimagerydatabase;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -13,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -40,8 +43,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -58,8 +59,6 @@ import com.google.android.material.snackbar.Snackbar;
  */
 
 public class Activity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private static final String TAG = "Activity 2";
     String latitude;
@@ -138,17 +137,16 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             Button okButton = favoriteDialog.findViewById(R.id.okButton);
 
             okButton.setOnClickListener(click -> {
-                if (titleEditText.getText().toString().equals("")){
+                if (titleEditText.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), R.string.favorite_validation, Toast.LENGTH_LONG).show();
-                }
-                else {
+                } else {
                     Intent testIntent3 = new Intent(Activity2.this, Activity3.class);
                     testIntent3.putExtra("LATITUDE", latitude);
                     testIntent3.putExtra("LONGITUDE", longitude);
                     testIntent3.putExtra("TITLE", titleEditText.getText().toString());
                     testIntent3.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
                     testIntent3.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
-                    testIntent3.putExtra("ZOOM",  String.valueOf(zoom));
+                    testIntent3.putExtra("ZOOM", String.valueOf(zoom));
                     startActivity(testIntent3);
                     closeKeyboard();
                     favoriteDialog.cancel();
@@ -204,56 +202,78 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         isTablet = findViewById(R.id.fragmentLocation) != null;
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.itemHeart:
-                        Intent intent = new Intent(getApplicationContext(), Activity3.class);
-                        startActivity(intent);
-                        break;
+        bottomNav.setOnNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.itemHeart:
+                    Intent intent = new Intent(getApplicationContext(), Activity3.class);
+                    startActivity(intent);
+                    break;
+                case R.id.itemCoffee:
+                    Toast.makeText(getApplicationContext(), R.string.coffee_warning, Toast.LENGTH_LONG).show();
+                    Bundle dataToPass = new Bundle();
+                    dataToPass.putString("LATITUDE", latitude);
+                    dataToPass.putString("LONGITUDE", longitude);
+                    if (isTablet) {
+                        dFragment.setArguments(dataToPass);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragmentLocation, dFragment)
+                                .commit();
+                    } else {
+                        Intent activityTwoListviewIntent = new Intent(getApplicationContext(), Activity2_listview.class);
+                        activityTwoListviewIntent.putExtra("LATITUDE", latitude);
+                        activityTwoListviewIntent.putExtra("LONGITUDE", longitude);
+                        startActivity(activityTwoListviewIntent);
+                    }
+                    break;
 
+                case R.id.itemCamera:
+                    //dispatchTakePictureIntent();
 
-                    case R.id.itemCoffee:
-                        Toast.makeText(getApplicationContext(), R.string.coffee_warning, Toast.LENGTH_LONG).show();
+                    String fileName = "photo";
+                    File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                    try {
+                        File imageFile = File.createTempFile(fileName, ".jpg", storageDirectory);
+                        currentPhotoPath = imageFile.getAbsolutePath();
+                        Uri imageUri = FileProvider.getUriForFile(Activity2.this, "com.example.nasaearthimagerydatabase.fileprovider", imageFile);
+                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                        startActivityForResult(cameraIntent, 1);
 
-                        Bundle dataToPass = new Bundle();
-                        dataToPass.putString("LATITUDE", latitude);
-                        dataToPass.putString("LONGITUDE", longitude);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
 
-                        if (isTablet) {
-                            dFragment.setArguments(dataToPass);
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.fragmentLocation, dFragment)
-                                    .commit();
-                        } else {
-                            Intent activityTwoListviewIntent = new Intent(getApplicationContext(), Activity2_listview.class);
-                            activityTwoListviewIntent.putExtra("LATITUDE", latitude);
-                            activityTwoListviewIntent.putExtra("LONGITUDE", longitude);
-                            startActivity(activityTwoListviewIntent);
-                        }
-                        break;
-                }
-                return true;
             }
+            return true;
         });
 
+    } // Oncreate
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK){
+            Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+            photoView.setImageBitmap(bitmap);
+        }
     }
 
     /**
      * This method uses an synctask that calls the bing api
      * which returns an image.
-     *
      */
-    private class MapQuery extends AsyncTask < String, Integer, String > {
+    @SuppressLint("StaticFieldLeak")
+    private class MapQuery extends AsyncTask<String, Integer, String> {
         protected void onPreExecute() {
             longitudeTextView.setVisibility(View.GONE);
             latitudeTextView.setVisibility(View.GONE);
         }
 
         @Override
-        protected String doInBackground(String...args) {
+        protected String doInBackground(String... args) {
 
             try {
 
@@ -297,7 +317,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             return null;
         }
 
-        public void onProgressUpdate(Integer...args) {
+        public void onProgressUpdate(Integer... args) {
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setProgress(args[0]);
 
@@ -335,7 +355,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
     /**
      * Top toolbar items
-     *
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -343,18 +362,18 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             case R.id.itemZoomIn:
                 zoom += 1;
                 zoom();
-                if (zoom > 10){
+                if (zoom > 10) {
                     move_lat_long = 0.05;
                 }
-                Toast.makeText(getApplicationContext(), "Zoom: " + zoom , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Zoom: " + zoom, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.itemZoomOut:
                 zoom -= 1;
                 zoom();
-                if (zoom <= 10){
+                if (zoom <= 10) {
                     move_lat_long = 0.5;
                 }
-                Toast.makeText(getApplicationContext(), "Zoom: " + zoom , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Zoom: " + zoom, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.helpItem:
                 Dialog helpDialog = new Dialog(Activity2.this);
@@ -370,7 +389,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
 
     /**
      * Navigation drawer items
-     *
      */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -403,7 +421,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     /**
      * This function is called when the zoom keys on top toolbar
      * are pressed. This calls the api again with new parameters
-     *
      */
     public void zoom() {
         MapQuery req = new MapQuery();
@@ -415,7 +432,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     /**
      * This function is called when the arrow keys
      * are pressed. This calls the api again with new parameters
-     *
      */
     public void moveMap() {
         MapQuery req = new MapQuery();
@@ -447,27 +463,27 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             this.zoom = zoom;
         }
 
-         void moveRight() {
+        void moveRight() {
             double longi = Double.parseDouble(this.longitude);
             this.longitude = Double.toString(longi + move_lat_long);
         }
 
-         void moveLeft() {
+        void moveLeft() {
             double longi = Double.parseDouble(this.longitude);
             this.longitude = Double.toString(longi - move_lat_long);
         }
 
-         void moveUp() {
+        void moveUp() {
             double lat = Double.parseDouble(this.latitude);
             this.latitude = Double.toString(lat + move_lat_long);
         }
 
-         void moveDown() {
+        void moveDown() {
             double lat = Double.parseDouble(this.latitude);
             this.latitude = Double.toString(lat - move_lat_long);
         }
 
-         String returnUrl() {
+        String returnUrl() {
             return start + latitude + "," + longitude + "?zl=" + zoom + end;
         }
     }
@@ -481,52 +497,9 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         // if there is a view that has focus
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-    }
-
-
-    /**
-     *  CAMERA
-     */
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-
-
-                Bundle extras = data.getExtras();
-                if (extras != null) {
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    photoView.setImageBitmap(imageBitmap);
-                }
-
-
-
-        }
-    }
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
     }
 
 }

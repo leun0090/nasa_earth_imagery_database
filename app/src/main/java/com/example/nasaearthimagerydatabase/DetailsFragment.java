@@ -1,5 +1,6 @@
 package com.example.nasaearthimagerydatabase;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -91,6 +92,7 @@ public class DetailsFragment extends Fragment {
     }
 
     // ASYNC TASK TO PULL LOCATION OF COFFEE SHOPS
+    @SuppressLint("StaticFieldLeak")
     protected class CoffeeQuery extends AsyncTask < String, Integer, String > {
         protected void onPreExecute() {}
         protected String doInBackground(String...args) {
@@ -143,8 +145,8 @@ public class DetailsFragment extends Fragment {
 
             // ListView
             ListView coffeeListView = result.findViewById(R.id.theListView);
-            PlacesAdapter myAdapter;
-            coffeeListView.setAdapter(myAdapter = new PlacesAdapter());
+            PlacesAdapter myAdapter = new PlacesAdapter();
+            coffeeListView.setAdapter(myAdapter);
 
             resultTextView.setText(coffeePlaces.size());
 
@@ -190,12 +192,14 @@ public class DetailsFragment extends Fragment {
         }
         public View getView(int position, View convertView, ViewGroup parent) {
             CoffeePlace aPlace = coffeePlaces.get(position);
-            View newView = getLayoutInflater().inflate(R.layout.activity_2_listview_row_layout, parent, false);
-            TextView placeName =newView.findViewById(R.id.placeName);
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.activity_2_listview_row_layout, parent, false);
+            }
+            TextView placeName =convertView.findViewById(R.id.placeName);
             placeName.setText(aPlace.name);
-            TextView placeAddress =newView.findViewById(R.id.placeAddress);
+            TextView placeAddress =convertView.findViewById(R.id.placeAddress);
             placeAddress.setText(aPlace.address);
-            return newView;
+            return convertView;
         }
     }
 

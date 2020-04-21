@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -200,6 +201,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
     /**
      * This method is used to retrieve data from url using asynctask
      */
+    @SuppressLint("StaticFieldLeak")
     private class CoffeeQuery extends AsyncTask < String, Integer, String > {
 
         protected void onPreExecute() {}
@@ -274,12 +276,14 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         }
         public View getView(int position, View convertView, ViewGroup parent) {
             CoffeePlace aPlace = coffeePlaces.get(position);
-            View newView = getLayoutInflater().inflate(R.layout.activity_2_listview_row_layout, parent, false);
-            TextView placeName = newView.findViewById(R.id.placeName);
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.activity_2_listview_row_layout, parent, false);
+            }
+            TextView placeName = convertView.findViewById(R.id.placeName);
             placeName.setText(aPlace.name);
-            TextView placeAddress =  newView.findViewById(R.id.placeAddress);
+            TextView placeAddress =  convertView.findViewById(R.id.placeAddress);
             placeAddress.setText(aPlace.address);
-            return newView;
+            return convertView;
         }
     }
 }
