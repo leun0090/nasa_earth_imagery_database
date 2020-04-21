@@ -24,17 +24,10 @@ public class CoffeePlace {
     public String getName() {
         return name;
     }
-
     public String getAddress() {
         return address;
     }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
+    public String getTelephone() { return telephone; }
+    public String getWebsite() { return website; }
 
 }

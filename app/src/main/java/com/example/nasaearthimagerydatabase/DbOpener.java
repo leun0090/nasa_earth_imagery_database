@@ -7,18 +7,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbOpener extends SQLiteOpenHelper {
 
-    private static String DATABASE_NAME = "Locations";
-    private  static int VERSION_NUM = 1;
-    private  static String TABLE_NAME = "LOCATIONS";
-    private  static String COL_TITLE = "TITLE";
-    private  static String COL_LATITUDE = "LATITUDE";
-    private  static String COL_LONGITUDE = "LONGITUDE";
-    private  static String COL_DESCRIPTION = "DESCRIPTION";
-    private  static String COL_EMAIL = "EMAIL";
-    private  static String COL_STARS = "STARS";
-    private  static String COL_ZOOM = "ZOOM";
+    protected final static String DATABASE_NAME = "TestDB";
+    protected final static int VERSION_NUM = 1;
+    public final static String TABLE_NAME = "LOCATIONS";
+    public final static String COL_TITLE = "TITLE";
+    public final static String COL_LATITUDE = "LATITUDE";
+    public final static String COL_LONGITUDE = "LONGITUDE";
+    public final static String COL_DESCRIPTION = "DESCRIPTION";
+    public final static String COL_EMAIL = "EMAIL";
+    public final static String COL_STARS = "STARS";
+    public final static String COL_ZOOM = "ZOOM";
+    public final static String COL_ID = "_id";
 
-    private DbOpener(Context ctx)
+    public DbOpener(Context ctx)
     {
         super(ctx, DATABASE_NAME, null, VERSION_NUM);
     }
@@ -56,30 +57,5 @@ public class DbOpener extends SQLiteOpenHelper {
 
         //Create the new table:
         onCreate(db);
-    }
-
-    public String getTABLE_NAME() {
-        return TABLE_NAME;
-    }
-    public String getCOL_TITLE() {
-        return COL_TITLE;
-    }
-    public String getCOL_LATITUDE() {
-        return COL_LATITUDE;
-    }
-    public String getCOL_LONGITUDE() {
-        return COL_LONGITUDE;
-    }
-    public String getCOL_DESCRIPTION() {
-        return COL_DESCRIPTION;
-    }
-    public String getCOL_EMAIL() {
-        return COL_EMAIL;
-    }
-    public String getCOL_STARS() {
-        return COL_STARS;
-    }
-    public String getCOL_ZOOM() {
-        return COL_ZOOM;
     }
 }

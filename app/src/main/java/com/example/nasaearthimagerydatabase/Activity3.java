@@ -25,7 +25,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -47,7 +46,6 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
 
     ArrayList<Place> initialList = new ArrayList<>();
     ArrayList<Place> placesList = new ArrayList<>();
-    int positionClicked = 0;
     MyOwnAdapter myAdapter;
     SQLiteDatabase db;
 
@@ -76,16 +74,15 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
         sharedPreferences = getSharedPreferences("Bing", Context.MODE_PRIVATE);
         loginEmail = sharedPreferences.getString("EMAIL",DEFAULT);
         TextView emailTextView = findViewById(R.id.emailTextView);
-        emailTextView.setText("All favorite places by: " + loginEmail);
+        String favoritePlaces = "All favorite places by: " + loginEmail;
+        emailTextView.setText(favoritePlaces);
 
         // DATABASE
         loadDataFromDatabase();
-        ListView theList = (ListView)findViewById(R.id.the_list);
+        ListView theList = findViewById(R.id.the_list);
         myAdapter = new MyOwnAdapter();
         theList.setAdapter(myAdapter);
-        theList.setOnItemClickListener((list, item, position, id) -> {
-            Toast.makeText(getApplicationContext(), "Data was saved successfully ", Toast.LENGTH_LONG).show();
-        });
+        theList.setOnItemClickListener((list, item, position, id) -> Toast.makeText(getApplicationContext(), "Data was saved successfully ", Toast.LENGTH_LONG).show());
 
         // ADD A PLACE
         String title = getIntent().getStringExtra("TITLE");
@@ -116,15 +113,15 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
             }
 
             ContentValues newRowValues = new ContentValues();
-            newRowValues.put(DbOpener.getCOL_TITLE(), title);
-            newRowValues.put(DbOpener.getCOL_LATITUDE(), latitude);
-            newRowValues.put(DbOpener.getCOL_LONGITUDE(), longitude);
-            newRowValues.put( DbOpener.getCOL_DESCRIPTION(), description);
-            newRowValues.put(DbOpener.getCOL_EMAIL(), loginEmail);
-            newRowValues.put(DbOpener.getCOL_STARS(), stars);
-            newRowValues.put(DbOpener.getCOL_ZOOM(), zoom);
+            newRowValues.put(DbOpener.COL_TITLE, title);
+            newRowValues.put(DbOpener.COL_LATITUDE, latitude);
+            newRowValues.put(DbOpener.COL_LONGITUDE, longitude);
+            newRowValues.put( DbOpener.COL_DESCRIPTION, description);
+            newRowValues.put(DbOpener.COL_EMAIL, loginEmail);
+            newRowValues.put(DbOpener.COL_STARS, stars);
+            newRowValues.put(DbOpener.COL_ZOOM, zoom);
 
-            long newId = db.insert(DbOpener.getTABLE_NAME(), null, newRowValues);
+            long newId = db.insert(DbOpener.TABLE_NAME, null, newRowValues);
             Place newPlace = new Place(title, latitude, longitude,description,loginEmail,stars,zoom, newId);
             placesList.add(newPlace);
             myAdapter.notifyDataSetChanged();
@@ -185,23 +182,18 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.helpItem:
-                Dialog helpDialog = new Dialog(Activity3.this);
-                helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                helpDialog.setContentView(R.layout.activity_2_help_dialog);
-                Button okButton = helpDialog.findViewById(R.id.okButton);
-                TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
-                helpDescription.setText("Select an item from the listview to view more details");
-                okButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helpDialog.cancel();
-                    }
-                });
-                helpDialog.show();
-                break;
+
+        if (item.getItemId() == R.id.helpItem) {
+            Dialog helpDialog = new Dialog(Activity3.this);
+            helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            helpDialog.setContentView(R.layout.activity_2_help_dialog);
+            Button okButton = helpDialog.findViewById(R.id.okButton);
+            TextView helpDescription = helpDialog.findViewById(R.id.helpDescription);
+            helpDescription.setText(R.string.activity3Select);
+            okButton.setOnClickListener(click -> helpDialog.cancel());
+            helpDialog.show();
         }
+
         return true;
     }
 
@@ -259,67 +251,58 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
 
             View newView = getLayoutInflater().inflate(R.layout.activity_test3_row_layout, parent, false );
 
-            TextView rowTitle = (TextView)newView.findViewById(R.id.placeTitle);
+            TextView rowTitle = newView.findViewById(R.id.placeTitle);
             rowTitle.setText(thisRow.getTitle());
 
             RatingBar mRatingBar = newView.findViewById(R.id.ratingBar);
             String s = thisRow.getStars();
             mRatingBar.setRating(Character.getNumericValue(s.charAt(0)));
 
-            TextView data = (TextView)newView.findViewById(R.id.data);
-            data.setText(thisRow.getLatitude() + ", " + thisRow.getLongitude()) ;
+            TextView data = newView.findViewById(R.id.data);
+            String dataString = thisRow.getLatitude() + ", " + thisRow.getLongitude();
+            data.setText(dataString) ;
 
             // Go back to activity 2
             ImageButton detailsButton =  newView.findViewById(R.id.detailsButton);
-            detailsButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Dialog helpDialog = new Dialog(Activity3.this);
-                    helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    helpDialog.setContentView(R.layout.activity_2_help_dialog);
-                    Button okButton = helpDialog.findViewById(R.id.okButton);
-                    TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
-                    helpDescription.setText(thisRow.getTitle());
-                    TextView helpDescription2 = (TextView) helpDialog.findViewById(R.id.helpDescription2);
-                    helpDescription2.setText(thisRow.getDescription());
-                    TextView helpDescription3 = (TextView) helpDialog.findViewById(R.id.helpDescription3);
-                    helpDescription3.setText("Latitude: " + thisRow.getLatitude()  + " Longitude: " + thisRow.getLongitude());
-                    TextView helpDescription4 = (TextView) helpDialog.findViewById(R.id.helpDescription4);
-                    helpDescription4.setText("Zoom Level: " + thisRow.getZoom());
-                    TextView helpDescription5 = (TextView) helpDialog.findViewById(R.id.helpDescription5);
-                    helpDescription5.setText("Email: " + thisRow.getEmail());
-                    okButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            helpDialog.cancel();
-                        }
-                    });
-                    helpDialog.show();
-                }
+            detailsButton.setOnClickListener(click -> {
+                Dialog helpDialog = new Dialog(Activity3.this);
+                helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                helpDialog.setContentView(R.layout.activity_2_help_dialog);
+                Button okButton = helpDialog.findViewById(R.id.okButton);
+                TextView helpDescription = helpDialog.findViewById(R.id.helpDescription);
+                helpDescription.setText(thisRow.getTitle());
+                TextView helpDescription2 = helpDialog.findViewById(R.id.helpDescription2);
+                helpDescription2.setText(thisRow.getDescription());
+                TextView helpDescription3 = helpDialog.findViewById(R.id.helpDescription3);
+                String help3 = "Latitude: " + thisRow.getLatitude()  + " Longitude: " + thisRow.getLongitude();
+                helpDescription3.setText(help3);
+                TextView helpDescription4 = helpDialog.findViewById(R.id.helpDescription4);
+                String help4 = "Zoom Level: " + thisRow.getZoom();
+                helpDescription4.setText(help4);
+                TextView helpDescription5 = helpDialog.findViewById(R.id.helpDescription5);
+                String help5 = "Email: " + thisRow.getEmail();
+                helpDescription5.setText(help5);
+                okButton.setOnClickListener(click2 -> helpDialog.cancel());
+                helpDialog.show();
             });
+
 
             // View details
             ImageButton viewButton =  newView.findViewById(R.id.viewButton);
-            viewButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), Activity2.class);
-                    intent.putExtra("LATITUDE", thisRow.getLatitude());
-                    intent.putExtra("LONGITUDE", thisRow.getLongitude());
-                    intent.putExtra("ZOOM", thisRow.getZoom());
-                    startActivity(intent);
-                }
+            viewButton.setOnClickListener(click -> {
+                Intent intent = new Intent(getApplicationContext(), Activity2.class);
+                intent.putExtra("LATITUDE", thisRow.getLatitude());
+                intent.putExtra("LONGITUDE", thisRow.getLongitude());
+                intent.putExtra("ZOOM", thisRow.getZoom());
+                startActivity(intent);
             });
 
             // Delete
             ImageButton deleteButton =  newView.findViewById(R.id.deleteButton);
-            deleteButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    placesList.remove(position);
-                    deletePlace(thisRow);
-                    notifyDataSetChanged();
-                }
+            deleteButton.setOnClickListener(click -> {
+                placesList.remove(position);
+                deletePlace(thisRow);
+                notifyDataSetChanged();
             });
 
             return newView;
@@ -331,7 +314,7 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
     }
 
     protected void deletePlace(Place c) {
-        db.delete(DbOpener.getTABLE_NAME(), DbOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
+        db.delete(DbOpener.TABLE_NAME, DbOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
     }
 
     private void loadDataFromDatabase() {
@@ -366,7 +349,6 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
             }
 
         }
-
         initialList = placesList;
         printCursor(results, db.getVersion());
     }
@@ -374,40 +356,16 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
     private void printCursor(Cursor c, int version) {
         Log.v(TAG, "The database number = " + version);
         Log.v(TAG, "The number of columns in the cursor = " + c.getColumnCount());
-
         String[] columnNames = c.getColumnNames();
         Log.v(TAG, "The names of columns in the cursor = " + Arrays.toString(columnNames));
-
-        Cursor  cursor = db.rawQuery("select * from " +  DbOpener.TABLE_NAME() + " WHERE email='" + loginEmail + "'",null);
-        int titleColumnIndex = cursor.getColumnIndex(DbOpener.COL_TITLE());
-        int latitudeColumnIndex = cursor.getColumnIndex(DbOpener.COL_LATITUDE());
-        int longitudeColumnIndex = cursor.getColumnIndex(DbOpener.COL_LONGITUDE());
-        int descriptionColumnIndex = cursor.getColumnIndex(DbOpener.COL_DESCRIPTION());
-        int starsColumnIndex = cursor.getColumnIndex(DbOpener.COL_STARS());
-        int zoomColumnIndex = cursor.getColumnIndex(DbOpener.COL_ZOOM());
-        int idColIndex = cursor.getColumnIndex(DbOpener.COL_ID());
-
+        Cursor  cursor = db.rawQuery("select * from " +  DbOpener.TABLE_NAME + " WHERE email='" + loginEmail + "'",null);
+        int titleColumnIndex = cursor.getColumnIndex(DbOpener.COL_TITLE);
+        int idColIndex = cursor.getColumnIndex(DbOpener.COL_ID);
         while(cursor.moveToNext()) {
             String title = cursor.getString(titleColumnIndex);
-            String latitude = cursor.getString(latitudeColumnIndex);
-            String longitude = cursor.getString(longitudeColumnIndex);
-            String description = cursor.getString(descriptionColumnIndex);
-            String stars = cursor.getString(starsColumnIndex);
-            String zoom = cursor.getString(zoomColumnIndex);
             long id = cursor.getLong(idColIndex);
             Log.v(TAG, "_id:" + id + " - title:" + title);
         }
+        cursor.close();
     }
-
-    // Close The Virtual keyboard
-    private void closeKeyboard() {
-        // current edittext
-        View view = this.getCurrentFocus();
-        // if there is a view that has focus
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
 }

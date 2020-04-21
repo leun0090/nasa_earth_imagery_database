@@ -40,36 +40,34 @@ import java.util.ArrayList;
  */
 public class DetailsFragment2 extends Fragment {
 
-    private Bundle dataFromActivity;
     private AppCompatActivity parentActivity;
-    String coffeeUrl;
     private ArrayList < CoffeePlace > coffeePlaces;
-    private ListView coffeeListView;
-    private PlacesAdapter myAdapter;
-    View result;
-    TextView resultTextView;
-    String latitude;
-    String longitude;
+
+    private View result;
+    private TextView resultTextView;
+    private String latitude;
+    private String longitude;
 
     public DetailsFragment2() {
-        coffeePlaces = new ArrayList < CoffeePlace > ();
+        coffeePlaces = new ArrayList <> ();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        dataFromActivity = getArguments();
-
         try {
-             latitude = this.getArguments().getString("LATITUDE");
-             longitude = this.getArguments().getString("LONGITUDE");
+            if (this.getArguments() != null) {
+                latitude = this.getArguments().getString("LATITUDE");
+                longitude = this.getArguments().getString("LONGITUDE");
+            }
+
         } catch (Exception e) {
             Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
         }
 
         // ListView
-        coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=" + latitude + "," + longitude + "&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
+        String coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=" + latitude + "," + longitude + "&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
         CoffeeQuery req = new CoffeeQuery();
         req.execute(coffeeUrl);
 
@@ -93,7 +91,7 @@ public class DetailsFragment2 extends Fragment {
     }
 
     // ASYNC TASK TO PULL LOCATION OF COFFEE SHOPS
-    private class CoffeeQuery extends AsyncTask < String, Integer, String > {
+    protected class CoffeeQuery extends AsyncTask < String, Integer, String > {
         protected void onPreExecute() {}
         protected String doInBackground(String...args) {
 
@@ -105,9 +103,10 @@ public class DetailsFragment2 extends Fragment {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response, StandardCharsets.UTF_8), 8);
                 StringBuilder sb = new StringBuilder();
 
-                String line = null;
+                String line;
                 while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
+                    String newLine = line + "\n";
+                    sb.append(newLine);
                 }
                 String result = sb.toString();
 
@@ -143,33 +142,37 @@ public class DetailsFragment2 extends Fragment {
         public void onPostExecute(String fromDoInBackground) {
 
             // ListView
-            coffeeListView = result.findViewById(R.id.theListView);
+            ListView coffeeListView = result.findViewById(R.id.theListView);
+            PlacesAdapter myAdapter;
             coffeeListView.setAdapter(myAdapter = new PlacesAdapter());
 
             resultTextView.setText(coffeePlaces.size());
 
             coffeeListView.setOnItemClickListener((parent, view, position, id) -> {
                 CoffeePlace selectedCoffee = coffeePlaces.get(position);
-                Dialog helpDialog = new Dialog(getActivity());
-                helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                helpDialog.setContentView(R.layout.activity_2_help_dialog);
+                if (getActivity() != null) {
+                    Dialog helpDialog = new Dialog(getActivity());
+                    helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    helpDialog.setContentView(R.layout.activity_2_help_dialog);
 
-                TextView helpDescription = helpDialog.findViewById(R.id.helpDescription);
-                helpDescription.setText(selectedCoffee.name);
-                TextView helpDescription2 =helpDialog.findViewById(R.id.helpDescription2);
-                helpDescription2.setText(selectedCoffee.address);
-                TextView helpDescription3 = helpDialog.findViewById(R.id.helpDescription3);
-                helpDescription3.setText(selectedCoffee.telephone);
-                TextView helpDescription4 = helpDialog.findViewById(R.id.helpDescription4);
-                helpDescription4.setText(selectedCoffee.website);
-                ImageView imageView = helpDialog.findViewById(R.id.imageView);
-                imageView.setVisibility(View.GONE);
-                ImageView coffeeImageView = helpDialog.findViewById(R.id.coffeeImageView);
-                coffeeImageView.setVisibility(View.VISIBLE);
+                    TextView helpDescription = helpDialog.findViewById(R.id.helpDescription);
+                    helpDescription.setText(selectedCoffee.name);
+                    TextView helpDescription2 =helpDialog.findViewById(R.id.helpDescription2);
+                    helpDescription2.setText(selectedCoffee.address);
+                    TextView helpDescription3 = helpDialog.findViewById(R.id.helpDescription3);
+                    helpDescription3.setText(selectedCoffee.telephone);
+                    TextView helpDescription4 = helpDialog.findViewById(R.id.helpDescription4);
+                    helpDescription4.setText(selectedCoffee.website);
+                    ImageView imageView = helpDialog.findViewById(R.id.imageView);
+                    imageView.setVisibility(View.GONE);
+                    ImageView coffeeImageView = helpDialog.findViewById(R.id.coffeeImageView);
+                    coffeeImageView.setVisibility(View.VISIBLE);
 
-                Button okButton = helpDialog.findViewById(R.id.okButton);
-                okButton.setOnClickListener(click -> helpDialog.cancel());
-                helpDialog.show();
+                    Button okButton = helpDialog.findViewById(R.id.okButton);
+                    okButton.setOnClickListener(click -> helpDialog.cancel());
+                    helpDialog.show();
+                }
+
             });
         }
     }
@@ -183,7 +186,7 @@ public class DetailsFragment2 extends Fragment {
             return "This is row " + position;
         }
         public long getItemId(int position) {
-            return (long) position;
+            return position;
         }
         public View getView(int position, View convertView, ViewGroup parent) {
             CoffeePlace aPlace = coffeePlaces.get(position);
@@ -195,4 +198,5 @@ public class DetailsFragment2 extends Fragment {
             return newView;
         }
     }
+
 }

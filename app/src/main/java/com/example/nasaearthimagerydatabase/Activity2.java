@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -41,6 +42,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -88,17 +91,17 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         setContentView(R.layout.activity_2);
 
         // Initialize layout items
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
-        mapView = (ImageView) findViewById(R.id.mapView);
-        photoView = (ImageView) findViewById(R.id.photoView);
-        latitudeTextView = (TextView) findViewById(R.id.latitudeTextView);
-        longitudeTextView = (TextView) findViewById(R.id.longitudeTextView);
-        favoriteButton = (Button) findViewById(R.id.favoriteButton);
-        leftButton = (ImageButton) findViewById(R.id.leftButton);
-        rightButton = (ImageButton) findViewById(R.id.rightButton);
-        upButton = (ImageButton) findViewById(R.id.upButton);
-        downButton = (ImageButton) findViewById(R.id.downButton);
+        mapView = findViewById(R.id.mapView);
+        photoView = findViewById(R.id.photoView);
+        latitudeTextView = findViewById(R.id.latitudeTextView);
+        longitudeTextView = findViewById(R.id.longitudeTextView);
+        favoriteButton = findViewById(R.id.favoriteButton);
+        leftButton = findViewById(R.id.leftButton);
+        rightButton = findViewById(R.id.rightButton);
+        upButton = findViewById(R.id.upButton);
+        downButton = findViewById(R.id.downButton);
 
 
         // Load data from previous activity
@@ -115,8 +118,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             longitude = "-74.0060";
         }
 
-        // urlMap = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/40.7128,-74.0060?zl=14&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
-        //urlMap = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/"+ latitude +"," + longitude + "?zl=" + Integer.toString(zoom) + "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
         currentUrl = new ApiUrl(latitude, longitude, Integer.toString(zoom));
         urlMap = currentUrl.returnUrl();
         MapQuery init = new MapQuery();
@@ -128,45 +129,34 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
             Dialog favoriteDialog = new Dialog(Activity2.this);
             favoriteDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             favoriteDialog.setContentView(R.layout.activity_2_favorite_dialog);
-            EditText titleEditText = (EditText) favoriteDialog.findViewById(R.id.titleEditText);
-            RatingBar simpleRatingBar = (RatingBar) favoriteDialog.findViewById(R.id.simpleRatingBar);
-            EditText descriptionEditText = (EditText) favoriteDialog.findViewById(R.id.descriptionEditText);
+            EditText titleEditText = favoriteDialog.findViewById(R.id.titleEditText);
+            RatingBar simpleRatingBar = favoriteDialog.findViewById(R.id.simpleRatingBar);
+            EditText descriptionEditText = favoriteDialog.findViewById(R.id.descriptionEditText);
 
-            favoriteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            Objects.requireNonNull(favoriteDialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
             Button okButton = favoriteDialog.findViewById(R.id.okButton);
 
-            okButton.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    if (titleEditText.getText().toString().equals("")){
-                        Toast.makeText(getApplicationContext(), R.string.favorite_validation, Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        Intent testIntent3 = new Intent(Activity2.this, Activity3.class);
-                        testIntent3.putExtra("LATITUDE", latitude);
-                        testIntent3.putExtra("LONGITUDE", longitude);
-                        testIntent3.putExtra("TITLE", titleEditText.getText().toString());
-                        testIntent3.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
-                        testIntent3.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
-                        testIntent3.putExtra("ZOOM",  String.valueOf(zoom));
-                        startActivity(testIntent3);
-                        closeKeyboard();
-                        favoriteDialog.cancel();
-                    }
-
-                    return true;
+            okButton.setOnClickListener(click -> {
+                if (titleEditText.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(), R.string.favorite_validation, Toast.LENGTH_LONG).show();
                 }
-            });
-
-
-            Button cancelButton = favoriteDialog.findViewById(R.id.cancelButton);
-            cancelButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                else {
+                    Intent testIntent3 = new Intent(Activity2.this, Activity3.class);
+                    testIntent3.putExtra("LATITUDE", latitude);
+                    testIntent3.putExtra("LONGITUDE", longitude);
+                    testIntent3.putExtra("TITLE", titleEditText.getText().toString());
+                    testIntent3.putExtra("DESCRIPTION", descriptionEditText.getText().toString());
+                    testIntent3.putExtra("STARS", String.valueOf(simpleRatingBar.getRating()));
+                    testIntent3.putExtra("ZOOM",  String.valueOf(zoom));
+                    startActivity(testIntent3);
+                    closeKeyboard();
                     favoriteDialog.cancel();
                 }
             });
+
+            Button cancelButton = favoriteDialog.findViewById(R.id.cancelButton);
+            cancelButton.setOnClickListener(click -> favoriteDialog.cancel());
             favoriteDialog.show();
         });
 
@@ -439,43 +429,45 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
      * This class is used to store the api
      */
     private class ApiUrl {
-        String start = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/";
-        String latitude = "";
-        String longitude = "";
-        String zoom = "";
-        String end = "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
+        private String start;
+        private String latitude;
+        private String longitude;
+        private String zoom;
+        private String end;
 
-        public ApiUrl(String latitude, String longitude, String zoom) {
+        ApiUrl(String latitude, String longitude, String zoom) {
+            this.start = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/";
             this.latitude = latitude;
             this.longitude = longitude;
             this.zoom = zoom;
+            this.end = "&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
         }
 
-        public void changeZoom(String zoom) {
+        void changeZoom(String zoom) {
             this.zoom = zoom;
         }
 
-        public void moveRight() {
+         void moveRight() {
             double longi = Double.parseDouble(this.longitude);
             this.longitude = Double.toString(longi + move_lat_long);
         }
 
-        public void moveLeft() {
+         void moveLeft() {
             double longi = Double.parseDouble(this.longitude);
             this.longitude = Double.toString(longi - move_lat_long);
         }
 
-        public void moveUp() {
+         void moveUp() {
             double lat = Double.parseDouble(this.latitude);
             this.latitude = Double.toString(lat + move_lat_long);
         }
 
-        public void moveDown() {
+         void moveDown() {
             double lat = Double.parseDouble(this.latitude);
             this.latitude = Double.toString(lat - move_lat_long);
         }
 
-        public String returnUrl() {
+         String returnUrl() {
             return start + latitude + "," + longitude + "?zl=" + zoom + end;
         }
     }
@@ -508,15 +500,22 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            photoView.setImageBitmap(imageBitmap);
+
+
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    photoView.setImageBitmap(imageBitmap);
+                }
+
+
+
         }
     }
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(

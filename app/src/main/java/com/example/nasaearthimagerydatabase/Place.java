@@ -42,7 +42,7 @@ public class Place {
     public String getStars() {
         return stars;
     }
-    protected String getZoom() {
+    public String getZoom() {
         return zoom;
     }
     public long getId() {

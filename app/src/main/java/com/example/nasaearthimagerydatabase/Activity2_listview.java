@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -33,6 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -50,8 +52,8 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
 
     ListView coffeeListView;
     String coffeeUrl;
-    private ArrayList < CoffeePlace > coffeePlaces;
-    private PlacesAdapter myAdapter;
+    ArrayList < CoffeePlace > coffeePlaces;
+    PlacesAdapter myAdapter;
 
     TextView resultTextView;
     ProgressBar progressBar;
@@ -61,8 +63,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_2_listview);
 
-
-        resultTextView = (TextView) findViewById(R.id.resultTextView);
+        resultTextView =findViewById(R.id.resultTextView);
 
         // Load Data from intent
         String latitude = getIntent().getStringExtra("LATITUDE");
@@ -74,7 +75,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         req.execute(coffeeUrl);
 
         // ListView
-        coffeePlaces = new ArrayList < CoffeePlace > ();
+        coffeePlaces = new ArrayList <> ();
         coffeeListView = findViewById(R.id.theListView);
 
         // Load toolbar
@@ -91,13 +92,8 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         navigationView.setNavigationItemSelectedListener(this);
 
         // Go Back to Activity2
-        Button hideButton = (Button) findViewById(R.id.hideButton);
-        hideButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        Button hideButton =  findViewById(R.id.hideButton);
+        hideButton.setOnClickListener(click -> finish());
 
         //Populate the coffeeshop listview
         coffeeListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -108,16 +104,16 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
             helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             helpDialog.setContentView(R.layout.activity_2_help_dialog);
 
-            TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
+            TextView helpDescription =  helpDialog.findViewById(R.id.helpDescription);
             helpDescription.setText(selectedCoffee.name);
 
-            TextView helpDescription2 = (TextView) helpDialog.findViewById(R.id.helpDescription2);
+            TextView helpDescription2 =  helpDialog.findViewById(R.id.helpDescription2);
             helpDescription2.setText(selectedCoffee.address);
 
-            TextView helpDescription3 = (TextView) helpDialog.findViewById(R.id.helpDescription3);
+            TextView helpDescription3 =  helpDialog.findViewById(R.id.helpDescription3);
             helpDescription3.setText(selectedCoffee.telephone);
 
-            TextView helpDescription4 = (TextView) helpDialog.findViewById(R.id.helpDescription4);
+            TextView helpDescription4 = helpDialog.findViewById(R.id.helpDescription4);
             helpDescription4.setText(selectedCoffee.website);
 
             ImageView imageView = helpDialog.findViewById(R.id.imageView);
@@ -127,18 +123,13 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
             coffeeImageView.setVisibility(View.VISIBLE);
 
             Button okButton = helpDialog.findViewById(R.id.okButton);
-            okButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    helpDialog.cancel();
-                }
-            });
+            okButton.setOnClickListener(click -> helpDialog.cancel());
             helpDialog.show();
 
         });
 
         // Progressbar
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
 
 
     }
@@ -169,9 +160,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
             TextView helpDescription = helpDialog.findViewById(R.id.helpDescription);
             helpDescription.setText(R.string.helpExtra);
             Button okButton = helpDialog.findViewById(R.id.okButton);
-            okButton.setOnClickListener(click -> {
-                    helpDialog.cancel();
-            });
+            okButton.setOnClickListener(click -> helpDialog.cancel());
             helpDialog.show();
         }
         return true;
@@ -221,12 +210,13 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
                 URL url = new URL(args[0]);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream response = urlConnection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(response, "UTF-8"), 8);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response, StandardCharsets.UTF_8), 8);
                 StringBuilder sb = new StringBuilder();
 
-                String line = null;
+                String line;
                 while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
+                    String newLine = line + "\n";
+                    sb.append(newLine);
                 }
                 String result = sb.toString(); //result is the whole string
 
@@ -250,7 +240,9 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
                     coffeePlaces.add(new CoffeePlace(name, formattedAddress, phoneNumber, website));
                 }
 
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+            }
             return null;
         }
 
@@ -261,7 +253,8 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
 
         public void onPostExecute(String fromDoInBackground) {
             progressBar.setVisibility(View.GONE);
-            resultTextView.setText("Total: " + coffeePlaces.size());
+            String coffeeSize = "Total: " + coffeePlaces.size();
+            resultTextView.setText(coffeeSize);
             coffeeListView.setAdapter(myAdapter = new PlacesAdapter());
         }
     }
@@ -277,7 +270,7 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
             return "This is row " + position;
         }
         public long getItemId(int position) {
-            return (long) position;
+            return position;
         }
         public View getView(int position, View convertView, ViewGroup parent) {
             CoffeePlace aPlace = coffeePlaces.get(position);

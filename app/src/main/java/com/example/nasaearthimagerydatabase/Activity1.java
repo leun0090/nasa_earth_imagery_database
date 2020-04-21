@@ -52,7 +52,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
     Button btnGetLocation;
 
 
-    LocationManager locationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,6 +187,7 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
     }
 
     private void onClick(View click) {
+        LocationManager locationManager;
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -194,11 +195,16 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
         String locationManagerString = "";
 
-        if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)) {
-            locationManagerString = locationManager.NETWORK_PROVIDER;
-        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            locationManagerString = locationManager.GPS_PROVIDER;
+        try {
+            if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)) {
+                locationManagerString = locationManager.NETWORK_PROVIDER;
+            } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                locationManagerString = locationManager.GPS_PROVIDER;
+            }
+        } catch (Exception E) {
+            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
         }
+
 
         locationManager.requestLocationUpdates(locationManagerString, 0, 0, new LocationListener() {
             @Override

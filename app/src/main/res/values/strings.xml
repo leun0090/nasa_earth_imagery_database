@@ -77,5 +77,6 @@
     <string name="total_locations">Total Locations:</string>
     <string name="advertisement">Your advertisement could be here.</string>
 
+    <string name="activity3Select">"Select an item from the listview to view more details"</string>
 
 </resources>
