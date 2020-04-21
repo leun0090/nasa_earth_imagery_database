@@ -10,6 +10,7 @@
     <string name="dark_mode">Mode sombre</string>
     <string name="email_error1">Veuillez saisir votre adresse e-mail</string>
     <string name="email_error2">Veuillez saisir une adresse e-mail correcte</string>
+    <string name="wrong_email">Wrong email</string>
 
     <!-- Activity 1 -->
     <string name="toast1">Vous allez maintenant à l\'activité 2</string>
@@ -28,6 +29,8 @@
     <string name="historyText">Historique des recherches</string>
     <string name="alert1">Alerte</string>
     <string name="alertMsg1">Cette fonctionnalité n\'est pas encore implémentée. Veuillez réessayer plus tard.</string>
+    <string name="activity1Description">Enter a latitude and a longitude and click search location</string>
+    <string name="activity1_toast">Enter a latitude and longitude</string>
 
     <!-- Activity 2 text -->
     <string name="helpDescription">Vous consultez actuellement une carte. Appuyez sur les icônes de zoom avant ou arrière dans la barre d\'outils. Saisissez ensuite un titre pour mettre cet emplacement en favori.</string>

@@ -10,11 +10,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,14 +32,15 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
-
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -54,10 +56,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class Activity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    String testUrl = "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial/43.6532,-79.3832?zl=18&o=xml&ms=500,500&key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O";
-
-    // https://docs.microsoft.com/en-us/bingmaps/rest-services/traffic/get-traffic-incidents
-    //http://dev.virtualearth.net/REST/v1/Traffic/Incidents/45.4215,-75.6972,46.4215,-74.6972?key=At7y4aOtMy4Uopf8cD8cu_um0-YGyp5nlzPLLDBxLmgDN4o6DUkvk0ZTs4QpYh1O
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private static final String TAG = "Activity 2";
     String latitude;
@@ -65,34 +64,23 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     String urlMap;
     String traceId;
     int zoom = 12;
-
     ProgressBar progressBar;
     ImageView mapView;
+    ImageView photoView;
     Bitmap image = null;
     String imageUrl;
     TextView longitudeTextView;
     TextView latitudeTextView;
-
     ImageButton leftButton;
     ImageButton rightButton;
     ImageButton upButton;
     ImageButton downButton;
-
     Button favoriteButton;
-
     ApiUrl currentUrl;
-
     Boolean isTablet;
     DetailsFragment2 dFragment;
-
     Double move_lat_long = 0.05;
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    String pathToFile;
-
-    // Shared preferences
-    SharedPreferences sharedPreferences = null;
-    public static final String DEFAULT = "N/A";
+    String currentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +91,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
         mapView = (ImageView) findViewById(R.id.mapView);
+        photoView = (ImageView) findViewById(R.id.photoView);
         latitudeTextView = (TextView) findViewById(R.id.latitudeTextView);
         longitudeTextView = (TextView) findViewById(R.id.longitudeTextView);
         favoriteButton = (Button) findViewById(R.id.favoriteButton);
@@ -220,14 +209,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // load bottom toolbar
-
-        /**
-         * This function is loads the fragment when coffeeshopbutton is pressed
-         * if it is on a tablet. Else go to activity2_listview if on mobile
-         *
-         */
-
         // Bottom menu
         dFragment = new DetailsFragment2();
         isTablet = findViewById(R.id.fragmentLocation) != null;
@@ -299,7 +280,6 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 xpp.setInput(response, "UTF-8");
 
                 // Start parsing
-                String parameter = null;
                 int eventType = xpp.getEventType(); //The parser is currently at START_DOCUMENT
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) {
@@ -359,7 +339,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.top_menu2, menu);
+        inflater.inflate(R.menu.top_menu, menu);
         return true;
     }
 
@@ -376,7 +356,7 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 if (zoom > 10){
                     move_lat_long = 0.05;
                 }
-                Toast.makeText(getApplicationContext(), "Zoom: " + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Zoom: " + zoom , Toast.LENGTH_SHORT).show();
                 break;
             case R.id.itemZoomOut:
                 zoom -= 1;
@@ -384,19 +364,14 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
                 if (zoom <= 10){
                     move_lat_long = 0.5;
                 }
-                Toast.makeText(getApplicationContext(), "Zoom: " + Integer.toString(zoom) , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Zoom: " + zoom , Toast.LENGTH_SHORT).show();
                 break;
             case R.id.helpItem:
                 Dialog helpDialog = new Dialog(Activity2.this);
                 helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 helpDialog.setContentView(R.layout.activity_2_help_dialog);
                 Button okButton = helpDialog.findViewById(R.id.okButton);
-                okButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helpDialog.cancel();
-                    }
-                });
+                okButton.setOnClickListener(click -> helpDialog.cancel());
                 helpDialog.show();
                 break;
         }
@@ -518,5 +493,41 @@ public class Activity2 extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
+
+    /**
+     *  CAMERA
+     */
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            photoView.setImageBitmap(imageBitmap);
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
 
 }

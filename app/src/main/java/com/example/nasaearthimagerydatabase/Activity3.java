@@ -116,15 +116,15 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
             }
 
             ContentValues newRowValues = new ContentValues();
-            newRowValues.put(DbOpener.COL_TITLE, title);
-            newRowValues.put(DbOpener.COL_LATITUDE, latitude);
-            newRowValues.put(DbOpener.COL_LONGITUDE, longitude);
-            newRowValues.put( DbOpener.COL_DESCRIPTION, description);
-            newRowValues.put(DbOpener.COL_EMAIL, loginEmail);
-            newRowValues.put(DbOpener.COL_STARS, stars);
-            newRowValues.put(DbOpener.COL_ZOOM, zoom);
+            newRowValues.put(DbOpener.getCOL_TITLE(), title);
+            newRowValues.put(DbOpener.getCOL_LATITUDE(), latitude);
+            newRowValues.put(DbOpener.getCOL_LONGITUDE(), longitude);
+            newRowValues.put( DbOpener.getCOL_DESCRIPTION(), description);
+            newRowValues.put(DbOpener.getCOL_EMAIL(), loginEmail);
+            newRowValues.put(DbOpener.getCOL_STARS(), stars);
+            newRowValues.put(DbOpener.getCOL_ZOOM(), zoom);
 
-            long newId = db.insert(DbOpener.TABLE_NAME, null, newRowValues);
+            long newId = db.insert(DbOpener.getTABLE_NAME(), null, newRowValues);
             Place newPlace = new Place(title, latitude, longitude,description,loginEmail,stars,zoom, newId);
             placesList.add(newPlace);
             myAdapter.notifyDataSetChanged();
@@ -139,7 +139,7 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.top_menu_test3, menu);
+        inflater.inflate(R.menu.top_menu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
@@ -331,7 +331,7 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
     }
 
     protected void deletePlace(Place c) {
-        db.delete(DbOpener.TABLE_NAME, DbOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
+        db.delete(DbOpener.getTABLE_NAME(), DbOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
     }
 
     private void loadDataFromDatabase() {
@@ -378,14 +378,14 @@ public class Activity3 extends AppCompatActivity  implements NavigationView.OnNa
         String[] columnNames = c.getColumnNames();
         Log.v(TAG, "The names of columns in the cursor = " + Arrays.toString(columnNames));
 
-        Cursor  cursor = db.rawQuery("select * from " +  DbOpener.TABLE_NAME + " WHERE email='" + loginEmail + "'",null);
-        int titleColumnIndex = cursor.getColumnIndex(DbOpener.COL_TITLE);
-        int latitudeColumnIndex = cursor.getColumnIndex(DbOpener.COL_LATITUDE);
-        int longitudeColumnIndex = cursor.getColumnIndex(DbOpener.COL_LONGITUDE);
-        int descriptionColumnIndex = cursor.getColumnIndex(DbOpener.COL_DESCRIPTION);
-        int starsColumnIndex = cursor.getColumnIndex(DbOpener.COL_STARS);
-        int zoomColumnIndex = cursor.getColumnIndex(DbOpener.COL_ZOOM);
-        int idColIndex = cursor.getColumnIndex(DbOpener.COL_ID);
+        Cursor  cursor = db.rawQuery("select * from " +  DbOpener.TABLE_NAME() + " WHERE email='" + loginEmail + "'",null);
+        int titleColumnIndex = cursor.getColumnIndex(DbOpener.COL_TITLE());
+        int latitudeColumnIndex = cursor.getColumnIndex(DbOpener.COL_LATITUDE());
+        int longitudeColumnIndex = cursor.getColumnIndex(DbOpener.COL_LONGITUDE());
+        int descriptionColumnIndex = cursor.getColumnIndex(DbOpener.COL_DESCRIPTION());
+        int starsColumnIndex = cursor.getColumnIndex(DbOpener.COL_STARS());
+        int zoomColumnIndex = cursor.getColumnIndex(DbOpener.COL_ZOOM());
+        int idColIndex = cursor.getColumnIndex(DbOpener.COL_ID());
 
         while(cursor.moveToNext()) {
             String title = cursor.getString(titleColumnIndex);

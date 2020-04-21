@@ -47,10 +47,6 @@ import java.util.ArrayList;
 
 public class Activity2_listview extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = "Activity2_Extra";
-
-    private MenuItem itemZoomIn;
-    private MenuItem itemZoomOut;
 
     ListView coffeeListView;
     String coffeeUrl;
@@ -151,10 +147,10 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.top_menu2, menu);
+        inflater.inflate(R.menu.top_menu, menu);
 
-        itemZoomIn = menu.findItem(R.id.itemZoomIn);
-        itemZoomOut = menu.findItem(R.id.itemZoomOut);
+        MenuItem itemZoomIn = menu.findItem(R.id.itemZoomIn);
+        MenuItem itemZoomOut = menu.findItem(R.id.itemZoomOut);
         itemZoomIn.setVisible(false);
         itemZoomOut.setVisible(false);
 
@@ -166,26 +162,17 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.helpItem:
-
-                Dialog helpDialog = new Dialog(Activity2_listview.this);
-
-                helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                helpDialog.setContentView(R.layout.activity_2_help_dialog);
-
-                TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
-                helpDescription.setText(R.string.helpExtra);
-
-                Button okButton = helpDialog.findViewById(R.id.okButton);
-                okButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helpDialog.cancel();
-                    }
-                });
-                helpDialog.show();
-                break;
+        if (item.getItemId() == R.id.helpItem) {
+            Dialog helpDialog = new Dialog(Activity2_listview.this);
+            helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            helpDialog.setContentView(R.layout.activity_2_help_dialog);
+            TextView helpDescription = helpDialog.findViewById(R.id.helpDescription);
+            helpDescription.setText(R.string.helpExtra);
+            Button okButton = helpDialog.findViewById(R.id.okButton);
+            okButton.setOnClickListener(click -> {
+                    helpDialog.cancel();
+            });
+            helpDialog.show();
         }
         return true;
     }
@@ -295,9 +282,9 @@ public class Activity2_listview extends AppCompatActivity implements NavigationV
         public View getView(int position, View convertView, ViewGroup parent) {
             CoffeePlace aPlace = coffeePlaces.get(position);
             View newView = getLayoutInflater().inflate(R.layout.activity_2_listview_row_layout, parent, false);
-            TextView placeName = (TextView) newView.findViewById(R.id.placeName);
+            TextView placeName = newView.findViewById(R.id.placeName);
             placeName.setText(aPlace.name);
-            TextView placeAddress = (TextView) newView.findViewById(R.id.placeAddress);
+            TextView placeAddress =  newView.findViewById(R.id.placeAddress);
             placeAddress.setText(aPlace.address);
             return newView;
         }

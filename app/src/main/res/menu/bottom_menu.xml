@@ -17,13 +17,13 @@
         android:textColor="@color/colorText"
         />
 
-<!--    <item android:id="@+id/itemCamera"-->
-<!--        android:title="Photo"-->
-<!--        android:icon="@drawable/camera"-->
-<!--        android:orderInCategory="200"-->
-<!--        app:showAsAction="always"-->
-<!--        android:textColor="@color/colorText"-->
-<!--        />-->
+    <item android:id="@+id/itemCamera"
+        android:title="Photo"
+        android:icon="@drawable/camera"
+        android:orderInCategory="200"
+        app:showAsAction="always"
+        android:textColor="@color/colorText"
+        />
 
 
 </menu>

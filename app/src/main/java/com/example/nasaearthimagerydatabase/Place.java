@@ -2,14 +2,14 @@ package com.example.nasaearthimagerydatabase;
 
 public class Place {
 
-    protected String title;
-    protected String latitude;
-    protected String longitude;
-    protected String description;
-    protected String email;
-    protected String stars;
-    protected String zoom;
-    protected long id;
+    private String title;
+    private String latitude;
+    private String longitude;
+    private String description;
+    private String email;
+    private String stars;
+    private String zoom;
+    private long id;
 
     /**Constructor:*/
     public Place(String atitle, String alatitude, String alongitude, String adescription, String aemail, String astars, String azoom, long i)
@@ -23,14 +23,6 @@ public class Place {
         zoom = azoom;
         id = i;
     }
-
-//    public void update(String title)
-//    {
-//        title = title;
-//    }
-
-    /**Chaining constructor: */
-//   public Place(String title) { this(title, 0);}
 
     public String getTitle() {
         return title;
@@ -50,10 +42,9 @@ public class Place {
     public String getStars() {
         return stars;
     }
-    public String getZoom() {
+    protected String getZoom() {
         return zoom;
     }
-
     public long getId() {
         return id;
     }

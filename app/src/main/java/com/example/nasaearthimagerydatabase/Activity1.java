@@ -7,6 +7,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,12 +17,12 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -50,8 +51,6 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
     Button searchButton;
     Button btnGetLocation;
 
-    private MenuItem itemZoomIn;
-    private MenuItem itemZoomOut;
 
     LocationManager locationManager;
 
@@ -62,30 +61,36 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
 
         // Initialize components
-        latitudeEditText = (EditText) findViewById(R.id.latitudeEditText);
-        longitudeEditText = (EditText) findViewById(R.id.longitudeEditText);
-        randomButton = (Button) findViewById(R.id.randomButton);
-        searchButton = (Button) findViewById(R.id.searchButton);
-        btnGetLocation = (Button) findViewById(R.id.btnGetLocation);
+        latitudeEditText =  findViewById(R.id.latitudeEditText);
+        longitudeEditText =  findViewById(R.id.longitudeEditText);
+        randomButton = findViewById(R.id.randomButton);
+        searchButton = findViewById(R.id.searchButton);
+        btnGetLocation = findViewById(R.id.btnGetLocation);
 
-        randomButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                // Load async task
-                RandomCoordinates req = new RandomCoordinates();
-                req.execute("https://api.3geonames.org/?randomland=yes");
-
-            }
+        // Load async task
+        randomButton.setOnClickListener(click -> {
+            RandomCoordinates req = new RandomCoordinates();
+            req.execute("https://api.3geonames.org/?randomland=yes");
         });
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+        searchButton.setOnClickListener(click -> {
+            if ((!latitudeEditText.getText().toString().equals("")) || (!longitudeEditText.getText().toString().equals(""))) {
                 Intent intent = new Intent(getApplicationContext(), Activity2.class);
                 intent.putExtra("LATITUDE", latitudeEditText.getText().toString());
                 intent.putExtra("LONGITUDE", longitudeEditText.getText().toString());
                 startActivity(intent);
+            }
+            else {
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.custom_toast_layout, findViewById(R.id.custom_toast_container));
+                TextView tv = layout.findViewById(R.id.txtvw);
+                tv.setText(R.string.activity1_toast);
+                Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         });
 
@@ -104,46 +109,9 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
 
         // Get current location
-        btnGetLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnGetLocation.setOnClickListener(// Get current location
+                this::onClick);
 
-                // Get current location
-                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-
-                String locationManagerString = "";
-
-                if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)) {
-                    locationManagerString = locationManager.NETWORK_PROVIDER;
-                }
-                else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    locationManagerString = locationManager.GPS_PROVIDER;
-                }
-
-                locationManager.requestLocationUpdates(locationManagerString, 0, 0, new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location location) {
-
-                        latitude = Double.toString(location.getLatitude());
-                        longitude= Double.toString(location.getLongitude());
-                        latitudeEditText.setText( latitude);
-                        longitudeEditText.setText(longitude);
-                    }
-                    @Override
-                    public void onStatusChanged(String s, int i, Bundle bundle) {
-                    }
-                    @Override
-                    public void onProviderEnabled(String s) {
-                    }
-                    @Override
-                    public void onProviderDisabled(String s) {
-                    }
-                });
-            }
-        });
     }
 
     /**
@@ -152,10 +120,9 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.top_menu2, menu);
-
-        itemZoomIn = menu.findItem(R.id.itemZoomIn);
-        itemZoomOut = menu.findItem(R.id.itemZoomOut);
+        inflater.inflate(R.menu.top_menu, menu);
+        MenuItem itemZoomIn = menu.findItem(R.id.itemZoomIn);
+        MenuItem itemZoomOut = menu.findItem(R.id.itemZoomOut);
         itemZoomIn.setVisible(false);
         itemZoomOut.setVisible(false);
 
@@ -168,22 +135,16 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.helpItem:
-                Dialog helpDialog = new Dialog(Activity1.this);
-                helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                helpDialog.setContentView(R.layout.activity_2_help_dialog);
-                Button okButton = helpDialog.findViewById(R.id.okButton);
-                TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
-                helpDescription.setText("Enter a latitude and a longitude and click search locationtest.");
-                okButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helpDialog.cancel();
-                    }
-                });
-                helpDialog.show();
-                break;
+
+        if (item.getItemId() == R.id.helpItem) {
+            Dialog helpDialog = new Dialog(Activity1.this);
+            helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            helpDialog.setContentView(R.layout.activity_2_help_dialog);
+            Button okButton = helpDialog.findViewById(R.id.okButton);
+            TextView helpDescription = helpDialog.findViewById(R.id.helpDescription);
+            helpDescription.setText(R.string.activity1Description);
+            okButton.setOnClickListener(click ->  helpDialog.cancel());
+            helpDialog.show();
         }
         return true;
     }
@@ -225,7 +186,46 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
+    private void onClick(View click) {
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
 
+        String locationManagerString = "";
+
+        if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)) {
+            locationManagerString = locationManager.NETWORK_PROVIDER;
+        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManagerString = locationManager.GPS_PROVIDER;
+        }
+
+        locationManager.requestLocationUpdates(locationManagerString, 0, 0, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+                latitude = Double.toString(location.getLatitude());
+                longitude = Double.toString(location.getLongitude());
+                latitudeEditText.setText(latitude);
+                longitudeEditText.setText(longitude);
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+            }
+        });
+    }
+
+
+    @SuppressLint("StaticFieldLeak")
     private class RandomCoordinates extends AsyncTask<String, Integer, String> {
         protected void onPreExecute() {
         }
@@ -248,7 +248,6 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
                 xpp.setInput( response  , "UTF-8");
 
                 // Start parsing
-                String parameter = null;
                 int eventType = xpp.getEventType(); //The parser is currently at START_DOCUMENT
                 while(eventType != XmlPullParser.END_DOCUMENT) {
                     if(eventType == XmlPullParser.START_TAG) {
@@ -276,7 +275,6 @@ public class Activity1 extends AppCompatActivity implements NavigationView.OnNav
         public void onPostExecute(String fromDoInBackground) {
             latitudeEditText.setText(latitude);
             longitudeEditText.setText(longitude);
-            Toast.makeText(getApplicationContext(), "Generated latitude and longitude: " + latitude + ", " + longitude, Toast.LENGTH_LONG).show();
         }
     }
 

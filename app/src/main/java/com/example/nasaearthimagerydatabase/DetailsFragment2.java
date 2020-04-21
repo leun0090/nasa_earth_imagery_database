@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -22,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -35,8 +40,6 @@ import java.util.ArrayList;
  */
 public class DetailsFragment2 extends Fragment {
 
-    private static final String TAG = "DetailsFragment2";
-    private boolean isTablet;
     private Bundle dataFromActivity;
     private AppCompatActivity parentActivity;
     String coffeeUrl;
@@ -45,14 +48,11 @@ public class DetailsFragment2 extends Fragment {
     private PlacesAdapter myAdapter;
     View result;
     TextView resultTextView;
-
-    public void setTablet(boolean tablet) {
-        isTablet = tablet;
-    }
+    String latitude;
+    String longitude;
 
     public DetailsFragment2() {
         coffeePlaces = new ArrayList < CoffeePlace > ();
-
     }
 
     @Override
@@ -60,31 +60,34 @@ public class DetailsFragment2 extends Fragment {
                              Bundle savedInstanceState) {
 
         dataFromActivity = getArguments();
-        String latitude = this.getArguments().getString("LATITUDE");
-        String longitude = this.getArguments().getString("LONGITUDE");
+
+        try {
+             latitude = this.getArguments().getString("LATITUDE");
+             longitude = this.getArguments().getString("LONGITUDE");
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+        }
 
         // ListView
         coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=" + latitude + "," + longitude + "&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
-        //coffeeUrl = "https://dev.virtualearth.net/REST/v1/LocalSearch/?query=coffee&userLocation=47.602038,-122.333964&key=ApzeMYSxJulF36ptSnMPfbN9Tb3ZDRj5820D3_YGcudYRWnStu_hn7ADXK2-Ddkz";
         CoffeeQuery req = new CoffeeQuery();
         req.execute(coffeeUrl);
 
         result = inflater.inflate(R.layout.fragment_details2, container, false);
 
-        resultTextView = (TextView)  result.findViewById(R.id.resultTextView);
+        resultTextView = result.findViewById(R.id.resultTextView);
 
         // get the delete button, and add a click listener:
-        Button hideButton = (Button) result.findViewById(R.id.hideButton);
-        hideButton.setOnClickListener(clk -> {
+        Button hideButton = result.findViewById(R.id.hideButton);
+        hideButton.setOnClickListener(click -> {
             coffeePlaces.clear();
             parentActivity.getSupportFragmentManager().beginTransaction().remove(this).commit();
         });
-
         return result;
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         parentActivity = (AppCompatActivity) context;
     }
@@ -99,7 +102,7 @@ public class DetailsFragment2 extends Fragment {
                 URL url = new URL(args[0]);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream response = urlConnection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(response, "UTF-8"), 8);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response, StandardCharsets.UTF_8), 8);
                 StringBuilder sb = new StringBuilder();
 
                 String line = null;
@@ -127,7 +130,9 @@ public class DetailsFragment2 extends Fragment {
                     String website = jsonObject.getString("Website");
                     coffeePlaces.add(new CoffeePlace(name, formattedAddress, phoneNumber, website));
                 }
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+            }
 
             return null;
         }
@@ -138,39 +143,32 @@ public class DetailsFragment2 extends Fragment {
         public void onPostExecute(String fromDoInBackground) {
 
             // ListView
-            coffeeListView = (ListView) result.findViewById(R.id.theListView);
+            coffeeListView = result.findViewById(R.id.theListView);
             coffeeListView.setAdapter(myAdapter = new PlacesAdapter());
 
-            resultTextView.setText("Total: " + coffeePlaces.size());
+            resultTextView.setText(coffeePlaces.size());
 
             coffeeListView.setOnItemClickListener((parent, view, position, id) -> {
                 CoffeePlace selectedCoffee = coffeePlaces.get(position);
-                Dialog helpDialog = new Dialog(getContext());
+                Dialog helpDialog = new Dialog(getActivity());
                 helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 helpDialog.setContentView(R.layout.activity_2_help_dialog);
 
-                TextView helpDescription = (TextView) helpDialog.findViewById(R.id.helpDescription);
+                TextView helpDescription = helpDialog.findViewById(R.id.helpDescription);
                 helpDescription.setText(selectedCoffee.name);
-                TextView helpDescription2 = (TextView) helpDialog.findViewById(R.id.helpDescription2);
+                TextView helpDescription2 =helpDialog.findViewById(R.id.helpDescription2);
                 helpDescription2.setText(selectedCoffee.address);
-                TextView helpDescription3 = (TextView) helpDialog.findViewById(R.id.helpDescription3);
+                TextView helpDescription3 = helpDialog.findViewById(R.id.helpDescription3);
                 helpDescription3.setText(selectedCoffee.telephone);
-                TextView helpDescription4 = (TextView) helpDialog.findViewById(R.id.helpDescription4);
+                TextView helpDescription4 = helpDialog.findViewById(R.id.helpDescription4);
                 helpDescription4.setText(selectedCoffee.website);
-
                 ImageView imageView = helpDialog.findViewById(R.id.imageView);
                 imageView.setVisibility(View.GONE);
-
                 ImageView coffeeImageView = helpDialog.findViewById(R.id.coffeeImageView);
                 coffeeImageView.setVisibility(View.VISIBLE);
 
                 Button okButton = helpDialog.findViewById(R.id.okButton);
-                okButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helpDialog.cancel();
-                    }
-                });
+                okButton.setOnClickListener(click -> helpDialog.cancel());
                 helpDialog.show();
             });
         }
@@ -190,9 +188,9 @@ public class DetailsFragment2 extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             CoffeePlace aPlace = coffeePlaces.get(position);
             View newView = getLayoutInflater().inflate(R.layout.activity_2_listview_row_layout, parent, false);
-            TextView placeName = (TextView) newView.findViewById(R.id.placeName);
+            TextView placeName =newView.findViewById(R.id.placeName);
             placeName.setText(aPlace.name);
-            TextView placeAddress = (TextView) newView.findViewById(R.id.placeAddress);
+            TextView placeAddress =newView.findViewById(R.id.placeAddress);
             placeAddress.setText(aPlace.address);
             return newView;
         }
